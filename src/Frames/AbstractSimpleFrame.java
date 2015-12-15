@@ -121,7 +121,7 @@ public  class AbstractSimpleFrame extends AbstractFrame {
         return rtrn;
     }
     //!!
-    private HashMap<Variable, String> getVariableRoleAccordance(){
+    public HashMap<Variable, String> getVariableRoleAccordance(){
         HashMap<Variable, String> rtrn = new HashMap();
         for (Slot slot: body.getSlots())
             if (slot.getArgument() instanceof Variable)

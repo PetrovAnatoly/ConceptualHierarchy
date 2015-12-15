@@ -146,14 +146,9 @@ public class ViewSimpleFrameDialog extends javax.swing.JDialog {
 
     private void viewExtensionalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewExtensionalButtonActionPerformed
         // TODO add your handling code here:
-        if (frame.isClosed()){
-            if (ActualData.frameExtensionalIsGettable(frame)){
-                
-            }
-            else {
-                
-            }
-        }
+        ViewExtensionalDialog viewExDial= new ViewExtensionalDialog(new javax.swing.JFrame(), true);
+        viewExDial.setFrame(frame);
+        viewExDial.setVisible(true);
     }//GEN-LAST:event_viewExtensionalButtonActionPerformed
 
     /**
@@ -201,6 +196,7 @@ public class ViewSimpleFrameDialog extends javax.swing.JDialog {
     private AbstractSimpleFrame frame;
     private DefaultTableModel myTableModel = new DefaultTableModel();
     public void setFrame(AbstractSimpleFrame fr){
+        frame = fr;
         if (fr instanceof EventFrame){
             frameTypeLabel.setText("Event-Frame");
         }

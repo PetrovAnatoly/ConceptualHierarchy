@@ -7,6 +7,7 @@ package Frames.Structure;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import Сoncepts.Concept;
 import Сoncepts.Variable;
 
 /**
@@ -65,7 +66,12 @@ public class Body {
             }
         return true;
     }
-    
+    public Concept getConceptByVariable(Variable var){
+        for (Slot slot: slots)
+            if (slot.getArgument() == var)
+                return slot.getDomen();
+        return null;
+    }
     public static HashMap<SlotArgument, SlotArgument> varAccording = new HashMap();
     
     /*public boolean equals(Body arg){

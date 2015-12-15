@@ -8,6 +8,8 @@ package conceptualhierarchy;
 import Frames.AbstractFrame;
 import Frames.AbstractSimpleFrame;
 import Frames.Structure.Body;
+import Frames.Structure.Quantor;
+import Frames.Structure.Slot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -97,6 +99,10 @@ public class ActualData {
         return rtrn;
     }
 
+    public static int getConstantInDomenCount(Concept concept){
+        return getAllConstantsInDomen(concept).size();
+    }
+    
     public static Variable getVariableInDomenByName(String varName, Concept concept) {
         Variable rtrn = null;
         ArrayList<Variable> variables = variablesInDomen.get(concept);
@@ -548,17 +554,37 @@ public class ActualData {
     public static Extensional getAllExtensionsWithThisRoleDomenSystem(){
         return null;
     }
+    
+    private static Extensional gettableCheckResult;
     public static boolean frameExtensionalIsGettable(AbstractSimpleFrame frame){
         if (!frame.isClosed())
             return true;
-        
+        HashMap<Constant, Concept> constants = new HashMap();
+        for (Quantor quantor: frame.getQuantors()){
+            Variable var = quantor.getVariable();
+            Concept domen = var.getDomen();
+            int domenConstantsCiunt = getConstantInDomenCount(domen);
+            switch (quantor.getType()) {
+                case "A":
+                    break;
+                case "[}":
+                case "[]":
+                    if (domenConstantsCiunt < quantor.getValue())
+                        return false;
+                    break;
+                case "{]":
+                    break;
+            }
+        }
+        Extensional predicateExtensional = predicateExtensionals.get(frame.getPredicate());
+        gettableCheckResult = predicateExtensional.getProjection(frame.getBody());//
         
         return false;
     }
     public static void addExtension(ArrayList<Concept> arguments){
         
     }
-    public boolean frameExtensionalIsDeducible(AbstractSimpleFrame frame){
+    public static boolean frameExtensionalIsDeducible(AbstractSimpleFrame frame){
         return false;
     }
    

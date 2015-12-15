@@ -67,6 +67,7 @@ public class Quantor {
     
     public String getType() { return type;}
     public Variable getVariable() { return var;}
+    public int getValue() { return value;}
     @Override
     public String toString(){
         switch (type) {
