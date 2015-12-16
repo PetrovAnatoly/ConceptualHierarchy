@@ -208,10 +208,7 @@ public class ViewSimpleFrameDialog extends javax.swing.JDialog {
         quantorsField.setText(fr.getQuantorsLine()); 
         myTableModel = new FrameSlotsTableModel(fr);
         slotsTable.setModel(myTableModel);
-        if (fr.isClosed())
-            viewExtensionalButton.setText("Вывести означивания");
-        else
-            viewExtensionalButton.setText("Посмотреть означивания");
+        viewExtensionalButton.setText("Означивания");
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField frameNameField;

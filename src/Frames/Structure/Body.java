@@ -72,6 +72,13 @@ public class Body {
                 return slot.getDomen();
         return null;
     }
+    public HashMap<String, Concept> getRoleConceptAccordance(){
+        HashMap<String, Concept> rtrn = new HashMap();
+        for (Slot slot: slots){
+            rtrn.put(slot.role, slot.domen);
+        }
+        return rtrn;
+    }
     public static HashMap<SlotArgument, SlotArgument> varAccording = new HashMap();
     
     /*public boolean equals(Body arg){

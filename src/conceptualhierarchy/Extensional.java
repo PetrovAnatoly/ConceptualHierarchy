@@ -40,6 +40,10 @@ public class Extensional {
     public void addExtension(HashMap<String, Constant> extension){
         arguments.add(extension);
     }
+    public void addAll(ArrayList<HashMap<String, Constant>> ext){
+        arguments.addAll(ext);
+    }
+    public ArrayList<HashMap<String, Constant>> getExtensions() { return arguments;}
     public Extensional getProjection(Body frameBody){
         Extensional rtrn = new Extensional(frame);
         for (HashMap<String,Constant> constants: arguments){
@@ -74,12 +78,47 @@ public class Extensional {
         }
         return rtrn;
     }
+    
+    public boolean contains(HashMap<String, Constant> arg){
+        for (HashMap<String, Constant> extension: arguments){
+            boolean isOk = true;
+            for (String role: arg.keySet()){
+                if (arg.get(role) != extension.get(role)){
+                    isOk = false;
+                    break;
+                }
+            }
+            if (isOk) 
+                return true;
+        }
+        return false;
+    }
+    
+    public HashMap<String, Constant> getExtension(HashMap<String, String> roleConstName){
+        for (HashMap<String, Constant> extension: arguments){
+            boolean isOk = true;
+            for (String role: roleConstName.keySet()){
+                if (!extension.containsKey(role))
+                    break;
+                if (!roleConstName.get(role).equals(extension.get(role).getName())){
+                    isOk = false;
+                    break;
+                }
+            }
+            if (isOk) 
+                return extension;
+        }
+        return null;
+    }
     //вызывать только после getProjection
     public Extensional getProjection(AbstractSimpleFrame frame){
         Extensional rtrn = new Extensional(frame);
-        ArrayList<Quantor> reversedQuantor = new ArrayList<>(frame.getQuantors());
-        Collections.reverse(reversedQuantor);
+        ArrayList<Quantor> reversedQuantors = new ArrayList<>(frame.getQuantors());
+        Collections.reverse(reversedQuantors);
         HashMap<Variable, String> variableRoleAccordance = frame.getVariableRoleAccordance();
+        for (Quantor quantor: reversedQuantors){
+            
+        }
         for (Quantor quantor: frame.getQuantors()){
             Concept concept = frame.getBody().getConceptByVariable(quantor.getVariable());
             ArrayList<Constant> constantsOfThisConcept = ActualData.getAllConstantsInDomen(concept);
@@ -94,4 +133,25 @@ public class Extensional {
         return rtrn;
     }
     
+    public boolean isEmpty(){ return arguments.isEmpty();}
+    
+    public void clear() { arguments = new ArrayList();}
+    
+    //вызывать после проекции на константу
+    public Extensional minus(ArrayList<Slot> slots) {
+        Extensional rtrn = new Extensional(frame);
+        for (HashMap<String, Constant> extension: arguments){
+            for (Slot slot: slots){
+                if (!slot.getArgument().isVariable() && slot.getArgument()!=extension.get(slot.getRole())){
+                    rtrn.arguments.add(extension);
+                    break;
+                }
+            }
+        }
+        return rtrn;
+    }
+
+    public void removeExtension(HashMap<String, Constant> extension) {
+        arguments.remove(extension);
+    }
 }

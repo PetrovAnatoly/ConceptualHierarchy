@@ -29,7 +29,7 @@ public class Quantor {
         }
         else if (arg.contains("{") && arg.contains("]")){
             type = "{]";
-            value = new Integer(arg.substring(arg.indexOf("{")+1,arg.indexOf("[")));
+            value = new Integer(arg.substring(arg.indexOf("{")+1,arg.indexOf("]")));
         }
         else
             type = "noQuantor";
@@ -56,6 +56,7 @@ public class Quantor {
                 for (Variable vrbl: variables){
                     if (quantor.endsWith(vrbl.getName())){
                         rtrn.add(new Quantor(quantor.replace(vrbl.getName(), ""), vrbl));
+                        break;
                     }
                 }
                 quantor = "";

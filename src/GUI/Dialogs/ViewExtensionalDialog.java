@@ -6,7 +6,12 @@
 package GUI.Dialogs;
 
 import Frames.AbstractSimpleFrame;
+import GUI.TableModels.ExtensionalTableModel;
 import conceptualhierarchy.ActualData;
+import conceptualhierarchy.Extensional;
+import java.util.HashMap;
+import Сoncepts.Concept;
+import Сoncepts.Constant;
 
 /**
  *
@@ -41,12 +46,13 @@ public class ViewExtensionalDialog extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         extensionalTable = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        addExtensionButton = new javax.swing.JButton();
+        removeExtensionButton = new javax.swing.JButton();
         closedFrameMessage = new javax.swing.JLabel();
         closedFrameButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         quantorsField = new javax.swing.JTextField();
+        predExtButton = new javax.swing.JButton();
 
         jCheckBox1.setText("jCheckBox1");
 
@@ -85,17 +91,39 @@ public class ViewExtensionalDialog extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(extensionalTable);
 
-        jButton1.setText("Добавить означивание");
+        addExtensionButton.setText("Добавить подстановку");
+        addExtensionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addExtensionButtonActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Удалить означивание");
+        removeExtensionButton.setText("Удалить подстановку");
+        removeExtensionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeExtensionButtonActionPerformed(evt);
+            }
+        });
 
         closedFrameMessage.setText("message");
 
         closedFrameButton.setText("Получить");
+        closedFrameButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closedFrameButtonActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Кванторы:");
 
         quantorsField.setEditable(false);
+
+        predExtButton.setText("Посмотреть все означивания предиката");
+        predExtButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                predExtButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -108,15 +136,11 @@ public class ViewExtensionalDialog extends javax.swing.JDialog {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(addExtensionButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(closedFrameMessage)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 306, Short.MAX_VALUE)
-                        .addComponent(closedFrameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(removeExtensionButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2)
@@ -126,7 +150,14 @@ public class ViewExtensionalDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(quantorsField)
                             .addComponent(frameNameField)
-                            .addComponent(predicateField, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(predicateField)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(closedFrameMessage)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(closedFrameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(predExtButton, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -146,16 +177,18 @@ public class ViewExtensionalDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(predicateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(predExtButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(closedFrameMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(closedFrameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
+                    .addComponent(removeExtensionButton)
+                    .addComponent(addExtensionButton))
                 .addContainerGap())
         );
 
@@ -165,9 +198,58 @@ public class ViewExtensionalDialog extends javax.swing.JDialog {
     private void frameNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frameNameFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_frameNameFieldActionPerformed
+
+    private void addExtensionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addExtensionButtonActionPerformed
+        // TODO add your handling code here:
+        AddExtensionDialog addExtDialog = new AddExtensionDialog(new java.awt.Frame(), true);
+        addExtDialog.setFrame(frame);
+        addExtDialog.setVisible(true);
+        // !!
+        if (addExtDialog.extensionIsAdded()){
+            myTableModel.addRow(addExtDialog.getAddedExtension());
+            extensional.addExtension(addExtDialog.getAddedExtension());
+        }
+    }//GEN-LAST:event_addExtensionButtonActionPerformed
+
+    private void removeExtensionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeExtensionButtonActionPerformed
+        // TODO add your handling code here:
+        int rowIndex = extensionalTable.getSelectedRow();
+        if (rowIndex == -1)
+            return;
+        HashMap<String, String> extensionLine = new HashMap();
+        HashMap<String, Concept> roleConc = frame.getBody().getRoleConceptAccordance();
+        for (int i = 0; i < extensionalTable.getColumnCount(); i++){
+            String role = extensionalTable.getColumnName(i);
+            String constName = (String) extensionalTable.getValueAt(rowIndex, i);
+            extensionLine.put(role, constName);
+        }
+        HashMap<String, Constant> extension = extensional.getExtension(extensionLine);
+        extensional.removeExtension(extension);
+        ActualData.getExtensional(frame.getPredicate()).removeExtension(extension);
+        myTableModel.removeRow(rowIndex);
+    }//GEN-LAST:event_removeExtensionButtonActionPerformed
+
+    private void closedFrameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closedFrameButtonActionPerformed
+        // TODO add your handling code here:
+        extensional = ActualData.deduceExtensional(frame);
+        myTableModel = new ExtensionalTableModel(frame, extensional);
+        extensionalTable.setModel(myTableModel);
+        closedFrameButton.setVisible(false);
+        closedFrameMessage.setText("Полученные означивания не сохранятся");
+        removeExtensionButton.setEnabled(false);
+    }//GEN-LAST:event_closedFrameButtonActionPerformed
+
+    private void predExtButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_predExtButtonActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_predExtButtonActionPerformed
     private AbstractSimpleFrame frame;
+    private ExtensionalTableModel myTableModel;
+    private Extensional extensional;
     public void setFrame(AbstractSimpleFrame arg){
         frame = arg;
+        extensional = new Extensional(frame);
+        myTableModel = new ExtensionalTableModel(frame, extensional);
         frameNameField.setText(frame.getName());
         quantorsField.setText(frame.getQuantorsLine());
         predicateField.setText(frame.getPredicate());
@@ -176,13 +258,11 @@ public class ViewExtensionalDialog extends javax.swing.JDialog {
             if (ActualData.frameExtensionalIsGettable(frame)){
                 closedFrameMessage.setText("Конфигурация не противоречит фрейму");
                 closedFrameButton.setVisible(false);
+                extensional = ActualData.getLastExtensionalCheckResult();
+                myTableModel = new ExtensionalTableModel(frame, extensional);
+                extensionalTable.setModel(myTableModel); 
             }
             else {
-                extensionalTable.setVisible(false);
-                jScrollPane1.setVisible(false);
-                jScrollPane1.setSize(0, 0);
-                extensionalTable.setSize(0, 0);
-                
                 if (ActualData.frameExtensionalIsDeducible(frame)){
                     closedFrameMessage.setText("Конфигурация противоречит фрейму, означивания выводимы");
                     closedFrameButton.setVisible(true);
@@ -194,9 +274,12 @@ public class ViewExtensionalDialog extends javax.swing.JDialog {
             }
         }
         else {
-            ViewExtensionalDialog viewExDial= new ViewExtensionalDialog(new javax.swing.JFrame(), true);
-            viewExDial.setFrame(frame);
-            viewExDial.setVisible(true);
+            closedFrameMessage.setText("Фрейм является открытым, означивания приведены в таблице");
+            closedFrameMessage.setVisible(true);
+            closedFrameButton.setVisible(false);
+            extensionalTable.setVisible(true);
+            myTableModel = new ExtensionalTableModel(frame, ActualData.getExtensional(frame));
+            extensionalTable.setModel(myTableModel);
         }
     }
     /**
@@ -242,12 +325,11 @@ public class ViewExtensionalDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addExtensionButton;
     private javax.swing.JButton closedFrameButton;
     private javax.swing.JLabel closedFrameMessage;
     private javax.swing.JTable extensionalTable;
     private javax.swing.JTextField frameNameField;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -256,7 +338,9 @@ public class ViewExtensionalDialog extends javax.swing.JDialog {
     private javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton predExtButton;
     private javax.swing.JTextField predicateField;
     private javax.swing.JTextField quantorsField;
+    private javax.swing.JButton removeExtensionButton;
     // End of variables declaration//GEN-END:variables
 }

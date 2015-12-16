@@ -29,6 +29,8 @@ public  class AbstractSimpleFrame extends AbstractFrame {
         quantors = frameQuantors;
         body = frameBody;
     }
+    
+    
     private String predicate=new String();
     private ArrayList<Quantor> quantors = new ArrayList(); 
     private Body body=new Body();

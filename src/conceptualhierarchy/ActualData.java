@@ -10,6 +10,7 @@ import Frames.AbstractSimpleFrame;
 import Frames.Structure.Body;
 import Frames.Structure.Quantor;
 import Frames.Structure.Slot;
+import Frames.Structure.SlotArgument;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -114,6 +115,10 @@ public class ActualData {
         return rtrn;
     }
 
+    public static Extensional getExtensionalOfPredicate(String predicate){
+        return predicateExtensionals.get(predicate);
+    }
+    
     public static void addNewConceptName(String arg) {
         conceptNameSet.add(arg);
     }
@@ -122,7 +127,7 @@ public class ActualData {
         frameNameSet.add(arg);
     }
 
-    public static void addNewConstantInDomen(String constantName, Concept domen){
+    public static void addNewConstantInDomen(String constantName, Concept domen){ 
         ArrayList<Concept> ancestors = getIsaSetForConcept(domen);
         Constant constant = new Constant(constantName, domen);
         for (Concept concept: ancestors){
@@ -557,19 +562,19 @@ public class ActualData {
     
     private static Extensional gettableCheckResult;
     public static boolean frameExtensionalIsGettable(AbstractSimpleFrame frame){
+        gettableCheckResult = new Extensional(frame);
         if (!frame.isClosed())
             return true;
-        HashMap<Constant, Concept> constants = new HashMap();
         for (Quantor quantor: frame.getQuantors()){
             Variable var = quantor.getVariable();
             Concept domen = var.getDomen();
-            int domenConstantsCiunt = getConstantInDomenCount(domen);
-            switch (quantor.getType()) {
+            int domenConstantsCount = getConstantInDomenCount(domen);
+            switch (quantor.getType()){
                 case "A":
                     break;
                 case "[}":
                 case "[]":
-                    if (domenConstantsCiunt < quantor.getValue())
+                    if (domenConstantsCount < quantor.getValue())
                         return false;
                     break;
                 case "{]":
@@ -577,16 +582,162 @@ public class ActualData {
             }
         }
         Extensional predicateExtensional = predicateExtensionals.get(frame.getPredicate());
-        gettableCheckResult = predicateExtensional.getProjection(frame.getBody());//
-        
-        return false;
+        Extensional bodyProjectedExt = predicateExtensional.getProjection(frame.getBody());//
+        if (frame.getQuantors().isEmpty()) {
+            gettableCheckResult = bodyProjectedExt;
+            return !bodyProjectedExt.isEmpty();
+        }
+        else 
+            return extIsOk(bodyProjectedExt, frame.getQuantors(), frame.getBody().getSlots());
     }
-    public static void addExtension(ArrayList<Concept> arguments){
-        
+    public static Extensional getLastExtensionalCheckResult() { return gettableCheckResult;}
+    //вызывать после проекции
+    private static boolean extIsOk(Extensional ext, ArrayList<Quantor> quantors, ArrayList<Slot> slots){
+        if (quantors.isEmpty()){
+            HashMap<String, Constant> roleConstant= new HashMap();
+            for (Slot slot: slots)
+                roleConstant.put(slot.getRole(), (Constant) slot.getArgument());
+            if (ext.contains(roleConstant)){
+                gettableCheckResult.addExtension(roleConstant);
+                return true;
+            }
+            else 
+                return false;
+        }
+        else {
+            Quantor qntr = quantors.get(0);
+            Concept conc = null;
+            String role = null;
+            for (Slot slot: slots)
+                if (slot.getArgument() == qntr.getVariable()){
+                    conc = slot.getDomen();
+                    role = slot.getRole();
+                    break;
+                }
+            if (conc==null)
+                return false;
+            ArrayList<Constant> allConstantsInDomen = getAllConstantsInDomen(conc);
+            int count = 0;
+            for (Constant constant: allConstantsInDomen){
+                Extensional projectedExt = ext.getProjection(role, constant);
+                ArrayList<Quantor> projectedQuantors = (ArrayList<Quantor>) quantors.clone();
+                projectedQuantors.remove(0);
+                ArrayList<Slot> projectedSlots = (ArrayList<Slot>) slots.clone();
+                for (Slot slot: projectedSlots)
+                    if (slot.getRole().equals(role)){
+                        projectedSlots.remove(slot);
+                        projectedSlots.add(new Slot(role, constant, conc));
+                        break;
+                    }
+                if (extIsOk(projectedExt, projectedQuantors, projectedSlots))
+                    count++;
+                else {
+                    gettableCheckResult = gettableCheckResult.minus(projectedSlots); 
+                }
+            }
+            boolean rtrn = false;
+            switch (qntr.getType()) {
+                case "A":
+                    rtrn = count == allConstantsInDomen.size();
+                    break;
+                case "[]":
+                    rtrn = count == qntr.getValue();
+                    break;
+                case "[}":
+                    rtrn = count >= qntr.getValue();
+                    break;
+                case "{]":
+                    rtrn = count <= qntr.getValue();
+                    break;
+            }
+            return rtrn;
+        }
+    }
+    
+    public static void addExtension(String predicate, HashMap<String, Constant> extension){
+        predicateExtensionals.get(predicate).addExtension(extension); 
     }
     public static boolean frameExtensionalIsDeducible(AbstractSimpleFrame frame){
-        return false;
+        for (Quantor quantor: frame.getQuantors()){
+            Variable var = quantor.getVariable();
+            Concept domen = var.getDomen();
+            int domenConstantsCount = getConstantInDomenCount(domen);
+            switch (quantor.getType()){
+                case "A":
+                    break;
+                case "[}":
+                case "[]":
+                    if (domenConstantsCount != quantor.getValue())
+                        return false;
+                    break;
+                case "{]":
+                    if (domenConstantsCount!=0)
+                        return false;
+            }
+        }
+        return true;
     }
-   
+    public static Extensional deduceExtensional(AbstractSimpleFrame frame){
+        Extensional ext = new Extensional(frame);
+        ArrayList<Quantor> qntrs = frame.getQuantors();
+        HashMap<String, Concept> roleConc = frame.getBody().getRoleConceptAccordance();
+        HashMap<String, Constant> roleConst = new HashMap();
+        for (Slot slot: frame.getBody().getSlots())
+            if (!slot.getArgument().isVariable()){
+                roleConc.remove(slot.getRole());
+                roleConst.put(slot.getRole(), (Constant) slot.getArgument());
+            }
+        if (roleConc.isEmpty()){
+            ext.addExtension(roleConst);
+            return ext;
+        }
+        ArrayList<HashMap<String, Constant>> extensions = getCartesianProduct(roleConc);
+        extensions = getCartesianProduct(roleConst, extensions);
+        ext.addAll(extensions);
+        return ext;
+    }
+    private static ArrayList<HashMap<String, Constant>> getCartesianProduct(HashMap<String, Concept> roleConc){
+        ArrayList<HashMap<String, Constant>> rtrn = new ArrayList();
+        Concept concept = null;
+        String role = null;
+        for (String rol: roleConc.keySet()){
+            concept = roleConc.get(rol);
+            role = rol;
+            roleConc.remove(rol);
+            break;
+        }
+        if (roleConc.isEmpty())
+            for (Constant cnst: ActualData.getAllConstantsInDomen(concept)){
+                HashMap<String, Constant> newExt = new HashMap();
+                newExt.put(role, cnst);
+                rtrn.add(newExt);
+            }
+        else {
+            HashMap<String, Concept> newRoleConc = (HashMap<String, Concept>) roleConc.clone();
+            newRoleConc.remove(role);
+            ArrayList<HashMap<String, Constant>> nextProd = getCartesianProduct(newRoleConc);
+            for (Constant cnst: ActualData.getAllConstantsInDomen(concept)){
+                for (HashMap<String, Constant> ext: nextProd){
+                    HashMap<String, Constant> newExt = (HashMap<String, Constant>) ext.clone();
+                    newExt.put(role, cnst);
+                    rtrn.add(newExt);
+                }
+            }
+        }
+        return rtrn;
+    }
+    private static ArrayList<HashMap<String, Constant>> getCartesianProduct(HashMap<String, Constant> roleConst,ArrayList<HashMap<String, Constant>> ext){
+        for (String role: roleConst.keySet()){
+            Constant constant = roleConst.get(role);
+            for (HashMap<String, Constant> extension: ext)
+                extension.put(role, constant);
+        }
+        return ext;
+    }
+    public static void removeExstension(String predicate, HashMap<String, Constant> extension){
+        Extensional predExt = predicateExtensionals.get(predicate);
+        predExt.removeExtension(extension);
+    }
+    
     //public boolean frameHas
 }
