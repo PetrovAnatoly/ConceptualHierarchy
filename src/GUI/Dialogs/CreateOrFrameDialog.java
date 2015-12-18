@@ -137,9 +137,15 @@ public class CreateOrFrameDialog extends javax.swing.JDialog {
             AbstractFrame firstOperand = ActualData.getFrameByName(firstOperandName);
             AbstractFrame secondOperand = ActualData.getFrameByName(secondOperandName);
             OrFrame newFrame = new OrFrame(newFrameName, firstOperand, secondOperand);
-            ActualData.addFrameToHierarchy(newFrame);
-            setVisible(false);
-            dispose();
+            if (ActualData.thisFrameAlreadyExist(newFrame)){
+                errorDialog errorD = new errorDialog(new javax.swing.JFrame(), true, "Фрейм с таким описанием уже есть!");
+                errorD.setVisible(true);
+            }
+            else{
+                ActualData.addFrameToHierarchy(newFrame);
+                setVisible(false);
+                dispose();
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

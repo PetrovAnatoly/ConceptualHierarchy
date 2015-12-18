@@ -19,4 +19,5 @@ public class NotFrame extends AbstractComplexFrame{
     public boolean ISA(AbstractSimpleFrame argument) {
         return false;
     }
+
 }

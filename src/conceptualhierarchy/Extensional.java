@@ -34,7 +34,7 @@ public class Extensional {
     private String predicate;
     private ArrayList<String> roles = new ArrayList();
     private ArrayList<Concept> domens = new ArrayList();
-    private HashMap<String, Concept> roleConceptAccordance = new HashMap();
+    private HashMap<String, Concept> roleConceptAccordance = new HashMap<>();
     private ArrayList<HashMap<String, Constant>> arguments = new ArrayList(); // <role:arg>
     
 

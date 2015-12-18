@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import Сoncepts.Concept;
 import Сoncepts.Constant;
+import Сoncepts.DefConcept;
 import Сoncepts.Variable;
 
 /**
@@ -41,6 +42,7 @@ public class ActualData {
     private static HashMap<Concept, ArrayList<Variable>> variablesInDomen = new HashMap();
     private static HashMap<String, HashMap<AbstractSimpleFrame, Extensional>> extensionals = new HashMap();
     private static HashMap<String, Extensional> predicateExtensionals = new HashMap();
+    private static HashMap<AbstractSimpleFrame, ArrayList<DefConcept>> defFrameConcept = new HashMap<>();
     //methods
     public static FrameNode getFrameHoerarchy() {
         return frameHierarchyRoot;
@@ -53,17 +55,24 @@ public class ActualData {
     public static ArrayList<String> getFrameNameSet() {
         return frameNameSet;
     }
-
+    public static FrameNode getFrameNode(AbstractFrame arg) { return frameNodeAccordance.get(arg);}
     public static AbstractFrame getFrameByName(String frName) {
         return nameFrameAccordance.get(frName);
     }
-
+    public static ArrayList<DefConcept> getDefConcepts(AbstractSimpleFrame frame){
+        ArrayList<DefConcept> rtrn = new ArrayList<>();
+        if (defFrameConcept.containsKey(frame))
+            return defFrameConcept.get(frame);
+        else return rtrn;
+    }
     public static Concept getConceptByName(String concName) {
         return nameConceptAccordance.get(concName);
     }
 
     public static Constant getConstantInDomenByName(String constName, Concept concept) {
         Constant rtrn = null;
+        if (!constantsInDomen.containsKey(concept))
+            return rtrn;
         ArrayList<Constant> constants = constantsInDomen.get(concept);
         for (Constant constant : constants) {
             if (constant.getName().equals(constName)) {
@@ -82,8 +91,20 @@ public class ActualData {
         return rtrn;
     }
     
+    
+    public static ArrayList<Constant> getConstantsOfDefConcept(DefConcept concept){
+        ArrayList<Constant> rtrn = new ArrayList();
+        Extensional defFrameExt = getExtensional((concept.getDefFrame()));
+        for (HashMap<String, Constant> consts: defFrameExt.getExtensions())
+            if (consts.containsKey(concept.getRole()))
+                if (!rtrn.contains(consts.get(concept.getRole())))
+                    rtrn.add(consts.get(concept.getRole()));
+        return rtrn;
+    }
     public static ArrayList<Constant> getAllConstantsInDomen(Concept concept){
         ArrayList<Constant> rtrn = new ArrayList();
+        if (concept instanceof DefConcept)
+            return rtrn;
         if (constantsInDomen.containsKey(concept)) {
             ArrayList<Constant> constants = constantsInDomen.get(concept);
             for(Constant cnst: constants)
@@ -99,8 +120,9 @@ public class ActualData {
         }
         return rtrn;
     }
-
+    
     public static int getConstantInDomenCount(Concept concept){
+        if (concept instanceof DefConcept) return 0;
         return getAllConstantsInDomen(concept).size();
     }
     
@@ -285,6 +307,20 @@ public class ActualData {
         conceptNameSet.add(arg.getName());
         conceptNodeAccordance.put(arg, newNode);
         nameConceptAccordance.put(arg.getName(), arg);
+        if (!constantNameMap.containsKey(arg))
+            constantNameMap.put(arg, new ArrayList());
+        if (!constantsInDomen.containsKey(arg))
+            constantsInDomen.put(arg, new ArrayList());
+        if (arg instanceof DefConcept){
+            AbstractSimpleFrame defFrame = ((DefConcept) arg).getDefFrame();
+            if (defFrameConcept.containsKey(defFrame))
+                defFrameConcept.get(defFrame).add((DefConcept) arg);
+            else {
+                ArrayList<DefConcept> defConcepts = new ArrayList<>();
+                defConcepts.add((DefConcept) arg);
+                defFrameConcept.put(((DefConcept) arg).getDefFrame(), defConcepts);
+            }
+        }
     }
 
     public static void addNewConcepts(ArrayList<Concept> newConcepts) {
@@ -553,6 +589,7 @@ public class ActualData {
     
     // для открытых фреймов
     public static Extensional getExtensional(AbstractSimpleFrame frame){
+        gettableCheckResult = predicateExtensionals.get(frame.getPredicate()).getProjection(frame);
         ArrayList<Variable> quantifiedVariables = frame.getQuantifiedVariables();
         ArrayList<Quantor> newQuantors = (ArrayList<Quantor>) frame.getQuantors().clone();
         for (Slot slot: frame.getBody().getSlots())
@@ -563,7 +600,9 @@ public class ActualData {
                 }
         AbstractSimpleFrame closedFrame = new AbstractSimpleFrame(frame.getName(),frame.getPredicate(), newQuantors, frame.getBody());
         boolean b = frameExtensionalIsGettable(closedFrame);
-        return gettableCheckResult;
+        if (b)
+            return gettableCheckResult;
+        else return new Extensional(frame);
     }
     public static Extensional getExtensional(String predicate){
         if (predicateExtensionals.containsKey(predicate))
@@ -752,5 +791,23 @@ public class ActualData {
         predExt.removeExtension(extension);
     }
     
+    public static boolean thisFrameAlreadyExist(AbstractFrame argFrame){
+        for (AbstractFrame frame: frameSet){
+            if (frame.equals(argFrame))
+                return true;
+        }
+        return false;
+    }
     //public boolean frameHas
+    public static DefConcept getDefConcept(AbstractSimpleFrame frame, String role){ return new DefConcept(frame, role);}
+    public static ArrayList<String> getNotUsedRoles(AbstractSimpleFrame frame){
+        ArrayList<String> rtrn = frame.getRoles();
+        ArrayList<DefConcept> defConc = getDefConcepts(frame);
+        for (DefConcept dc: defConc)
+            rtrn.remove(dc.getRole());
+        for (Slot slot: frame.getBody().getSlots())
+            if (slot.getArgument() instanceof Constant)
+                rtrn.remove(slot.getRole());
+        return rtrn;
+    }
 }

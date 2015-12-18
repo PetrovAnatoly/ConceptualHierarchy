@@ -313,9 +313,15 @@ public class CreateCharacteristicFrameDialog extends javax.swing.JDialog {
             ArrayList<Variable> vrbls = newFrBody.getAllVariablesInBody();
             ArrayList<Quantor> qntrs = Quantor.getQuantorArray(quantorsStr, vrbls);
             CharacteristicFrame newFrame = new CharacteristicFrame(newFrName, newFrPredicate, qntrs, newFrBody);
-            ActualData.addFrameToHierarchy(newFrame);
-            setVisible(false);
-            dispose();
+            if (ActualData.thisFrameAlreadyExist(newFrame)){
+                errorDialog errorD = new errorDialog(new javax.swing.JFrame(), true, "Фрейм с таким описанием уже есть!");
+                errorD.setVisible(true);
+            }
+            else{
+                ActualData.addFrameToHierarchy(newFrame);
+                setVisible(false);
+                dispose();
+            } 
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

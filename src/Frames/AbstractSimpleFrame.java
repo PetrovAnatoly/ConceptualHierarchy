@@ -60,6 +60,8 @@ public  class AbstractSimpleFrame extends AbstractFrame {
     @Override
     public boolean ISA(AbstractSimpleFrame arg)
     {
+        if (arg == this)
+            return true;
         if (!predicate.equals(arg.predicate))
             return false;
         if (!body.coveredAndSimilar(arg.body))
@@ -87,7 +89,6 @@ public  class AbstractSimpleFrame extends AbstractFrame {
     public boolean ISA(OrFrame arg){
         return ISA(arg.firstOperand) || ISA(arg.secondOperand);
     }
-    
     //!!!
     public AbstractSimpleFrame getMergeFrame(AbstractSimpleFrame arg){
         AbstractSimpleFrame rtrn;
@@ -153,6 +154,12 @@ public  class AbstractSimpleFrame extends AbstractFrame {
             if (slot.getArgument().isVariable())
                 i++;
         return i;
+    }
+    public ArrayList<String> getRoles() { 
+        ArrayList<String> rtrn = new ArrayList<>();
+        for (Slot slot: body.getSlots())
+            rtrn.add(slot.getRole());
+        return rtrn;
     }
     public ArrayList<Variable> getQuantifiedVariables(){
         ArrayList<Variable> rtrn = new ArrayList();
@@ -228,5 +235,6 @@ public  class AbstractSimpleFrame extends AbstractFrame {
     public boolean isClosed(){
         return getVariableCount() == quantors.size();
     }
+    
 }
    

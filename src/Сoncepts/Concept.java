@@ -5,7 +5,6 @@
  */
 package Сoncepts;
 
-import conceptualhierarchy.HierarchyUnitInterface;
 import java.util.ArrayList;
 
 /**
@@ -24,12 +23,17 @@ public class Concept extends AbstractConcept{
         comment = argComment;
     }
     //fields
-    private String comment;
+    protected String comment;
     public String getComment() { return comment;}
     public void setComment(String cmmnt) { comment = cmmnt;}
-    private ArrayList<String> properties = new ArrayList();
+    protected ArrayList<String> properties = new ArrayList();
     public ArrayList<String> getProperties() { return properties;}
     public void setProperties(ArrayList<String> newProperties) { properties = newProperties;}
+    public void addAllProperties(ArrayList<String> props){
+        for (String prop: props)
+            if (!properties.contains(prop))
+                properties.add(prop);
+    }
     Concept (String s, ArrayList<String> argProperties){
         name = s;
         for (String prop : argProperties) {
@@ -38,6 +42,8 @@ public class Concept extends AbstractConcept{
     }
     //true, если свойства концепта this покрывают свойства концепта arg
     public boolean ISA(Concept arg){
+        if (arg instanceof DefConcept)
+            return false;
         if (properties.isEmpty())
             return false;
         if (arg.properties.isEmpty()) 

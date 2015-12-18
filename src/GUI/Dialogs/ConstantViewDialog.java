@@ -14,6 +14,7 @@ import java.util.Set;
 import javax.swing.table.DefaultTableModel;
 import Сoncepts.Concept;
 import Сoncepts.Constant;
+import Сoncepts.DefConcept;
 
 /**
  *
@@ -368,8 +369,13 @@ public class ConstantViewDialog extends javax.swing.JDialog {
         concept = conc;
         myTableModel = new constantTableModel(conc);
         constantTable.setModel(myTableModel);
+        constantTable.setVisible(true);
         conceptCommentTextField.setText(concept.getComment());
         conceptNameTextField.setText(concept.getName());
+        if (conc instanceof DefConcept){
+            removeButton.setVisible(false);
+            addButton.setVisible(false);
+        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;

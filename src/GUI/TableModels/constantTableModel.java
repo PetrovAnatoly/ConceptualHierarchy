@@ -6,9 +6,11 @@
 package GUI.TableModels;
 
 import conceptualhierarchy.ActualData;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import Сoncepts.Concept;
 import Сoncepts.Constant;
+import Сoncepts.DefConcept;
 
 /**
  *
@@ -17,9 +19,13 @@ import Сoncepts.Constant;
 public class constantTableModel extends DefaultTableModel{
     
     public constantTableModel(Concept concept){
-        super(data, headers);
-        domen = concept;
-        for (Constant constant: ActualData.getAllConstantsInDomen(concept)){
+         super(data, headers);
+        ArrayList<Constant> constants;
+        if (concept instanceof DefConcept)
+            constants = ActualData.getConstantsOfDefConcept((DefConcept)concept);
+        else 
+            constants = ActualData.getAllConstantsInDomen(concept);
+        for (Constant constant: constants){
             Object [] row = {constant.getName()};
             if (ActualData.constantIsUsedInFrame(constant) || ActualData.constantIsUsedInExtension(constant)){
                 insertRow(0, row);

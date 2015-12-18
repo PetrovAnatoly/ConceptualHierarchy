@@ -129,9 +129,15 @@ public class CreateNotFrameDialog extends javax.swing.JDialog {
         else {
             AbstractFrame firstOperand = ActualData.getFrameByName(firstOperandName);
             NotFrame newFrame = new NotFrame(newFrameName, firstOperand); 
-            ActualData.addFrameToHierarchy(newFrame);
-            setVisible(false);
-            dispose();
+            if (ActualData.thisFrameAlreadyExist(newFrame)){
+                errorDialog errorD = new errorDialog(new javax.swing.JFrame(), true, "Фрейм с таким описанием уже есть!");
+                errorD.setVisible(true);
+            }
+            else{
+                ActualData.addFrameToHierarchy(newFrame);
+                setVisible(false);
+                dispose();
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -267,6 +267,7 @@ public class MainFrame extends javax.swing.JFrame {
             AbstractFrame fr = ActualData.getFrameByName(s);
             viewFrame(fr);
         }
+        updateConceptIsaTree();
     }//GEN-LAST:event_frameViewButtonActionPerformed
 
     private void conceptViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conceptViewButtonActionPerformed

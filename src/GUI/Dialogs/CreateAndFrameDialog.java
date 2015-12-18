@@ -189,9 +189,15 @@ public class CreateAndFrameDialog extends javax.swing.JDialog {
             AbstractFrame firstOperand = ActualData.getFrameByName(firstOperandName);
             AbstractFrame secondOperand = ActualData.getFrameByName(secondOperandName);
             AndFrame newFrame = new AndFrame(newFrameName, firstOperand, secondOperand);
-            ActualData.addFrameToHierarchy(newFrame);
-            setVisible(false);
-            dispose();
+            if (ActualData.thisFrameAlreadyExist(newFrame)){
+                errorDialog errorD = new errorDialog(new javax.swing.JFrame(), true, "Фрейм с таким описанием уже есть!");
+                errorD.setVisible(true);
+            }
+            else{
+                ActualData.addFrameToHierarchy(newFrame);
+                setVisible(false);
+                dispose();
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

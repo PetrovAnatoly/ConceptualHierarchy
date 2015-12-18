@@ -26,6 +26,7 @@ public class FrameNode {
     //methods
     public AbstractFrame getValue() { return value;}
     public ArrayList<FrameNode> getChildNodes() { return childNodes;}
+    public ArrayList<FrameNode> getParents() { return parents;}
     public boolean addChild(FrameNode arg) {
         if (childNodes.contains(arg))
             return false;
