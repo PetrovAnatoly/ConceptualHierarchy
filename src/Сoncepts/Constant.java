@@ -6,7 +6,6 @@
 package Сoncepts;
 
 import Frames.Structure.SlotArgument;
-import conceptualhierarchy.HierarchyUnitInterface;
 
 /**
  *  

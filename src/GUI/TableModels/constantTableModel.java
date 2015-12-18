@@ -21,8 +21,10 @@ public class constantTableModel extends DefaultTableModel{
         domen = concept;
         for (Constant constant: ActualData.getAllConstantsInDomen(concept)){
             Object [] row = {constant.getName()};
-            if (ActualData.constantIsUsed(constant))
+            if (ActualData.constantIsUsedInFrame(constant) || ActualData.constantIsUsedInExtension(constant)){
                 insertRow(0, row);
+                firstRemovebleIndex++;
+            }
             else 
                 addRow(row);
         }
@@ -31,6 +33,7 @@ public class constantTableModel extends DefaultTableModel{
     public constantTableModel() {
         super();
     }
+    private int firstRemovebleIndex = 0;
     public int getFirstRemovebleRowIndex(){
         for (int i = 0; i < getRowCount(); i++){
             if (isCellRemoveble(i, 0))
@@ -46,13 +49,14 @@ public class constantTableModel extends DefaultTableModel{
         return false;
     }
     public boolean isCellRemoveble(int row, int column){
-        String constantName = ((String) getValueAt(row, 0)).trim();
-        return !ActualData.constantIsUsed(ActualData.getConstantInDomenByName(constantName, domen));
+        return row>=firstRemovebleIndex;
     }
     public void addRow(String constantName){
         Object[] row = {constantName};
-        if (ActualData.constantIsUsed(ActualData.getConstantInDomenByName(constantName, domen)))
-            insertRow(0, row);
+        if (ActualData.constantIsUsedInFrame(ActualData.getConstantInDomenByName(constantName, domen))){
+            insertRow(firstRemovebleIndex, row);
+            firstRemovebleIndex++;
+        }
         else 
             addRow(row);
     }

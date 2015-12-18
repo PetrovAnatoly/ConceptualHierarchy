@@ -24,6 +24,14 @@ public class ExtensionalTableModel extends DefaultTableModel{
             roles.add(slot.getRole());
         Object[] headers = roles.toArray();
         setColumnIdentifiers(headers);
+        for (HashMap<String, Constant> extension: extensions.getExtensions()){
+            addRow(extension);
+        }
+    }  
+    public ExtensionalTableModel(Extensional extensions){
+        ArrayList<String> roles = extensions.getRoles();
+        Object[] headers = roles.toArray();
+        setColumnIdentifiers(headers);
         ArrayList<String> constantNames = new ArrayList();
         String columnName = new String();
         for (HashMap<String, Constant> extension: extensions.getExtensions()){
@@ -35,7 +43,11 @@ public class ExtensionalTableModel extends DefaultTableModel{
     public final void addRow(HashMap<String, Constant> extension){
         ArrayList<String> newRow = new ArrayList();
         for (int i=0;i<getColumnCount(); i++){
-            String constName = extension.get(this.getColumnName(i)).getName();
+            String constName;
+            if (!extension.containsKey(getColumnName(i)))
+                constName = "";
+            else
+                constName = extension.get(getColumnName(i)).getName();
             newRow.add(constName);
         }
         this.addRow(newRow.toArray());

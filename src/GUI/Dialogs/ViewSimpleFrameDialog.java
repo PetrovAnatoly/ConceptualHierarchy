@@ -146,7 +146,7 @@ public class ViewSimpleFrameDialog extends javax.swing.JDialog {
 
     private void viewExtensionalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewExtensionalButtonActionPerformed
         // TODO add your handling code here:
-        ViewExtensionalDialog viewExDial= new ViewExtensionalDialog(new javax.swing.JFrame(), true);
+        ViewFrameExtensionalDialog viewExDial= new ViewFrameExtensionalDialog(new javax.swing.JFrame(), true);
         viewExDial.setFrame(frame);
         viewExDial.setVisible(true);
     }//GEN-LAST:event_viewExtensionalButtonActionPerformed

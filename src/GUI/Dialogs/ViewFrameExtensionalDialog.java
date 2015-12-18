@@ -17,12 +17,12 @@ import Сoncepts.Constant;
  *
  * @author Anatoly
  */
-public class ViewExtensionalDialog extends javax.swing.JDialog {
+public class ViewFrameExtensionalDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form ViewExtensionalDialog
      */
-    public ViewExtensionalDialog(java.awt.Frame parent, boolean modal) {
+    public ViewFrameExtensionalDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -241,11 +241,14 @@ public class ViewExtensionalDialog extends javax.swing.JDialog {
 
     private void predExtButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_predExtButtonActionPerformed
         // TODO add your handling code here:
-        
+        ViewPredicateExtensionalDialog viewPrExD = new ViewPredicateExtensionalDialog(new java.awt.Frame(), true);
+        viewPrExD.setPredicate(frame.getPredicate());
+        viewPrExD.setVisible(true);
     }//GEN-LAST:event_predExtButtonActionPerformed
     private AbstractSimpleFrame frame;
     private ExtensionalTableModel myTableModel;
     private Extensional extensional;
+    
     public void setFrame(AbstractSimpleFrame arg){
         frame = arg;
         extensional = new Extensional(frame);
@@ -278,7 +281,8 @@ public class ViewExtensionalDialog extends javax.swing.JDialog {
             closedFrameMessage.setVisible(true);
             closedFrameButton.setVisible(false);
             extensionalTable.setVisible(true);
-            myTableModel = new ExtensionalTableModel(frame, ActualData.getExtensional(frame));
+            extensional = ActualData.getExtensional(frame);
+            myTableModel = new ExtensionalTableModel(frame, extensional);
             extensionalTable.setModel(myTableModel);
         }
     }
@@ -299,20 +303,21 @@ public class ViewExtensionalDialog extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewExtensionalDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewFrameExtensionalDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewExtensionalDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewFrameExtensionalDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewExtensionalDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewFrameExtensionalDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewExtensionalDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewFrameExtensionalDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ViewExtensionalDialog dialog = new ViewExtensionalDialog(new javax.swing.JFrame(), true);
+                ViewFrameExtensionalDialog dialog = new ViewFrameExtensionalDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

@@ -154,7 +154,7 @@ public  class AbstractSimpleFrame extends AbstractFrame {
                 i++;
         return i;
     }
-    private ArrayList<Variable> getQuantifiedVariables(){
+    public ArrayList<Variable> getQuantifiedVariables(){
         ArrayList<Variable> rtrn = new ArrayList();
         for (Quantor quantor: quantors)
             rtrn.add(quantor.getVariable());

@@ -37,18 +37,52 @@ public class Extensional {
     private HashMap<String, Concept> roleConceptAccordance = new HashMap();
     private ArrayList<HashMap<String, Constant>> arguments = new ArrayList(); // <role:arg>
     
+
+    public void exploreRoles(Body body){
+        for (Slot slot: body.getSlots()){
+            if (!roleConceptAccordance.containsKey(slot.getRole())){
+                roleConceptAccordance.put(slot.getRole(), slot.getDomen());
+                roles.add(slot.getRole());
+                if (!domens.contains(slot.getDomen()))
+                    domens.add(slot.getDomen());
+            }
+            else if (roleConceptAccordance.get(slot.getRole()) != slot.getDomen())
+                if (roleConceptAccordance.get(slot.getRole()).ISA(slot.getDomen())){
+                    domens.remove(roleConceptAccordance.get(slot.getRole()));
+                    domens.add(slot.getDomen());
+                    roleConceptAccordance.put(slot.getRole(), slot.getDomen());
+                }
+        }
+    }
     public void addExtension(HashMap<String, Constant> extension){
         arguments.add(extension);
+        for (String role: extension.keySet())
+            if (!roleConceptAccordance.containsKey(role)){
+                roleConceptAccordance.put(role, extension.get(role).getDomen());
+                roles.add(role);
+                domens.add(extension.get(role).getDomen());
+            }
     }
     public void addAll(ArrayList<HashMap<String, Constant>> ext){
         arguments.addAll(ext);
     }
     public ArrayList<HashMap<String, Constant>> getExtensions() { return arguments;}
+    
+    public boolean constantIsUsed(Constant constant){
+        for (HashMap<String, Constant> map: arguments)
+            if (map.values().contains(constant))
+                return true;
+        return false;
+    }
     public Extensional getProjection(Body frameBody){
         Extensional rtrn = new Extensional(frame);
         for (HashMap<String,Constant> constants: arguments){
             boolean rolevant = true;
             for (Slot slot: frameBody.getSlots()){
+                if (!constants.containsKey(slot.getRole())){
+                    rolevant = false;
+                    break;
+                }
                 if (slot.getArgument() instanceof Constant){
                     if (slot.getArgument() != constants.get(slot.getRole())){
                         rolevant = false;
@@ -78,7 +112,7 @@ public class Extensional {
         }
         return rtrn;
     }
-    
+    public ArrayList<String> getRoles() { return roles;}
     public boolean contains(HashMap<String, Constant> arg){
         for (HashMap<String, Constant> extension: arguments){
             boolean isOk = true;

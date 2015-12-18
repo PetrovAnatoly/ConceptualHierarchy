@@ -258,6 +258,7 @@ public class ActualData {
                 extensionals.put(predicate, thisPredicateExtensionals); 
             }
             else {
+                predicateExtensionals.get(predicate).exploreRoles(((AbstractSimpleFrame)arg).getBody());
                 extensionals.get(predicate).put((AbstractSimpleFrame) arg, new Extensional((AbstractSimpleFrame) arg));
             }
             
@@ -501,14 +502,19 @@ public class ActualData {
         return frames;
     }
     
-    public static boolean constantIsUsed(Constant constant){
+    public static boolean constantIsUsedInFrame(Constant constant){
         for (AbstractFrame fr: frameSet){
             if (fr.constantIsUsed(constant))
                 return true;
         }
         return false;
     }
-    
+    public static boolean constantIsUsedInExtension(Constant constant){
+        for (Extensional ext: predicateExtensionals.values())
+            if (ext.constantIsUsed(constant))
+                return true;
+        return false;
+    }
     public static HashSet<String> getUsedConstantNamesOfThisConcept(Concept conc){
         HashSet<AbstractFrame> frames = getFramesThatUseConcept(conc);
         ArrayList<Constant> uncheckedConstantsOfThisConcept = ActualData.getAllConstantsInDomen(conc);
@@ -545,11 +551,19 @@ public class ActualData {
         constantNameMap.get(domen).remove(constant.getName());
     }
     
+    // для открытых фреймов
     public static Extensional getExtensional(AbstractSimpleFrame frame){
-        if (extensionals.containsKey(frame))
-            return extensionals.get(frame.getPredicate()).get(frame);
-        else return new Extensional(frame); 
-        
+        ArrayList<Variable> quantifiedVariables = frame.getQuantifiedVariables();
+        ArrayList<Quantor> newQuantors = (ArrayList<Quantor>) frame.getQuantors().clone();
+        for (Slot slot: frame.getBody().getSlots())
+            if (slot.getArgument() instanceof Variable)
+                if (!quantifiedVariables.contains((Variable) slot.getArgument())){
+                    Quantor newQuantor = new Quantor("[}",1,(Variable) slot.getArgument());
+                    newQuantors.add(newQuantor);
+                }
+        AbstractSimpleFrame closedFrame = new AbstractSimpleFrame(frame.getName(),frame.getPredicate(), newQuantors, frame.getBody());
+        boolean b = frameExtensionalIsGettable(closedFrame);
+        return gettableCheckResult;
     }
     public static Extensional getExtensional(String predicate){
         if (predicateExtensionals.containsKey(predicate))
@@ -559,7 +573,6 @@ public class ActualData {
     public static Extensional getAllExtensionsWithThisRoleDomenSystem(){
         return null;
     }
-    
     private static Extensional gettableCheckResult;
     public static boolean frameExtensionalIsGettable(AbstractSimpleFrame frame){
         gettableCheckResult = new Extensional(frame);
