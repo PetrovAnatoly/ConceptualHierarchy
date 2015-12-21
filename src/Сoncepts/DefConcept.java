@@ -40,6 +40,8 @@ public class DefConcept extends Concept{
     @Override
     public boolean ISA(Concept arg){
         if (arg instanceof DefConcept){
+            if (!role.equals(((DefConcept) arg).role))
+                return false;
             if (baseConcept == arg || baseConcept.ISA(arg))
                 return true;
             if ((baseConcept == ((DefConcept) arg).baseConcept || baseConcept.ISA(((DefConcept) arg).baseConcept)) 

@@ -19,12 +19,17 @@ import GUI.Dialogs.errorDialog;
 import conceptualhierarchy.ActualData;
 import conceptualhierarchy.ConceptNode;
 import conceptualhierarchy.FrameNode;
+import conceptualhierarchy.InputOutputXML;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+import org.xml.sax.SAXException;
 import Сoncepts.Concept;
 
 /**
@@ -64,6 +69,8 @@ public class MainFrame extends javax.swing.JFrame {
         constantViewButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
 
@@ -141,6 +148,24 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         jMenu1.setText("File");
+
+        jMenuItem2.setText("Сохранить");
+        jMenuItem2.setToolTipText("");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        jMenuItem1.setText("Загрузить");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
@@ -335,6 +360,25 @@ public class MainFrame extends javax.swing.JFrame {
             updateConceptIsaTree();
         }
     }//GEN-LAST:event_removeConceptButtonActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        ActualData.save();
+        
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        try {
+            // TODO add your handling code here:
+            InputOutputXML.load();
+            updateFrameIsaTree();
+            updateConceptIsaTree();
+        } catch (SAXException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
     public static void viewFrame(AbstractFrame fr){
         if (fr instanceof AndFrame){
             BinaryFrameViewDialog frViewDialog = new BinaryFrameViewDialog(new javax.swing.JFrame(), true);
@@ -403,6 +447,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton removeConceptButton;

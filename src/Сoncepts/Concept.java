@@ -34,8 +34,15 @@ public class Concept extends AbstractConcept{
             if (!properties.contains(prop))
                 properties.add(prop);
     }
-    Concept (String s, ArrayList<String> argProperties){
+    public Concept (String s, ArrayList<String> argProperties){
         name = s;
+        for (String prop : argProperties) {
+            properties.add(prop.trim());
+        }
+    }
+    public Concept (String nameArg, String commentArg, ArrayList<String> argProperties){
+        name = nameArg;
+        comment = commentArg;
         for (String prop : argProperties) {
             properties.add(prop.trim());
         }

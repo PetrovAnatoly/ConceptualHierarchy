@@ -12,7 +12,7 @@ import Сoncepts.Constant;
  *
  * @author Anatoly
  */
-abstract class AbstractComplexFrame extends AbstractFrame{
+public abstract class AbstractComplexFrame extends AbstractFrame{
     protected AbstractFrame firstOperand;
     @Override
     public boolean conceptIsUsed(Concept concept){

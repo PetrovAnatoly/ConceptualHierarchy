@@ -176,8 +176,12 @@ public class CreateAndFrameDialog extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String firstOperandName = (String) firstOperandComboBox.getSelectedItem();
         String secondOperandName = (String) secondOperandComboBox.getSelectedItem();
-        String newFrameName = newFrameNameTextField.getText();
-        if (!ActualData.avalibleFrameName(newFrameName)) {
+        String newFrameName = newFrameNameTextField.getText().trim();
+        if (newFrameName.isEmpty()){
+            errorDialog errorD = new errorDialog(new javax.swing.JFrame(), true, "Вы не вввели название фрейма");
+            errorD.setVisible(true);
+        }
+        else if (!ActualData.avalibleFrameName(newFrameName)) {
             errorDialog errorD = new errorDialog(new javax.swing.JFrame(), true, "Фрейм с таким именем уже есть");
             errorD.setVisible(true);
         }

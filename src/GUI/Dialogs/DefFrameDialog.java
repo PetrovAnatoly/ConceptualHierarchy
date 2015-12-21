@@ -152,6 +152,7 @@ public class DefFrameDialog extends javax.swing.JDialog {
         String role = (String) roleComboBox.getSelectedItem();
         DefConcept defConc = new DefConcept(defFrame, role);
         defConc.setName(conceptName);
+        defConc.setComment(conceptComment);
         ActualData.addConceptToHierarchy(defConc);
         setVisible(false);
         dispose();

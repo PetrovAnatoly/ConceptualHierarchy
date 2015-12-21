@@ -36,7 +36,7 @@ public  class AbstractSimpleFrame extends AbstractFrame {
     private Body body=new Body();
 
     public AbstractSimpleFrame() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
     
     private Quantor getQuantorByVariable(SlotArgument var)
@@ -48,6 +48,7 @@ public  class AbstractSimpleFrame extends AbstractFrame {
     }
         
     public String getPredicate() { return predicate;}
+    public void setPredicate(String str) { predicate = str;}
     public Body getBody(){ return body;}  
     public ArrayList<Quantor> getQuantors() { return quantors;}
     public String getQuantorsLine() {

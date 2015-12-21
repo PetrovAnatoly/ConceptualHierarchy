@@ -18,6 +18,7 @@ public abstract class AbstractFrame{
     
     //methods
     public String getName() {return name;}
+    public void setName(String str) { name = str;}
     public void rename(String arg) {name = arg;}
     
     public abstract boolean ISA(AbstractSimpleFrame argument);

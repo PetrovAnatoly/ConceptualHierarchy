@@ -30,5 +30,8 @@ public class OrFrame extends AbstractBinaryFrame{
     public boolean ISA(OrFrame argument){
         return (firstOperand.ISA(argument) && secondOperand.ISA(argument));
     }
+
+    @Override
+    public String getOperation() { return "OR";}
     
 }

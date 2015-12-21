@@ -10,10 +10,14 @@ import Frames.AbstractSimpleFrame;
 import Frames.Structure.Body;
 import Frames.Structure.Quantor;
 import Frames.Structure.Slot;
-import Frames.Structure.SlotArgument;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 import Сoncepts.Concept;
 import Сoncepts.Constant;
 import Сoncepts.DefConcept;
@@ -51,7 +55,11 @@ public class ActualData {
     public static ConceptNode getConceptHoerarchy() {
         return conceptHierarchyRoot;
     }
-
+    public static ArrayList<AbstractFrame> getFrames() { return frameSet;}
+    public static HashMap<String, Extensional> getAllExtensionals() { return predicateExtensionals;}
+    public static ArrayList<Concept> getConcepts() { return conceptSet;}
+    public static HashMap<Concept, ArrayList<Constant>> getConstants() { return constantsInDomen;}
+    public static HashMap<Concept, ArrayList<Variable>> getVariables() { return variablesInDomen;}
     public static ArrayList<String> getFrameNameSet() {
         return frameNameSet;
     }
@@ -311,6 +319,10 @@ public class ActualData {
             constantNameMap.put(arg, new ArrayList());
         if (!constantsInDomen.containsKey(arg))
             constantsInDomen.put(arg, new ArrayList());
+        if (!variableNameMap.containsKey(arg))
+            variableNameMap.put(arg, new ArrayList());
+        if (!variablesInDomen.containsKey(arg))
+            variablesInDomen.put(arg, new ArrayList());
         if (arg instanceof DefConcept){
             AbstractSimpleFrame defFrame = ((DefConcept) arg).getDefFrame();
             if (defFrameConcept.containsKey(defFrame))
@@ -461,7 +473,7 @@ public class ActualData {
     }
     
     public static boolean conceptWithThisPropertiesIsExist(ArrayList<String> arg){
-        if (arg.size() == 0) return false;
+        if (arg.isEmpty()) return false;
         for (Concept conc: conceptSet){
             if (conc.getProperties().containsAll(arg) && arg.containsAll(conc.getProperties()))
                 return true;
@@ -800,6 +812,7 @@ public class ActualData {
     }
     //public boolean frameHas
     public static DefConcept getDefConcept(AbstractSimpleFrame frame, String role){ return new DefConcept(frame, role);}
+    
     public static ArrayList<String> getNotUsedRoles(AbstractSimpleFrame frame){
         ArrayList<String> rtrn = frame.getRoles();
         ArrayList<DefConcept> defConc = getDefConcepts(frame);
@@ -809,5 +822,13 @@ public class ActualData {
             if (slot.getArgument() instanceof Constant)
                 rtrn.remove(slot.getRole());
         return rtrn;
+    }
+
+    public static void save() {
+        try {
+            InputOutputXML.save();
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            Logger.getLogger(ActualData.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

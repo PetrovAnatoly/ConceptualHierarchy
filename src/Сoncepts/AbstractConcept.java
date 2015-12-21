@@ -5,8 +5,6 @@
  */
 package Сoncepts;
 
-import conceptualhierarchy.HierarchyUnitInterface;
-
 public abstract class AbstractConcept {
     //fields
     protected String name;

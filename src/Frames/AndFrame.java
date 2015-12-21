@@ -78,4 +78,7 @@ public class AndFrame extends AbstractBinaryFrame{
     public boolean ISA(OrFrame arg){
         return ISA(arg.firstOperand) && ISA(arg.secondOperand);
     }
+
+    @Override
+    public String getOperation() { return "AND";}
 }
