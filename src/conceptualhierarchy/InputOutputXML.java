@@ -53,6 +53,7 @@ public class InputOutputXML {
         addConcepts(document,ActualData.getConcepts());
         addConstants(document, ActualData.getConstants());
         addVariables(document, ActualData.getVariables());
+        //addExtensionals(document, ActualData.getAllExtensionals());
         writeDocument(document);
     }
     public static void load() throws SAXException, IOException{
@@ -326,6 +327,16 @@ public class InputOutputXML {
             vars.appendChild(concElem);
         }
     }
+    public static void addExtensionals(Document document, HashMap<String, Extensional> ext){
+        Node root = document.getDocumentElement();
+        Node extensionals = document.createElement("extensionals");
+        root.appendChild(extensionals);
+        for (String predicate: ext.keySet()){
+            Element predElem = document.createElement("predicate");
+            predElem.setAttribute("val", predicate);
+            
+        }
+    }
     public static void loadConcepts(Node conceptsNode){
         if (conceptsNode == null)
             return;
@@ -420,7 +431,7 @@ public class InputOutputXML {
                     Slot slot = new Slot();
                     boolean argIsVar = false;
                     String argName = slotNode.getAttributes().getNamedItem("argument").getNodeValue();
-                    if (!((argName.charAt(0) == '\'') && (argName.charAt(argName.length()-2) == '\'')))
+                    if (!((argName.charAt(0) == '\'') && (argName.charAt(argName.length()-1) == '\'')))
                         argIsVar = true;
                     String domenName = slotNode.getAttributes().getNamedItem("domen").getNodeValue();
                     Concept domen = ActualData.getConceptByName(domenName);

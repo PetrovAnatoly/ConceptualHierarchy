@@ -8,9 +8,7 @@ package GUI.Dialogs;
 import Frames.AbstractSimpleFrame;
 import Frames.CharacteristicFrame;
 import Frames.EventFrame;
-import Frames.Structure.Slot;
 import GUI.TableModels.FrameSlotsTableModel;
-import conceptualhierarchy.ActualData;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,10 +19,14 @@ public class ViewSimpleFrameDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form viewSimpleFrame
+     * @param parent
+     * @param modal
      */
     public ViewSimpleFrameDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        pack();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -106,16 +108,12 @@ public class ViewSimpleFrameDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(frameNameField, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(quantorsField, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jLabel5)
-                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(predicateField)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(viewExtensionalButton, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(viewExtensionalButton, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
+                    .addComponent(jLabel5))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -142,12 +140,12 @@ public class ViewSimpleFrameDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(viewExtensionalButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();

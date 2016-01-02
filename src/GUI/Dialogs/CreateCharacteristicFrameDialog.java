@@ -14,7 +14,6 @@ import GUI.TableModels.FrameSlotsTableModel;
 import conceptualhierarchy.ActualData;
 import java.util.ArrayList;
 import java.util.HashMap;
-import javax.swing.table.DefaultTableModel;
 import Сoncepts.Concept;
 import Сoncepts.Constant;
 import Сoncepts.Variable;
@@ -27,10 +26,14 @@ public class CreateCharacteristicFrameDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form CreateCharacteristicFrameDialog
+     * @param parent
+     * @param modal
      */
     public CreateCharacteristicFrameDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        pack();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -113,13 +116,13 @@ public class CreateCharacteristicFrameDialog extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 84, Short.MAX_VALUE)
                 .addComponent(jLabel7)
-                .addGap(79, 79, 79))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(79, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(105, 105, 105))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(149, 149, 149)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );

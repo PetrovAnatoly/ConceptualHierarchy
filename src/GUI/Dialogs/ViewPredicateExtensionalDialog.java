@@ -17,10 +17,14 @@ public class ViewPredicateExtensionalDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form ViewPredicateExtensionalDialog
+     * @param parent
+     * @param modal
      */
     public ViewPredicateExtensionalDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        pack();
+        setLocationRelativeTo(null);
     }
 
     /**

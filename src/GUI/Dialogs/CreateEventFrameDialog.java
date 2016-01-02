@@ -14,7 +14,6 @@ import GUI.TableModels.FrameSlotsTableModel;
 import conceptualhierarchy.ActualData;
 import java.util.ArrayList;
 import java.util.HashMap;
-import javax.swing.table.DefaultTableModel;
 import Сoncepts.Concept;
 import Сoncepts.Constant;
 import Сoncepts.Variable;
@@ -27,10 +26,14 @@ public class CreateEventFrameDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form CreateEventFrameDialog
+     * @param parent
+     * @param modal
      */
     public CreateEventFrameDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        pack();
+        setLocationRelativeTo(null);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -111,6 +114,10 @@ public class CreateEventFrameDialog extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel7)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -118,7 +125,7 @@ public class CreateEventFrameDialog extends javax.swing.JDialog {
                                 .addGap(158, 158, 158)
                                 .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(179, 179, 179)
+                                .addContainerGap(179, Short.MAX_VALUE)
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)))
                         .addGap(148, 148, 148))
@@ -135,17 +142,12 @@ public class CreateEventFrameDialog extends javax.swing.JDialog {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(quantorsTextField)
                                     .addComponent(predicateTextField)
-                                    .addComponent(newFrameNameTextField))))))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel7)
-                .addGap(79, 79, 79))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(newSlotButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(deleteSlotButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(newFrameNameTextField)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(newSlotButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteSlotButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

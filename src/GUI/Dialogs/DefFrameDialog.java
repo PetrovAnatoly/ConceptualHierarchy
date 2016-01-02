@@ -18,10 +18,14 @@ public class DefFrameDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form DefFrameDialog
+     * @param parent
+     * @param modal
      */
     public DefFrameDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        pack();
+        setLocationRelativeTo(null);
     }
 
     /**

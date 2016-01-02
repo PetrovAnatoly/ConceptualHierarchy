@@ -16,18 +16,24 @@ import Сoncepts.Constant;
  *
  * @author Anatoly
  */
-public class AddExtensionDialog extends javax.swing.JDialog {
+public final class AddExtensionDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form AddExtensionDialog
+     * @param parent
+     * @param modal
      */
     public AddExtensionDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        pack();
+        setLocationRelativeTo(null);
     }
     public AddExtensionDialog(AbstractSimpleFrame arg){
         super(new java.awt.Frame(), true);
         setFrame(arg);
+        pack();
+        setLocationRelativeTo(null);
     }
     /**
      * This method is called from within the constructor to initialize the form.

@@ -18,10 +18,14 @@ public class ConceptViewDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form ConceptViewDialog
+     * @param parent
+     * @param modal
      */
     public ConceptViewDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        pack();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -117,7 +121,7 @@ public class ConceptViewDialog extends javax.swing.JDialog {
                         .addComponent(deletePropertyButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(114, 114, 114)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(titleLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );

@@ -43,6 +43,8 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
+        pack();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -373,9 +375,7 @@ public class MainFrame extends javax.swing.JFrame {
             InputOutputXML.load();
             updateFrameIsaTree();
             updateConceptIsaTree();
-        } catch (SAXException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (SAXException | IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
@@ -426,6 +426,7 @@ public class MainFrame extends javax.swing.JFrame {
         //AbstractSimpleFrame.main(args);
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new MainFrame().setVisible(true);
             }

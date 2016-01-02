@@ -17,10 +17,14 @@ public class NotFrameViewDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form NotFrameViewDialog
+     * @param parent
+     * @param modal
      */
     public NotFrameViewDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        pack();
+        setLocationRelativeTo(null);
     }
 
     /**
