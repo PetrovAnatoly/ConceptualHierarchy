@@ -19,7 +19,8 @@ import Сoncepts.DefConcept;
 public class constantTableModel extends DefaultTableModel{
     
     public constantTableModel(Concept concept){
-         super(data, headers);
+        super(data, headers);
+        domen = concept;
         ArrayList<Constant> constants;
         if (concept instanceof DefConcept)
             constants = ActualData.getConstantsOfDefConcept((DefConcept)concept);

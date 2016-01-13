@@ -45,7 +45,7 @@ public class ActualData {
     private static HashMap<Concept, ArrayList<Constant>> constantsInDomen = new HashMap();
     private static HashMap<Concept, ArrayList<Variable>> variablesInDomen = new HashMap();
     private static HashMap<String, HashMap<AbstractSimpleFrame, Extensional>> extensionals = new HashMap();
-    private static HashMap<String, Extensional> predicateExtensionals = new HashMap();
+    static HashMap<String, Extensional> predicateExtensionals = new HashMap();
     private static HashMap<AbstractSimpleFrame, ArrayList<DefConcept>> defFrameConcept = new HashMap<>();
     //methods
     public static FrameNode getFrameHoerarchy() {
@@ -830,5 +830,15 @@ public class ActualData {
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             Logger.getLogger(ActualData.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    static AbstractSimpleFrame getFrameWithThisPredicate(String predicate) {
+        AbstractSimpleFrame rtrn = null;
+        for (AbstractFrame fr: frameSet){
+            if (fr instanceof AbstractSimpleFrame){
+                if (((AbstractSimpleFrame) fr).getPredicate().equals(predicate))
+                    return (AbstractSimpleFrame) fr;
+            }
+        }
+        return rtrn;
     }
 }

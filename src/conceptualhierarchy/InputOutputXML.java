@@ -53,7 +53,7 @@ public class InputOutputXML {
         addConcepts(document,ActualData.getConcepts());
         addConstants(document, ActualData.getConstants());
         addVariables(document, ActualData.getVariables());
-        //addExtensionals(document, ActualData.getAllExtensionals());
+        addExtensionals(document, ActualData.getAllExtensionals());
         writeDocument(document);
     }
     public static void load() throws SAXException, IOException{
@@ -65,6 +65,7 @@ public class InputOutputXML {
             Node variableNode = null;
             Node constantNode = null;
             Node frameNode = null;
+            Node extensionalsNode = null;
             for (int i = 0; i < root.getChildNodes().getLength(); i++){
                 String nodeName = root.getChildNodes().item(i).getNodeName();
                 switch (nodeName) {
@@ -80,6 +81,9 @@ public class InputOutputXML {
                     case "variables":
                         variableNode = root.getChildNodes().item(i);
                         break;
+                    case "extensionals":
+                        extensionalsNode = root.getChildNodes().item(i);
+                        break;
                 }
             }
             loadConcepts(conceptNode);
@@ -87,6 +91,7 @@ public class InputOutputXML {
             loadVariables(variableNode);
             loadFrames(frameNode);
             loadDefConcepts(conceptNode);
+            loadExtensionals(extensionalsNode);
         } catch (ParserConfigurationException ex) {
             Logger.getLogger(InputOutputXML.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -124,70 +129,6 @@ public class InputOutputXML {
                 frameElement.setAttribute("type", ((AbstractBinaryFrame)frame).getOperation());
             }
         }
-    }
-    private static void addSimpleFrame(Document document, AbstractSimpleFrame frame){
-        Node root = document.getDocumentElement();
-        Node frames = null;
-        if (root.getChildNodes().getLength() != 0) 
-            frames = root.getChildNodes().item(0);
-        if (frames == null){
-            frames = document.createElement("frames");
-            root.appendChild(frames);
-        }
-        Element frameElem = document.createElement("Frame");
-        Element name = document.createElement("Name");
-        name.setTextContent(frame.getName());
-        Element predicate = document.createElement("Predicate");
-        predicate.setTextContent(frame.getPredicate());
-        Element quantors = document.createElement("Quantors");
-        quantors.setTextContent(frame.getQuantorsLine());
-        Element body = document.createElement("Body");
-        for (Slot slot: frame.getBody().getSlots()){
-            Element slotElem = document.createElement("Slot");
-            Element slotRole = document.createElement("Role");
-            slotRole.setTextContent(slot.getRole());
-            Element slotArg = document.createElement("Argument");
-            slotArg.setTextContent(slot.getArgument().getName());
-            Element slotDomen = document.createElement("Domen");
-            slotDomen.setTextContent(slot.getDomen().getName());
-            slotElem.appendChild(slotRole);
-            slotElem.appendChild(slotArg);
-            slotElem.appendChild(slotDomen);
-            body.appendChild(slotElem);
-        }
-        frameElem.appendChild(name);
-        frameElem.appendChild(predicate);
-        frameElem.appendChild(quantors);
-        frameElem.appendChild(body);
-        frames.appendChild(frameElem);
-    }
-    private static void addConcept(Document document, Concept concept){
-        Node root = document.getDocumentElement();
-        Node concepts = null;
-        if (root.getChildNodes().getLength() != 0) 
-            concepts = root.getAttributes().getNamedItem("concepts");
-        if (concepts == null){
-            concepts = document.createElement("concepts");
-            root.appendChild(concepts);
-        }
-        Element conceptElem = document.createElement("Concept");
-        Element name = document.createElement("Name");
-        name.setTextContent(concept.getName());
-        Element comment = document.createElement("Comment");
-        comment.setTextContent(concept.getComment());
-        Element props = document.createElement("Properties");
-        for (String property: concept.getProperties()){
-            Element propElem = document.createElement("Property");
-            propElem.setTextContent(property);
-            props.appendChild(propElem);
-        }
-        if (concept instanceof DefConcept){
-            //доделать или переделать
-        }
-        conceptElem.appendChild(name);
-        conceptElem.appendChild(comment);
-        conceptElem.appendChild(props);
-        concepts.appendChild(conceptElem);
     }
     public static void addConcepts(Document document, ArrayList<Concept> conceptsArr){
         Node root = document.getDocumentElement();
@@ -333,8 +274,28 @@ public class InputOutputXML {
         root.appendChild(extensionals);
         for (String predicate: ext.keySet()){
             Element predElem = document.createElement("predicate");
+            extensionals.appendChild(predElem);
             predElem.setAttribute("val", predicate);
-            
+            Extensional extens = ext.get(predicate);
+            HashMap<String, Concept> roleConceptAcc = extens.getRoleConceptAccordance();
+            Element roleConcAccElem = document.createElement("role-concept-accordance");
+            predElem.appendChild(roleConcAccElem);
+            for (String role: roleConceptAcc.keySet()){
+                Element roleConcElem = document.createElement("role-concept");
+                roleConcElem.setAttribute("role", role);
+                roleConcElem.setAttribute("concept", roleConceptAcc.get(role).getName());
+                roleConcAccElem.appendChild(roleConcElem);
+            }
+            for (HashMap<String, Constant> extension: extens.getExtensions()){
+                Element extElem = document.createElement("extension");
+                predElem.appendChild(extElem);
+                for (String role: extens.getRoles()){
+                    Element extensionAtom = document.createElement("roleConstantNode"); 
+                    extElem.appendChild(extensionAtom);
+                    extensionAtom.setAttribute("role", role);
+                    extensionAtom.setAttribute("constant", extension.get(role).getName());
+                }
+            }
         }
     }
     public static void loadConcepts(Node conceptsNode){
@@ -355,6 +316,40 @@ public class InputOutputXML {
                 ActualData.addConceptToHierarchy(conc);
             }
         }
+    }
+    public static void loadExtensionals(Node ExtensionalsNode){
+        if (ExtensionalsNode == null)
+            return;
+        HashMap<String, Extensional> predicateExtensionals = new HashMap();
+        for (int i = 0; i < ExtensionalsNode.getChildNodes().getLength(); i++){
+            Node predNode = ExtensionalsNode.getChildNodes().item(i);
+            String predicate = predNode.getAttributes().getNamedItem("val").getNodeValue();
+            Extensional ext = new Extensional(ActualData.getFrameWithThisPredicate(predicate));
+            predicateExtensionals.put(predicate, ext);
+            Node roleConcNodeRoot = predNode.getChildNodes().item(0);
+            HashMap<String, Concept> roleConc = new HashMap<>();
+            for (int k = 0; k < roleConcNodeRoot.getChildNodes().getLength(); k++){
+                Node roleConceptNode = roleConcNodeRoot.getChildNodes().item(k);
+                String role = roleConceptNode.getAttributes().getNamedItem("role").getNodeValue();
+                String concName = roleConceptNode.getAttributes().getNamedItem("concept").getNodeValue();
+                Concept concept = ActualData.getConceptByName(concName);
+                roleConc.put(role, concept);
+            }
+            ext.setRoleConceptAccordance(roleConc);
+            for (int k = 1; k < predNode.getChildNodes().getLength(); k++){
+                Node extensionNode = predNode.getChildNodes().item(k);
+                HashMap<String,Constant> extension = new HashMap<>();
+                for (int j = 0; j < extensionNode.getChildNodes().getLength(); j++){
+                    Node atomNode = extensionNode.getChildNodes().item(j);
+                    String role = atomNode.getAttributes().getNamedItem("role").getNodeValue();
+                    String constName = atomNode.getAttributes().getNamedItem("constant").getNodeValue();
+                    Constant constant = ActualData.getConstantInDomenByName(constName, roleConc.get(role));
+                    extension.put(role, constant);
+                }
+                ext.addExtension(extension);
+            }
+        }
+        ActualData.predicateExtensionals = predicateExtensionals;
     }
     private static void loadDefConcepts(Node conceptsNode){
         if (conceptsNode == null)

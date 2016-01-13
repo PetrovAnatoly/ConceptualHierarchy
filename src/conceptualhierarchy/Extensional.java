@@ -21,6 +21,7 @@ import Сoncepts.Variable;
  * @author Anatoly
  */
 public class Extensional {
+    public Extensional() {};
     public Extensional(AbstractSimpleFrame fr){
         frame = fr;
         predicate = fr.getPredicate();
@@ -37,7 +38,9 @@ public class Extensional {
     private HashMap<String, Concept> roleConceptAccordance = new HashMap<>();
     private ArrayList<HashMap<String, Constant>> arguments = new ArrayList(); // <role:arg>
     
-
+    public HashMap<String, Concept> getRoleConceptAccordance() { return roleConceptAccordance;}
+    public void setRoleConceptAccordance(HashMap<String, Concept> rc) {roleConceptAccordance = rc;}
+    public void setPredictae (String pred) { predicate = pred;}
     public void exploreRoles(Body body){
         for (Slot slot: body.getSlots()){
             if (!roleConceptAccordance.containsKey(slot.getRole())){

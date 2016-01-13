@@ -9,11 +9,13 @@ import Frames.AbstractBinaryFrame;
 import Frames.AbstractFrame;
 import Frames.AbstractSimpleFrame;
 import Frames.AndFrame;
+import Frames.NotFrame;
 import Frames.OrFrame;
 import GUI.Dialogs.BinaryFrameViewDialog;
 import GUI.Dialogs.ChoiceTypeOfNewFrameDialog;
 import GUI.Dialogs.ConceptViewDialog;
 import GUI.Dialogs.ConstantViewDialog;
+import GUI.Dialogs.NotFrameViewDialog;
 import GUI.Dialogs.ViewSimpleFrameDialog;
 import GUI.Dialogs.errorDialog;
 import conceptualhierarchy.ActualData;
@@ -393,6 +395,11 @@ public class MainFrame extends javax.swing.JFrame {
         else if (fr instanceof AbstractSimpleFrame) {
             ViewSimpleFrameDialog frViewDialog = new ViewSimpleFrameDialog(new javax.swing.JFrame(), true);
             frViewDialog.setFrame((AbstractSimpleFrame) fr);
+            frViewDialog.setVisible(true);
+        }
+        else if (fr instanceof NotFrame){
+            NotFrameViewDialog frViewDialog = new NotFrameViewDialog(new javax.swing.JFrame(), true);
+            frViewDialog.setFrame((NotFrame) fr);
             frViewDialog.setVisible(true);
         }
     }
