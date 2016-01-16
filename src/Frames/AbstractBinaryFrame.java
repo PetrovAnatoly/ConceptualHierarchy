@@ -20,8 +20,6 @@ public abstract class AbstractBinaryFrame extends AbstractComplexFrame{
     public boolean conceptIsUsed(Concept concept){
         return firstOperand.conceptIsUsed(concept) || secondOperand.conceptIsUsed(concept);
     }
-    
-    
     public abstract String getOperation();
     @Override
     public boolean constantIsUsed(Constant constant){ 

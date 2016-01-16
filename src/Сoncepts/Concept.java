@@ -76,19 +76,4 @@ public class Concept extends AbstractConcept{
         s+=")";
         return s;
     }
-    //methods
-    
-    public static void main(String[] args){
-        Concept frst = new Concept();
-        ArrayList<String> pr= new ArrayList();
-        pr.add("q");
-        frst.setProperties(pr);
-        Concept scnd = new Concept();
-        ArrayList<String> pr2= new ArrayList();
-        pr2.add("q");
-        pr2.add("w");
-        scnd.setProperties(pr2);
-        System.out.print(frst.ISA(scnd));
-        System.out.print(scnd.ISA(frst));
-    }
 }

@@ -23,6 +23,7 @@ public class Variable implements SlotArgument{
     private Concept domen;
     
     //methods
+    @Override
     public String getName() { return name;}
     @Override
     public boolean isVariable() { return true;}

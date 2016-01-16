@@ -281,7 +281,7 @@ public class ActualData {
         nameFrameAccordance.put(arg.getName(), arg);
         if (arg instanceof AbstractSimpleFrame) {
             String predicate = ((AbstractSimpleFrame) arg).getPredicate();
-            if (!extensionals.containsKey(predicate)){
+            if (!predicateExtensionals.containsKey(predicate)){
                 predicateExtensionals.put(predicate, new Extensional((AbstractSimpleFrame) arg));
                 HashMap<AbstractSimpleFrame, Extensional> thisPredicateExtensionals = new HashMap();
                 thisPredicateExtensionals.put((AbstractSimpleFrame) arg, new Extensional((AbstractSimpleFrame) arg));
@@ -445,6 +445,7 @@ public class ActualData {
 
     public static void removeFrameByName(String frName) {
         AbstractFrame fr = getFrameByName(frName);
+        
         FrameNode node = frameNodeAccordance.get(fr);
         for (FrameNode prnt : node.parents) {
             prnt.childNodes.remove(node);
@@ -468,6 +469,12 @@ public class ActualData {
                     parentNode.addChild(ch);
                     ch.addParent(parentNode);
                 }
+            }
+        }
+        if (fr instanceof AbstractSimpleFrame){
+            String predicate = ((AbstractSimpleFrame) fr).getPredicate();
+            if (getFrameWithThisPredicate(predicate) == null){
+                predicateExtensionals.remove(predicate);
             }
         }
     }

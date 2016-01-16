@@ -41,7 +41,6 @@ public abstract class AbstractFrame{
         return ISA(arg) && arg.ISA(this);
     }
     public boolean ISA(OrFrame arg){ return false;}
-
     public abstract boolean conceptIsUsed(Concept concept); 
     public abstract boolean constantIsUsed(Constant constant);  
 }
