@@ -50,6 +50,7 @@ public class ConceptViewDialog extends javax.swing.JDialog {
         okButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Объявление нового концепта");
 
         jLabel2.setText("Имя концепта:");
 
@@ -62,7 +63,7 @@ public class ConceptViewDialog extends javax.swing.JDialog {
         });
 
         titleLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        titleLabel.setText("Просмотр свойств концепта");
+        titleLabel.setText("Новый концепт");
 
         newPropertyButton.setText("Добавить свойство");
         newPropertyButton.addActionListener(new java.awt.event.ActionListener() {
@@ -177,6 +178,7 @@ public class ConceptViewDialog extends javax.swing.JDialog {
         }
         newConceptInd = false;
         titleLabel.setText("Редактирование свойств концепта");
+        setTitle("Просмотр и редактирование концепта");
     }
     private boolean conceptPropertiesIsChanged(){
         ArrayList<String> oldProp = concept.getProperties();
@@ -233,7 +235,7 @@ public class ConceptViewDialog extends javax.swing.JDialog {
                     return;
                 }
                 else {
-                    ActualData.removeConceptByName(conceptName);
+                    ActualData.removeConceptByName(concept.getName());
                     concept.setName(conceptName);
                     concept.setComment(conceptComment);
                     concept.setProperties(newProp);

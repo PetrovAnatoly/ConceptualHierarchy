@@ -21,6 +21,7 @@ public class AddConstantDialog extends javax.swing.JDialog {
         initComponents();
         pack();
         setLocationRelativeTo(null);
+        constantName = null;
     }
 
     /**

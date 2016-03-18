@@ -45,7 +45,7 @@ import Сoncepts.Variable;
  */
 public class InputOutputXML {
 
-    public static void save() throws ParserConfigurationException, SAXException, IOException{
+    public static void save(String absolutePath) throws ParserConfigurationException, SAXException, IOException{
         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = documentBuilder.newDocument();
         document.appendChild(document.createElement("data"));
@@ -54,12 +54,12 @@ public class InputOutputXML {
         addConstants(document, ActualData.getConstants());
         addVariables(document, ActualData.getVariables());
         addExtensionals(document, ActualData.getAllExtensionals());
-        writeDocument(document);
+        writeDocument(document, absolutePath);
     }
-    public static void load() throws SAXException, IOException{
+    public static void load(String absolutePath) throws SAXException, IOException{
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document document = documentBuilder.parse("other.xml");
+            Document document = documentBuilder.parse(absolutePath);
             Node root = document.getDocumentElement();
             Node conceptNode = null;
             Node variableNode = null;
@@ -86,6 +86,7 @@ public class InputOutputXML {
                         break;
                 }
             }
+            ActualData.clear();
             loadConcepts(conceptNode);
             loadConstants(constantNode);
             loadVariables(variableNode);
@@ -492,14 +493,15 @@ public class InputOutputXML {
             }
         }
     }
-    private static void writeDocument(Document document) {
+    private static void writeDocument(Document document, String absolutePath) {
         try {
             Transformer tr = TransformerFactory.newInstance().newTransformer();
             DOMSource source = new DOMSource(document);
-            FileOutputStream fos = new FileOutputStream("other.xml");
+            FileOutputStream fos = new FileOutputStream(absolutePath);
             StreamResult result = new StreamResult(fos);
             tr.transform(source, result);
         } catch (TransformerException | IOException e) {
             e.printStackTrace(System.out);
-        }}
+        }
+    }
 }

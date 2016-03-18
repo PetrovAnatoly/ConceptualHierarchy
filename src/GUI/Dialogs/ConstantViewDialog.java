@@ -62,6 +62,7 @@ public class ConstantViewDialog extends javax.swing.JDialog {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Константы");
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
@@ -140,7 +141,9 @@ public class ConstantViewDialog extends javax.swing.JDialog {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(renameButton, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(renameButton, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(removeButton, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
@@ -153,13 +156,9 @@ public class ConstantViewDialog extends javax.swing.JDialog {
                             .addComponent(conceptCommentTextField)
                             .addComponent(conceptNameTextField))))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel5)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -176,7 +175,7 @@ public class ConstantViewDialog extends javax.swing.JDialog {
                     .addComponent(jLabel4)
                     .addComponent(conceptCommentTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addButton)
@@ -184,7 +183,7 @@ public class ConstantViewDialog extends javax.swing.JDialog {
                     .addComponent(removeButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(okButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -230,15 +229,17 @@ public class ConstantViewDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
         jDialog1 = new AddConstantDialog(new java.awt.Frame(), true);
         jDialog1.setVisible(true);
-        String constName = "\'" + AddConstantDialog.constantName + "\'";
+        String constName = AddConstantDialog.constantName;
         if (constName == null)
             return;
+        constName = constName.trim();
         if (constName.isEmpty()){
             String errorMessage = "Вы не ввели имя константы!";
             errorDialog errorD = new errorDialog(new javax.swing.JFrame(), true, errorMessage);
             errorD.setVisible(true);
             return;
         }
+        constName = "\'" + constName + "\'";
         if (!ActualData.avalibleConstantNameInDomen(constName, concept))
         {
             errorDialog errorD = new errorDialog(new javax.swing.JFrame(), true, "Такая константа уже есть!");

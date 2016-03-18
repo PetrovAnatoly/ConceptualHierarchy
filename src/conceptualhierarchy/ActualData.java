@@ -831,12 +831,8 @@ public class ActualData {
         return rtrn;
     }
 
-    public static void save() {
-        try {
-            InputOutputXML.save();
-        } catch (ParserConfigurationException | SAXException | IOException ex) {
-            Logger.getLogger(ActualData.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public static void save(String absolutePath) throws ParserConfigurationException, SAXException, IOException {
+        InputOutputXML.save(absolutePath); 
     }
     static AbstractSimpleFrame getFrameWithThisPredicate(String predicate) {
         AbstractSimpleFrame rtrn = null;
@@ -847,5 +843,25 @@ public class ActualData {
             }
         }
         return rtrn;
+    }
+    public static void clear(){
+        frameSet = new ArrayList();
+        conceptSet = new ArrayList();
+        conceptHierarchyRoot = new ConceptNode(new Concept("Concepts"));
+        frameHierarchyRoot = new FrameNode(
+            new AbstractSimpleFrame("Frames", "", new ArrayList(), new Body(new ArrayList())));
+        frameNodeAccordance = new HashMap();
+        conceptNodeAccordance = new HashMap();
+        nameFrameAccordance = new HashMap();
+        nameConceptAccordance = new HashMap();
+        conceptNameSet = new ArrayList();
+        frameNameSet = new ArrayList();
+        constantNameMap = new HashMap();
+        variableNameMap = new HashMap();
+        constantsInDomen = new HashMap();
+        variablesInDomen = new HashMap();
+        extensionals = new HashMap();
+        predicateExtensionals = new HashMap();
+        defFrameConcept = new HashMap<>();
     }
 }

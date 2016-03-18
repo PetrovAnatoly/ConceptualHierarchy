@@ -27,10 +27,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JTree;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import Сoncepts.Concept;
 
@@ -77,6 +81,8 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Модель предметной области");
+        setMinimumSize(new java.awt.Dimension(755, 499));
 
         updateFrameIsaTree();
         frameTree.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -312,6 +318,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         ConceptViewDialog cwd = new ConceptViewDialog(this, true);
+        
         cwd.setVisible(true);
         updateFrameIsaTree();
         updateConceptIsaTree();
@@ -358,19 +365,41 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        ActualData.save();
-        
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(".xml","xml");
+        JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(filter);
+        String absolutePath = null;
+        if ( fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION ) {
+            absolutePath = fc.getSelectedFile().getAbsolutePath();
+            if (!absolutePath.endsWith(".xml"))
+                absolutePath+=".xml";
+        }
+        if (absolutePath == null || absolutePath.isEmpty())
+            return;
+        try {
+            ActualData.save(absolutePath);
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            new errorDialog(this, true, "Ошибка при сохранении файла!").setVisible(true);
+        }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(".xml","xml");
+        JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(filter);
+        int ret = fc.showDialog(null, "Открыть файл");
+        String absolutePath = null;
+        if (ret == JFileChooser.APPROVE_OPTION) 
+            absolutePath = fc.getSelectedFile().getAbsolutePath();
+        if (absolutePath == null || absolutePath.isEmpty())
+            return;
         try {
-            // TODO add your handling code here:
-            InputOutputXML.load();
-            updateFrameIsaTree();
-            updateConceptIsaTree();
+            InputOutputXML.load(absolutePath);
         } catch (SAXException | IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            new errorDialog(this, true, "Ошибка при загрузке файла!").setVisible(true);
         }
+        updateFrameIsaTree();
+        updateConceptIsaTree();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
     public static void viewFrame(AbstractFrame fr){
         if (fr instanceof AndFrame){

@@ -5,6 +5,7 @@
  */
 package GUI.Dialogs;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 /**
@@ -95,38 +96,27 @@ public class ChoiceTypeOfNewFrameDialog extends javax.swing.JDialog {
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         String s = (String) frameTypeComboBox.getSelectedItem();
+        JDialog crFrDial = null;
         switch (s) {
             case "Событие":
-                CreateEventFrameDialog crEvFr = new CreateEventFrameDialog(new JFrame(), true);
-                this.setVisible(false);
-                this.dispose();
-                crEvFr.setVisible(true);
+                crFrDial = new CreateEventFrameDialog(new JFrame(), true);
                 break;
             case "Характеристика":
-                CreateCharacteristicFrameDialog crChFr = new CreateCharacteristicFrameDialog(new JFrame(), true);
-                this.setVisible(false);
-                this.dispose();
-                crChFr.setVisible(true);
+                crFrDial = new CreateCharacteristicFrameDialog(new JFrame(), true);
                 break;
             case "AND":
-                CreateAndFrameDialog crAndFr = new CreateAndFrameDialog(new JFrame(), true);
-                this.setVisible(false);
-                this.dispose();
-                crAndFr.setVisible(true);
+                crFrDial = new CreateAndFrameDialog(new JFrame(), true);
                 break;
             case "OR":
-                CreateOrFrameDialog crOrFr = new CreateOrFrameDialog(new JFrame(), true);
-                this.setVisible(false);
-                this.dispose();
-                crOrFr.setVisible(true);
+                crFrDial = new CreateOrFrameDialog(new JFrame(), true);
                 break;
             case "NOT":
-                CreateNotFrameDialog crNotFr = new CreateNotFrameDialog(new JFrame(), true);
-                this.setVisible(false);
-                this.dispose();
-                crNotFr.setVisible(true);
-                break;
-        }
+                crFrDial = new CreateNotFrameDialog(new JFrame(), true);
+            }
+        this.setVisible(false);
+        this.dispose();
+        crFrDial.setTitle("Добавление нового фрйема");
+        crFrDial.setVisible(true);
     }//GEN-LAST:event_okButtonActionPerformed
 
     /**
