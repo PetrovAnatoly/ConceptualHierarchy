@@ -9,6 +9,7 @@ import Frames.AbstractSimpleFrame;
 import Frames.Structure.Body;
 import Frames.Structure.Quantor;
 import Frames.Structure.Slot;
+import ModelInputLoad.ConDesLanTag;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -190,5 +191,25 @@ public class Extensional {
 
     public void removeExtension(HashMap<String, Constant> extension) {
         arguments.remove(extension);
+    }
+    public ConDesLanTag toConDesLanTag(){
+        ConDesLanTag rtrn = new ConDesLanTag("Extensional");
+        for (String role: roleConceptAccordance.keySet()){
+            ConDesLanTag roleConcept = new ConDesLanTag("role-concept");
+            roleConcept.addSimpleProperty("role", role);
+            roleConcept.addSimpleProperty("concept", roleConceptAccordance.get(role).getName());
+            rtrn.addComplexTagProperty("role-concept-accordance", roleConcept);
+        }
+        for (HashMap<String, Constant> extension: arguments){
+            ConDesLanTag extensionTag = new ConDesLanTag("Extension");
+            for (String role: extension.keySet()){
+                ConDesLanTag roleConstantTag = new ConDesLanTag("role-constant");
+                roleConstantTag.addSimpleProperty("role", role);
+                roleConstantTag.addSimpleProperty("constant", extension.get(role).getName());
+                extensionTag.addComplexTagProperty("role-constants", roleConstantTag);
+            }
+            rtrn.addComplexTagProperty("extensions", extensionTag);
+        }
+        return rtrn;
     }
 }

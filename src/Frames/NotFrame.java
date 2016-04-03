@@ -5,6 +5,8 @@
  */
 package Frames;
 
+import ModelInputLoad.ConDesLanTag;
+
 /**
  *
  * @author Anatoly
@@ -20,4 +22,12 @@ public class NotFrame extends AbstractComplexFrame{
         return false;
     }
 
+    @Override
+    public ConDesLanTag toConDesLanTag() {
+        ConDesLanTag rtrn = new ConDesLanTag("фрейм");
+        rtrn.addSimpleProperty("имя", name);
+        rtrn.addSimpleProperty("тип", "NOT");
+        rtrn.addSimpleProperty("аргумент", this.firstOperand.getName());
+        return rtrn;
+    }
 }

@@ -5,6 +5,8 @@
  */
 package Frames;
 
+import ModelInputLoad.ConDesLanTag;
+
 /**
  *
  * @author Anatoly
@@ -81,4 +83,13 @@ public class AndFrame extends AbstractBinaryFrame{
 
     @Override
     public String getOperation() { return "AND";}
+
+    public ConDesLanTag toConDesLanTag() {
+        ConDesLanTag rtrn = new ConDesLanTag("фрейм");
+        rtrn.addSimpleProperty("имя", name);
+        rtrn.addSimpleProperty("тип", "AND");
+        rtrn.addSimpleProperty("аргумент1", this.firstOperand.getName());
+        rtrn.addSimpleProperty("аргумент2", this.secondOperand.getName());
+        return rtrn;
+    }
 }

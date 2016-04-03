@@ -3,19 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package conceptualhierarchy;
+package ModelInputLoad;
 import Frames.AbstractBinaryFrame;
 import Frames.AbstractComplexFrame;
 import Frames.AbstractFrame;
 import Frames.AbstractSimpleFrame;
 import Frames.AndFrame;
-import Frames.CharacteristicFrame;
+import Frames.CharacteristicFrame; 
 import Frames.EventFrame;
 import Frames.NotFrame;
-import Frames.OrFrame;
+import Frames.OrFrame; 
 import Frames.Structure.Body;
 import Frames.Structure.Quantor;
 import Frames.Structure.Slot;
+import conceptualhierarchy.ActualData;
+import conceptualhierarchy.Extensional;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -350,7 +352,7 @@ public class InputOutputXML {
                 ext.addExtension(extension);
             }
         }
-        ActualData.predicateExtensionals = predicateExtensionals;
+        ActualData.setPredicateExtensionals(predicateExtensionals);
     }
     private static void loadDefConcepts(Node conceptsNode){
         if (conceptsNode == null)

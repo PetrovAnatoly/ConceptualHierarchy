@@ -5,6 +5,7 @@
  */
 package Frames.Structure;
 
+import ModelInputLoad.ConDesLanTag;
 import java.util.ArrayList;
 import java.util.HashMap;
 import Сoncepts.Concept;
@@ -80,7 +81,17 @@ public class Body {
         return rtrn;
     }
     public static HashMap<SlotArgument, SlotArgument> varAccording = new HashMap();
-    
+    public ArrayList<ConDesLanTag> toConDesLanTags(){
+        ArrayList<ConDesLanTag> rtrn = new ArrayList<>();
+        for (Slot slot: slots){
+            ConDesLanTag slotTag = new ConDesLanTag("слот");
+            slotTag.addSimpleProperty("роль", slot.role);
+            slotTag.addSimpleProperty("аргумент", slot.argument.getName());
+            slotTag.addSimpleProperty("домен", slot.domen.getName());
+            rtrn.add(slotTag);
+        }
+        return rtrn;
+    }
     /*public boolean equals(Body arg){
         if (slots)
     }*/

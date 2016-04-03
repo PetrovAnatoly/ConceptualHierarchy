@@ -5,6 +5,7 @@
  */
 package Frames;
 
+import ModelInputLoad.ConDesLanTag;
 import Сoncepts.Concept;
 import Сoncepts.Constant;
 
@@ -43,4 +44,6 @@ public abstract class AbstractFrame{
     public boolean ISA(OrFrame arg){ return false;}
     public abstract boolean conceptIsUsed(Concept concept); 
     public abstract boolean constantIsUsed(Constant constant);  
+
+    public abstract ConDesLanTag toConDesLanTag();
 }

@@ -18,10 +18,11 @@ import GUI.Dialogs.ConstantViewDialog;
 import GUI.Dialogs.NotFrameViewDialog;
 import GUI.Dialogs.ViewSimpleFrameDialog;
 import GUI.Dialogs.errorDialog;
+import ModelInputLoad.InputOutputConDesLan;
 import conceptualhierarchy.ActualData;
 import conceptualhierarchy.ConceptNode;
 import conceptualhierarchy.FrameNode;
-import conceptualhierarchy.InputOutputXML;
+import ModelInputLoad.InputOutputXML;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,6 +30,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JTree;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -365,41 +367,74 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(".xml","xml");
+        FileNameExtensionFilter filterXml = new FileNameExtensionFilter(".xml","xml");
+        FileNameExtensionFilter filterConDesLan = new FileNameExtensionFilter(".condeslan","condeslan");
         JFileChooser fc = new JFileChooser();
-        fc.setFileFilter(filter);
-        String absolutePath = null;
+        fc.removeChoosableFileFilter(fc.getFileFilter());
+        fc.setFileFilter(filterConDesLan);
+        fc.setFileFilter(filterXml);
+        String absolutePath;
         if ( fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION ) {
             absolutePath = fc.getSelectedFile().getAbsolutePath();
-            if (!absolutePath.endsWith(".xml"))
-                absolutePath+=".xml";
-        }
-        if (absolutePath == null || absolutePath.isEmpty())
-            return;
-        try {
-            ActualData.save(absolutePath);
-        } catch (ParserConfigurationException | SAXException | IOException ex) {
-            new errorDialog(this, true, "Ошибка при сохранении файла!").setVisible(true);
+            FileFilter acceptedFilter = fc.getFileFilter();
+            String extensionDescr = acceptedFilter.getDescription();
+            switch (extensionDescr) {
+                case ".xml":
+                    if (!absolutePath.endsWith(".xml"))
+                        absolutePath+=".xml";
+                    try {
+                        ActualData.save(absolutePath);} 
+                    catch (ParserConfigurationException | SAXException | IOException ex) {
+                        new errorDialog(this, true, "Ошибка при сохранении файла!").setVisible(true);}
+                    break;
+                case ".condeslan":{
+                    if (!absolutePath.endsWith(".condeslan"))
+                        absolutePath+=".condeslan";
+                    try {
+                        InputOutputConDesLan.save(absolutePath);
+                    } catch (IOException ex) {
+                        new errorDialog(this, true, "Ошибка при сохранении файла!").setVisible(true);
+                    }
+                }
+            }
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(".xml","xml");
+        FileNameExtensionFilter filterXml = new FileNameExtensionFilter(".xml","xml");
+        FileNameExtensionFilter filterConDesLan = new FileNameExtensionFilter(".condeslan","condeslan");
         JFileChooser fc = new JFileChooser();
-        fc.setFileFilter(filter);
+        fc.removeChoosableFileFilter(fc.getFileFilter());
+        fc.setFileFilter(filterConDesLan);
+        fc.setFileFilter(filterXml);
         int ret = fc.showDialog(null, "Открыть файл");
-        String absolutePath = null;
-        if (ret == JFileChooser.APPROVE_OPTION) 
+        String absolutePath;
+        if (ret == JFileChooser.APPROVE_OPTION) {
             absolutePath = fc.getSelectedFile().getAbsolutePath();
-        if (absolutePath == null || absolutePath.isEmpty())
-            return;
-        try {
-            InputOutputXML.load(absolutePath);
-        } catch (SAXException | IOException ex) {
-            new errorDialog(this, true, "Ошибка при загрузке файла!").setVisible(true);
+            FileFilter acceptedFilter = fc.getFileFilter();
+            String extensionDescr = acceptedFilter.getDescription();
+            switch (extensionDescr) {
+                case ".xml":
+                    if (!absolutePath.endsWith(".xml"))
+                        absolutePath+=".xml";
+                    try {
+                        InputOutputXML.load(absolutePath);} 
+                    catch (SAXException | IOException ex) {
+                        new errorDialog(this, true, "Ошибка при загрузке файла!").setVisible(true);}
+                    break;
+                case ".condeslan":{
+                    if (!absolutePath.endsWith(".condeslan"))
+                        absolutePath+=".condeslan";
+                    try {
+                        InputOutputConDesLan.load(absolutePath);
+                    } catch (IOException ex) {
+                        new errorDialog(this, true, "Ошибка при загрузке файла!").setVisible(true);
+                    }
+                }
+            }
+            updateFrameIsaTree();
+            updateConceptIsaTree();
         }
-        updateFrameIsaTree();
-        updateConceptIsaTree();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
     public static void viewFrame(AbstractFrame fr){
         if (fr instanceof AndFrame){

@@ -9,6 +9,7 @@ import Frames.Structure.Body;
 import Frames.Structure.Quantor;
 import Frames.Structure.Slot;
 import Frames.Structure.SlotArgument;
+import ModelInputLoad.ConDesLanTag;
 import conceptualhierarchy.ActualData;
 import java.util.ArrayList;
 import java.util.HashMap;  
@@ -20,7 +21,7 @@ import Сoncepts.Variable;
  *
  * @author Anatoly
  */
-public  class AbstractSimpleFrame extends AbstractFrame {
+public class AbstractSimpleFrame extends AbstractFrame {
     //constr
     public AbstractSimpleFrame(String frameName, 
             String framePredicate,ArrayList<Quantor> frameQuantors,Body frameBody){
@@ -235,6 +236,17 @@ public  class AbstractSimpleFrame extends AbstractFrame {
     }
     public boolean isClosed(){
         return getVariableCount() == quantors.size();
+    }
+
+    public ConDesLanTag toConDesLanTag() {
+        ConDesLanTag rtrn = new ConDesLanTag("фрейм");
+        rtrn.addSimpleProperty("имя", name);
+        rtrn.addSimpleProperty("тип", this instanceof EventFrame ? "event":"characteristic");
+        rtrn.addSimpleProperty("предикат", predicate);
+        rtrn.addSimpleProperty("кванторы", getQuantorsLine());
+        for (ConDesLanTag slotTag : body.toConDesLanTags())
+            rtrn.addComplexTagProperty("слоты", slotTag);
+        return rtrn; 
     }
     
 }

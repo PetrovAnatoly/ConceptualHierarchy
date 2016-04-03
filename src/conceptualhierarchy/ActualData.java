@@ -5,6 +5,7 @@
  */
 package conceptualhierarchy;
 
+import ModelInputLoad.InputOutputXML;
 import Frames.AbstractFrame;
 import Frames.AbstractSimpleFrame;
 import Frames.Structure.Body;
@@ -834,7 +835,7 @@ public class ActualData {
     public static void save(String absolutePath) throws ParserConfigurationException, SAXException, IOException {
         InputOutputXML.save(absolutePath); 
     }
-    static AbstractSimpleFrame getFrameWithThisPredicate(String predicate) {
+    public static AbstractSimpleFrame getFrameWithThisPredicate(String predicate) {
         AbstractSimpleFrame rtrn = null;
         for (AbstractFrame fr: frameSet){
             if (fr instanceof AbstractSimpleFrame){
@@ -863,5 +864,9 @@ public class ActualData {
         extensionals = new HashMap();
         predicateExtensionals = new HashMap();
         defFrameConcept = new HashMap<>();
+    }
+
+    public static void setPredicateExtensionals(HashMap<String, Extensional> arg) {
+        predicateExtensionals = arg;
     }
 }

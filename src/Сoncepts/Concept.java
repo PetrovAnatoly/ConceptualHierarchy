@@ -5,6 +5,7 @@
  */
 package Сoncepts;
 
+import ModelInputLoad.ConDesLanTag;
 import java.util.ArrayList;
 
 /**
@@ -75,5 +76,25 @@ public class Concept extends AbstractConcept{
             s+=properties.get(properties.size()-1);
         s+=")";
         return s;
+    }
+
+    public char[] toConDesLan() {
+        String s = "";
+        s+="<концепт\n";
+        s+="имя:\""+ name +"\"\n";
+        s+="свойтва:[";
+        for (String prop: properties)
+            s+="\"" + prop + "\"\n";
+        s+="]\n";
+        return s.toCharArray();
+    }
+
+    public ConDesLanTag toConDesLanTag() {
+        ConDesLanTag rtrn = new ConDesLanTag("концепт");
+        rtrn.addSimpleProperty("имя", name);
+        rtrn.addSimpleProperty("комментарий", comment);
+        for (String prop: properties)
+            rtrn.addComplexStringProperty("свойства", prop);
+        return rtrn;
     }
 }

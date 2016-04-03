@@ -6,6 +6,7 @@
 package Сoncepts;
 
 import Frames.AbstractSimpleFrame;
+import ModelInputLoad.ConDesLanTag;
 import conceptualhierarchy.ActualData;
 import conceptualhierarchy.FrameNode;
 import java.util.ArrayList;
@@ -53,4 +54,17 @@ public class DefConcept extends Concept{
         else return super.ISA(arg);
     }
     public AbstractSimpleFrame getDefFrame() { return defFrame;}
+    @Override
+    public ConDesLanTag toConDesLanTag(){
+        ConDesLanTag rtrn = new ConDesLanTag("def-концепт");
+        rtrn.addSimpleProperty("имя", name);
+        rtrn.addSimpleProperty("комментарий", comment);
+        rtrn.addSimpleProperty("def-фрейм", defFrame.getName());
+        rtrn.addSimpleProperty("роль", role);
+        rtrn.addSimpleProperty("базовыйКонцепт", baseConcept.getName());
+        rtrn.addSimpleProperty("роль", role);
+        for (String prop: properties)
+            rtrn.addComplexStringProperty("свойства", prop);
+        return rtrn;
+    }
 }
