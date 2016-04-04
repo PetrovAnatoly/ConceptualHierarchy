@@ -375,7 +375,7 @@ public class MainFrame extends javax.swing.JFrame {
         fc.setFileFilter(filterXml);
         String absolutePath;
         if ( fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION ) {
-            absolutePath = fc.getSelectedFile().getAbsolutePath();
+            absolutePath = fc.getSelectedFile().getAbsolutePath().trim();
             FileFilter acceptedFilter = fc.getFileFilter();
             String extensionDescr = acceptedFilter.getDescription();
             switch (extensionDescr) {
@@ -410,7 +410,7 @@ public class MainFrame extends javax.swing.JFrame {
         int ret = fc.showDialog(null, "Открыть файл");
         String absolutePath;
         if (ret == JFileChooser.APPROVE_OPTION) {
-            absolutePath = fc.getSelectedFile().getAbsolutePath();
+            absolutePath = fc.getSelectedFile().getAbsolutePath().trim();
             FileFilter acceptedFilter = fc.getFileFilter();
             String extensionDescr = acceptedFilter.getDescription();
             switch (extensionDescr) {

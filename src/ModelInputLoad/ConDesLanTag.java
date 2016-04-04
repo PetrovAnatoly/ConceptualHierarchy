@@ -62,22 +62,10 @@ public class ConDesLanTag {
         //well be soon
         String rtrn = "";
         tabShift = 0;
-        rtrn+=this.toCDSByShift(tabShift);
-        /*rtrn +="<" + tagName + "\n";
-        for (String property: simpleProperties.keySet()){
-            rtrn+=property + ":" + "\"" + simpleProperties.get(property) + "\"\n";
-        }
-        for (String property: complexProperties.keySet()){
-            rtrn+=property + ":" + "[\n";
-            ArrayList<ConDesLanTag> values = complexProperties.get(property);
-            
-            for (ConDesLanTag tag: values){
-                
-            }
-        }*/
+        rtrn+=this.toCDSWithShift(tabShift);
         return rtrn;
     }
-    private String toCDSByShift(int shift){
+    private String toCDSWithShift(int shift){
         String rtrn = "";
         for (int i = 0; i < shift; i++)
             rtrn+="\t";
@@ -95,7 +83,7 @@ public class ConDesLanTag {
             ArrayList<ConDesLanTag> values = complexTagProperties.get(property);
             tabShift++;
             for (ConDesLanTag tag: values){
-                rtrn+=tag.toCDSByShift(tabShift);
+                rtrn+=tag.toCDSWithShift(tabShift);
             }
             tabShift--;
             for (int i = 0; i < shift; i++)
@@ -124,9 +112,155 @@ public class ConDesLanTag {
         rtrn+=">\n";
         return rtrn;
     }
-    /* static ConDesLanTag parse(String s){
-    }*/
-    public static ConDesLanTag parseString(String s){
+    static ConDesLanTag parseString(String s){
+        s = s.trim();
+        ConDesLanTag rtrn = new ConDesLanTag("INPUT_STRING_IS_INCORRECT");
+        int inputLength = s.length();
+        if (s.charAt(0) != '<' || s.charAt(inputLength-1) != '>')
+            return rtrn;
+        else s = s.substring(1).substring(0, inputLength-2);
+        inputLength = inputLength - 2;
+        //System.out.println("\n--------------------------------------\n");
+        //System.out.println(s);
+        //System.out.println("\n--------------------------------------\n");
+        HashMap<String, String> complexProperties = new HashMap<>();
+        int counter = 0;
+        boolean nameHasBeenReaded = false;
+        String name = "";
+        boolean propertyNameHasBeenReaded = false;
+        String propertyName = "";
+        String propertyValue = "";
+        while (counter < inputLength){
+            if (!nameHasBeenReaded){
+                while ((s.charAt(counter) != ' ') && (s.charAt(counter) != '\n') && (s.charAt(counter) != '\t')){
+                    name += s.charAt(counter);
+                    counter++;
+                }
+                nameHasBeenReaded = true;
+                rtrn.setName(name);
+                while (s.charAt(counter) == '\n' || s.charAt(counter) == '\t' || s.charAt(counter) == ' ')
+                    counter++;
+            }
+            else {
+                while (!propertyNameHasBeenReaded){
+                    if (s.charAt(counter) == ':')
+                        propertyNameHasBeenReaded = true;
+                    else 
+                        propertyName += s.charAt(counter);
+                    counter++;
+                    if (counter == inputLength)
+                        break;
+                }
+                if (counter == inputLength)
+                    break;
+                if (s.charAt(counter) == '\"'){
+                    counter++;
+                    while (s.charAt(counter) != '\"'){
+                        propertyValue += s.charAt(counter);
+                        counter++;
+                    }
+                    counter++;
+                    rtrn.simpleProperties.put(propertyName, propertyValue);
+                    propertyName = "";
+                    propertyValue = "";
+                    while (counter < inputLength && (s.charAt(counter) == '\n' || s.charAt(counter) == '\t' || s.charAt(counter) == ' '))
+                        counter++;
+                    if (counter == inputLength)
+                        break;
+                    propertyNameHasBeenReaded = false;
+                }
+                else if (s.charAt(counter) == '['){
+                    counter++;
+                    int depth = 1; 
+                    while (depth > 0){
+                        if (s.charAt(counter) == '[')
+                            depth++;
+                        else if (s.charAt(counter) == ']')
+                            depth--;
+                        if (depth > 0)
+                            propertyValue += s.charAt(counter);
+                        counter++;
+                    }
+                    complexProperties.put(propertyName, propertyValue);
+                    propertyNameHasBeenReaded = false;
+                    propertyName = "";
+                    propertyValue = "";
+                }
+            }
+        }
+        System.out.println(complexProperties);
+        for (String property: complexProperties.keySet()){
+            String value = complexProperties.get(property);
+            ArrayList<String> atomValues = getStrAtomValuesOfComplexProperty(value);
+            System.out.println("---------------------------" + property + "---------------------------");
+            for (String atomValue: atomValues){
+                if (atomValue.equals("") || atomValue.charAt(0) != '<'){
+                    System.out.println("---------------------------value---------------------------");
+                    System.out.println(atomValue);
+                    rtrn.addComplexStringProperty(property, atomValue);
+                }
+                else if (atomValue.charAt(0) == '<'){
+                    ConDesLanTag valueTag = parseString(atomValue);
+                    rtrn.addComplexTagProperty(property, valueTag);
+                    System.out.println("---------------------------value---------------------------");
+                    System.out.println(valueTag.getConDesLanStructure());
+                }
+            }
+        }
+        return rtrn;
+    }
+    
+    private static ArrayList<String> getStrAtomValuesOfComplexProperty(String s){
+        ArrayList<String> rtrn = new ArrayList<>();
+        int inputLength = s.length();
+        int counter = 0;
+        boolean valueIsReading = false;
+        String atomValue = "";
+        while ( counter < inputLength){
+            if (!valueIsReading){
+                if (counter == inputLength)
+                    return rtrn;
+                while (s.charAt(counter) == '\n' || s.charAt(counter) == '\t' || s.charAt(counter) == ' '){
+                    counter++;
+                    if (counter == inputLength)
+                        return rtrn;
+                }
+                valueIsReading = true;
+            }
+            else {
+                if (s.charAt(counter) == '\"'){
+                    counter++;
+                    while (s.charAt(counter) != '\"'){
+                        atomValue += s.charAt(counter);
+                        counter++;
+                    }
+                    counter++;
+                    valueIsReading = false;
+                    atomValue = atomValue.trim();
+                    rtrn.add(atomValue);
+                    atomValue = "";
+                }
+                else if (s.charAt(counter) == '<'){
+                    int depth = 0; 
+                    do {
+                        atomValue += s.charAt(counter);
+                        if (s.charAt(counter) == '<')
+                            depth++;
+                        else if (s.charAt(counter) == '>')
+                            depth--;
+                        counter++;
+                    }
+                    while (depth > 0);
+                    atomValue = atomValue.trim();
+                    rtrn.add(atomValue);
+                    atomValue = "";
+                    valueIsReading = false;
+                }
+            }
+        }
+        return rtrn;
+    } 
+    public static ConDesLanTag parse(String s){
         while (s.charAt(0) != '<'){
             if (s.length() == 0)
                 return new ConDesLanTag(null);

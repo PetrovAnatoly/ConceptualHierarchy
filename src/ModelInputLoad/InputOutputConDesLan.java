@@ -23,7 +23,7 @@ import Сoncepts.Concept;
 import Сoncepts.Constant;
 import Сoncepts.DefConcept;
 import Сoncepts.Variable;
-
+import java.util.Date;
 /**
  *
  * @author Anatoly
@@ -31,16 +31,24 @@ import Сoncepts.Variable;
 public class InputOutputConDesLan {
     public static void save(String absolutePath) throws IOException{
         FileWriter fw = new FileWriter(absolutePath, false);
+        ConDesLanTag root = new ConDesLanTag("data");
+        String username = System.getProperty("user.name");
+        root.addSimpleProperty("Autor", username);
+        Date date = new Date(System.currentTimeMillis());
+        date = new Date(date.getTime());
+        //сделать нормальную дату!!! (в нулевой или текущей временной зоне)
+        root.addSimpleProperty("Creation_time", date.toString());
         ConDesLanTag framesTag = getFramesTag(ActualData.getFrames());
-        fw.write(framesTag.getConDesLanStructure());
+        root.addComplexTagProperty("содержимое", framesTag);
         ConDesLanTag conceptsTag = getConceptsTag(ActualData.getConcepts());
-        fw.write(conceptsTag.getConDesLanStructure());
+        root.addComplexTagProperty("содержимое", conceptsTag);
         ConDesLanTag constantsTag = getConstantsTag(ActualData.getConstants());
-        fw.write(constantsTag.getConDesLanStructure());
+        root.addComplexTagProperty("содержимое", constantsTag);
         ConDesLanTag variablesTag = getVariablesTag(ActualData.getVariables());
-        fw.write(variablesTag.getConDesLanStructure());
+        root.addComplexTagProperty("содержимое", variablesTag);
         ConDesLanTag extensionalsTag = getExtensionalsTag(ActualData.getAllExtensionals());
-        fw.write(extensionalsTag.getConDesLanStructure());
+        root.addComplexTagProperty("содержимое", extensionalsTag);
+        fw.write(root.getConDesLanStructure());
         fw.flush();
     }
     public static void load(String absolutePath) throws IOException{
@@ -50,6 +58,7 @@ public class InputOutputConDesLan {
         fr.read(buffer);
         String fileContent = new String(buffer);
         ConDesLanTag cdl = ConDesLanTag.parseString(fileContent);
+        System.out.println("---------------result of file parsing----------------------");
         System.out.print(cdl.getConDesLanStructure());
     }
     private static ConDesLanTag getFramesTag(ArrayList<AbstractFrame> frames){
