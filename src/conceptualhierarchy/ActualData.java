@@ -869,4 +869,11 @@ public class ActualData {
     public static void setPredicateExtensionals(HashMap<String, Extensional> arg) {
         predicateExtensionals = arg;
     }
+
+    public static void clearExtensionals() {
+        extensionals = new HashMap();
+        for (String predicate: predicateExtensionals.keySet()){
+            predicateExtensionals.get(predicate).clear();
+        }
+    }
 }

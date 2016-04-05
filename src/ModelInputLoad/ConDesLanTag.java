@@ -30,6 +30,15 @@ public class ConDesLanTag {
     public void addSimpleProperty(String property, String value){
         simpleProperties.put(property, value);
     }
+    public String getSimplePropertyValue(String property){
+        return simpleProperties.get(property);
+    }
+    public ArrayList<String> getComplexStringPropertyValue(String property){
+        return complexStringProperties.get(property);
+    }
+    public ArrayList<ConDesLanTag> getComplexTagPropertyValue(String property){
+        return complexTagProperties.get(property);
+    }
     public HashMap<String, String> getSimpleProperties(){
         return simpleProperties;
     }
@@ -59,7 +68,6 @@ public class ConDesLanTag {
     }
     private static int tabShift = 0;
     public String getConDesLanStructure(){
-        //well be soon
         String rtrn = "";
         tabShift = 0;
         rtrn+=this.toCDSWithShift(tabShift);
@@ -120,9 +128,6 @@ public class ConDesLanTag {
             return rtrn;
         else s = s.substring(1).substring(0, inputLength-2);
         inputLength = inputLength - 2;
-        //System.out.println("\n--------------------------------------\n");
-        //System.out.println(s);
-        //System.out.println("\n--------------------------------------\n");
         HashMap<String, String> complexProperties = new HashMap<>();
         int counter = 0;
         boolean nameHasBeenReaded = false;
@@ -160,7 +165,7 @@ public class ConDesLanTag {
                         counter++;
                     }
                     counter++;
-                    rtrn.simpleProperties.put(propertyName, propertyValue);
+                    rtrn.simpleProperties.put(propertyName.trim(), propertyValue);
                     propertyName = "";
                     propertyValue = "";
                     while (counter < inputLength && (s.charAt(counter) == '\n' || s.charAt(counter) == '\t' || s.charAt(counter) == ' '))
@@ -181,29 +186,22 @@ public class ConDesLanTag {
                             propertyValue += s.charAt(counter);
                         counter++;
                     }
-                    complexProperties.put(propertyName, propertyValue);
+                    complexProperties.put(propertyName.trim(), propertyValue);
                     propertyNameHasBeenReaded = false;
                     propertyName = "";
                     propertyValue = "";
                 }
             }
         }
-        System.out.println(complexProperties);
         for (String property: complexProperties.keySet()){
             String value = complexProperties.get(property);
             ArrayList<String> atomValues = getStrAtomValuesOfComplexProperty(value);
-            System.out.println("---------------------------" + property + "---------------------------");
             for (String atomValue: atomValues){
-                if (atomValue.equals("") || atomValue.charAt(0) != '<'){
-                    System.out.println("---------------------------value---------------------------");
-                    System.out.println(atomValue);
+                if (atomValue.equals("") || atomValue.charAt(0) != '<')
                     rtrn.addComplexStringProperty(property, atomValue);
-                }
                 else if (atomValue.charAt(0) == '<'){
                     ConDesLanTag valueTag = parseString(atomValue);
                     rtrn.addComplexTagProperty(property, valueTag);
-                    System.out.println("---------------------------value---------------------------");
-                    System.out.println(valueTag.getConDesLanStructure());
                 }
             }
         }
@@ -256,105 +254,6 @@ public class ConDesLanTag {
                     atomValue = "";
                     valueIsReading = false;
                 }
-            }
-        }
-        return rtrn;
-    } 
-    public static ConDesLanTag parse(String s){
-        while (s.charAt(0) != '<'){
-            if (s.length() == 0)
-                return new ConDesLanTag(null);
-            s = s.substring(1);
-        }
-        s = s.substring(1);
-        String name = "";
-        while (s.charAt(0) != '\n' && s.charAt(0) != '\t' && s.charAt(0) != '>'){
-            name+=s.charAt(0);
-            if (s.length() == 0)
-                return new ConDesLanTag(null);
-            s = s.substring(1);
-        }
-        s = s.substring(1);
-        ConDesLanTag rtrn = new ConDesLanTag(name);
-        boolean propertyNameIsStarted = false;
-        String propertyName = "";
-        for (int i = 0; i < s.length(); i++){
-            if (propertyNameIsStarted){
-                if (s.charAt(i) == ':'){
-                    i++;
-                    if (s.charAt(i) == '\"'){
-                        String propertyValue = "";
-                        i++;
-                        while (s.charAt(i) != '\"'){
-                            propertyValue += s.charAt(i);
-                            i++;
-                        }
-                        i++;
-                        rtrn.addSimpleProperty(propertyName, propertyValue);
-                    }
-                    else if (s.charAt(i) == '['){
-                        i++;
-                        if (s.charAt(i) == '\"'){
-                            String propertyValue = "";
-                            i++;
-                            boolean strIsStarted = true;
-                            while (s.charAt(i) != ']'){
-                                if (strIsStarted){
-                                    if (s.charAt(i) != '\"')
-                                        propertyValue+= s.charAt(i);
-                                    else{
-                                        rtrn.addComplexStringProperty(propertyName, propertyValue);
-                                        strIsStarted = false;
-                                    }
-                                }
-                                else if (s.charAt(i) == '\"')
-                                    strIsStarted = true;
-                                i++;
-                            }
-                            i++;
-                        }
-                        else if (s.charAt(i) == '<'){
-                            String propertyTagStr = "";
-                            int depthCounter = 1;
-                            boolean tagIsStarted = false;
-                            while (s.charAt(i) != ']'){
-                                if (!tagIsStarted){
-                                    if (s.charAt(i) == '<'){
-                                        propertyTagStr += s.charAt(i);
-                                        depthCounter++;
-                                        tagIsStarted = true;
-                                    }
-                                }
-                                else {
-                                    propertyTagStr += s.charAt(i);
-                                    if (s.charAt(i) == '>')
-                                        depthCounter--;
-                                    if (s.charAt(i) == '<')
-                                        depthCounter++;
-                                    if (depthCounter == 0){
-                                        rtrn.addComplexTagProperty(propertyName, parseString(propertyTagStr));
-                                        propertyTagStr = "";
-                                        tagIsStarted = false;
-                                    }
-                                }
-                                i++;
-                            }
-                            i++;
-                        }
-                        i++;
-                    }
-                    propertyNameIsStarted = false;
-                    propertyName = "";
-                }
-                else 
-                    propertyName += s.charAt(i);
-                
-            }
-            else if (s.charAt(i) != '\n' && s.charAt(i) != '\t'){
-                if (s.charAt(i) == '>')
-                    return rtrn;
-                propertyNameIsStarted = true;
-                propertyName += s.charAt(i);
             }
         }
         return rtrn;

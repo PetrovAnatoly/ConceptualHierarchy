@@ -25,6 +25,7 @@ import conceptualhierarchy.FrameNode;
 import ModelInputLoad.InputOutputXML;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,9 +79,13 @@ public class MainFrame extends javax.swing.JFrame {
         removeConceptButton = new javax.swing.JButton();
         constantViewButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        fileMenu = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        modelMenu = new javax.swing.JMenu();
+        clearModelMenuItem = new javax.swing.JMenuItem();
+        clearExtensionalsMenuItem = new javax.swing.JMenuItem();
+        generateMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Модель предметной области");
@@ -157,7 +162,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jMenu1.setText("File");
+        fileMenu.setText("File");
 
         jMenuItem2.setText("Сохранить");
         jMenuItem2.setToolTipText("");
@@ -166,7 +171,7 @@ public class MainFrame extends javax.swing.JFrame {
                 jMenuItem2ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        fileMenu.add(jMenuItem2);
 
         jMenuItem1.setText("Загрузить");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -174,9 +179,32 @@ public class MainFrame extends javax.swing.JFrame {
                 jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        fileMenu.add(jMenuItem1);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(fileMenu);
+
+        modelMenu.setText("Model");
+
+        clearModelMenuItem.setText("Clear Model");
+        clearModelMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearModelMenuItemActionPerformed(evt);
+            }
+        });
+        modelMenu.add(clearModelMenuItem);
+
+        clearExtensionalsMenuItem.setText("Clear Extensionals");
+        clearExtensionalsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearExtensionalsMenuItemActionPerformed(evt);
+            }
+        });
+        modelMenu.add(clearExtensionalsMenuItem);
+
+        generateMenuItem.setText("Generate");
+        modelMenu.add(generateMenuItem);
+
+        jMenuBar1.add(modelMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -420,7 +448,7 @@ public class MainFrame extends javax.swing.JFrame {
                     try {
                         InputOutputXML.load(absolutePath);} 
                     catch (SAXException | IOException ex) {
-                        new errorDialog(this, true, "Ошибка при загрузке файла!").setVisible(true);}
+                        new errorDialog(this, true, "Ошибка при загрузке модели из файла!").setVisible(true);}
                     break;
                 case ".condeslan":{
                     if (!absolutePath.endsWith(".condeslan"))
@@ -428,7 +456,7 @@ public class MainFrame extends javax.swing.JFrame {
                     try {
                         InputOutputConDesLan.load(absolutePath);
                     } catch (IOException ex) {
-                        new errorDialog(this, true, "Ошибка при загрузке файла!").setVisible(true);
+                        new errorDialog(this, true, "Ошибка при загрузке модели из файла!").setVisible(true);
                     }
                 }
             }
@@ -436,6 +464,17 @@ public class MainFrame extends javax.swing.JFrame {
             updateConceptIsaTree();
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void clearModelMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearModelMenuItemActionPerformed
+        ActualData.clear();
+        updateFrameIsaTree();
+        updateConceptIsaTree();
+    }//GEN-LAST:event_clearModelMenuItemActionPerformed
+
+    private void clearExtensionalsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearExtensionalsMenuItemActionPerformed
+        // TODO add your handling code here:
+        ActualData.clearExtensionals();
+    }//GEN-LAST:event_clearExtensionalsMenuItemActionPerformed
     public static void viewFrame(AbstractFrame fr){
         if (fr instanceof AndFrame){
             BinaryFrameViewDialog frViewDialog = new BinaryFrameViewDialog(new javax.swing.JFrame(), true);
@@ -497,21 +536,25 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addFrameButton;
+    private javax.swing.JMenuItem clearExtensionalsMenuItem;
+    private javax.swing.JMenuItem clearModelMenuItem;
     private javax.swing.JTree conceptTree;
     private javax.swing.JButton conceptViewButton;
     private javax.swing.JButton constantViewButton;
     private javax.swing.JButton deleteFrameButton;
+    private javax.swing.JMenu fileMenu;
     private javax.swing.JTree frameTree;
     private javax.swing.JButton frameViewButton;
+    private javax.swing.JMenuItem generateMenuItem;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JMenu modelMenu;
     private javax.swing.JButton removeConceptButton;
     // End of variables declaration//GEN-END:variables
 

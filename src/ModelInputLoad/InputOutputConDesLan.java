@@ -58,9 +58,73 @@ public class InputOutputConDesLan {
         fr.read(buffer);
         String fileContent = new String(buffer);
         ConDesLanTag cdl = ConDesLanTag.parseString(fileContent);
-        System.out.println("---------------result of file parsing----------------------");
-        System.out.print(cdl.getConDesLanStructure());
+        ArrayList<ConDesLanTag> content = cdl.getComplexTagPropertyValue("содержимое");
+        if (content == null)
+            throw new IOException();
+        ConDesLanTag conceptsTag = null, constantsTag = null, variablesTag = null, framesTag = null, extensionalsTag = null;
+        for (ConDesLanTag tag: content){
+            switch (tag.getName()) {
+                case "concepts":
+                    conceptsTag = tag;
+                    break;
+                case "constants":
+                    constantsTag = tag;
+                    break;
+                case "variables":
+                    variablesTag = tag;
+                    break;
+                case "frames":
+                    framesTag = tag;
+                    break;
+                case "extensionals":
+                    extensionalsTag = tag;
+                    break;
+            }
+        }
+        if (conceptsTag == null || constantsTag == null || variablesTag == null || framesTag == null || extensionalsTag == null)
+            throw new IOException();
+        ActualData.clear();
+        loadBasicConcepts(conceptsTag);
+        loadConstants(constantsTag);
+        loadVariables(variablesTag);
+        loadFrames(framesTag);
+        loadDefConcepts(constantsTag);
+        loadExtensionals(extensionalsTag);
     }
+    private static void loadBasicConcepts(ConDesLanTag conceptsTag){
+        ArrayList<ConDesLanTag> basicConceptTags = conceptsTag.getComplexTagPropertyValue("basicConcepts");
+        String name, comment;
+        ArrayList<String> properties;
+        for (ConDesLanTag conceptTag: basicConceptTags){
+            if (!conceptTag.getName().equals("концепт"))
+                continue;
+            name = conceptTag.getSimplePropertyValue("имя");
+            comment = conceptTag.getSimplePropertyValue("комментарий");
+            if (conceptTag.getComplexStringProperties().containsKey("свойства"))
+                properties = conceptTag.getComplexStringPropertyValue("свойства");
+            else 
+                properties = new ArrayList<>();
+            Concept conc = new Concept(name, comment, properties);
+            ActualData.addConceptToHierarchy(conc);
+        }
+    }
+    private static void loadConstants(ConDesLanTag constantsTag){
+        
+    }
+    private static void loadVariables(ConDesLanTag variablesTag){
+        
+    }
+    private static void loadFrames(ConDesLanTag framesTag){
+        
+    }
+    private static void loadDefConcepts(ConDesLanTag conceptsTag){
+        ArrayList<ConDesLanTag> defConceptTags = conceptsTag.getComplexTagProperties().get("defConcepts");
+        
+    }
+    private static void loadExtensionals(ConDesLanTag extensionalsTag){
+        
+    }
+    
     private static ConDesLanTag getFramesTag(ArrayList<AbstractFrame> frames){
         ConDesLanTag framesTag = new ConDesLanTag("frames");
         for (AbstractFrame frame: frames){
@@ -90,7 +154,7 @@ public class InputOutputConDesLan {
                 rtrn.addComplexTagProperty("defConcepts", conc.toConDesLanTag());
             }
             else {
-                rtrn.addComplexTagProperty("concepts", conc.toConDesLanTag());
+                rtrn.addComplexTagProperty("basicConcepts", conc.toConDesLanTag());
             }
         }
         return rtrn;
