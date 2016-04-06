@@ -62,6 +62,7 @@ public class InputOutputXML {
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document document = documentBuilder.parse(absolutePath);
+            System.out.println("document is parsed");
             Node root = document.getDocumentElement();
             Node conceptNode = null;
             Node variableNode = null;
@@ -73,17 +74,23 @@ public class InputOutputXML {
                 switch (nodeName) {
                     case "frames":
                         frameNode = root.getChildNodes().item(i);
+                        System.out.println("frameNode is Exists");
                         break;
                     case "concepts":
                         conceptNode = root.getChildNodes().item(i);
+                        System.out.println("conceptsNode is Exists");
+
                         break;
                     case "constants":
+                        System.out.println("constsNode is Exists");
                         constantNode = root.getChildNodes().item(i);
                         break;
                     case "variables":
+                        System.out.println("vsrsNode is Exists");
                         variableNode = root.getChildNodes().item(i);
                         break;
                     case "extensionals":
+                        System.out.println("extNode is Exists");
                         extensionalsNode = root.getChildNodes().item(i);
                         break;
                 }
@@ -166,71 +173,6 @@ public class InputOutputXML {
                 defConceptElem.appendChild(props);
                 concepts.appendChild(defConceptElem);
             }
-        }
-    }
-    public static AbstractSimpleFrame getFrame() throws ParserConfigurationException, SAXException, IOException{
-        AbstractSimpleFrame fr = new AbstractSimpleFrame();
-        DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        Document document = documentBuilder.parse("other.xml");
-        Node root = document.getDocumentElement();
-        NodeList frames = root.getChildNodes();
-        Node frame = frames.item(0);
-        NodeList childs = frame.getChildNodes();
-        Node body = null;
-        Node quantors;
-        for (int i = 0; i < childs.getLength(); i++){
-            Node node = childs.item(i);
-            switch (node.getNodeName()) {
-                case "Name":
-                    fr.setName(node.getTextContent());
-                    break;
-                case "Predicate":
-                    fr.setPredicate(node.getTextContent());
-                    break;
-                case "Body":
-                    body = node;
-                    break;
-                case "Quantors":
-                    quantors = node;
-                    break;
-            }
-        }
-        for (int i = 0; i< body.getChildNodes().getLength();i++){
-        }
-        return fr;
-    }
-    public static void main(String[] args) {
-        try {
-            // Создается построитель документа
-            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            // Создается дерево DOM документа из файла
-            Document document = documentBuilder.parse("BookCatalog.xml");
- 
-            // Получаем корневой элемент
-            Node root = document.getDocumentElement();
-            
-            System.out.println("List of books:");
-            System.out.println();
-            // Просматриваем все подэлементы корневого - т.е. книги
-            NodeList books = root.getChildNodes();
-            for (int i = 0; i < books.getLength(); i++) {
-                Node book = books.item(i);
-                // Если нода не текст, то это книга - заходим внутрь
-                if (book.getNodeType() != Node.TEXT_NODE) {
-                    NodeList bookProps = book.getChildNodes();
-                    for(int j = 0; j < bookProps.getLength(); j++) {
-                        Node bookProp = bookProps.item(j);
-                        // Если нода не текст, то это один из параметров книги - печатаем
-                        if (bookProp.getNodeType() != Node.TEXT_NODE) {
-                            System.out.println(bookProp.getNodeName() + ":" + bookProp.getChildNodes().item(0).getTextContent());
-                        }
-                    }
-                    System.out.println("===========>>>>");
-                }
-            }
- 
-        } catch (ParserConfigurationException | SAXException | IOException ex) {
-            ex.printStackTrace(System.out);
         }
     }
     public static void addConstants(Document document, HashMap<Concept, ArrayList<Constant>> concepts){
@@ -321,13 +263,20 @@ public class InputOutputXML {
         }
     }
     public static void loadExtensionals(Node ExtensionalsNode){
+        System.out.println("ext load is started");
         if (ExtensionalsNode == null)
             return;
         HashMap<String, Extensional> predicateExtensionals = new HashMap();
         for (int i = 0; i < ExtensionalsNode.getChildNodes().getLength(); i++){
             Node predNode = ExtensionalsNode.getChildNodes().item(i);
             String predicate = predNode.getAttributes().getNamedItem("val").getNodeValue();
-            Extensional ext = new Extensional(ActualData.getFrameWithThisPredicate(predicate));
+            Extensional ext;
+            if (ActualData.getFrameWithThisPredicate(predicate) != null)
+                ext = new Extensional(ActualData.getFrameWithThisPredicate(predicate));
+            else{
+                ext = new Extensional();
+                ext.setPredicate(predicate);
+            }
             predicateExtensionals.put(predicate, ext);
             Node roleConcNodeRoot = predNode.getChildNodes().item(0);
             HashMap<String, Concept> roleConc = new HashMap<>();
@@ -337,6 +286,7 @@ public class InputOutputXML {
                 String concName = roleConceptNode.getAttributes().getNamedItem("concept").getNodeValue();
                 Concept concept = ActualData.getConceptByName(concName);
                 roleConc.put(role, concept);
+                
             }
             ext.setRoleConceptAccordance(roleConc);
             for (int k = 1; k < predNode.getChildNodes().getLength(); k++){
@@ -353,6 +303,7 @@ public class InputOutputXML {
             }
         }
         ActualData.setPredicateExtensionals(predicateExtensionals);
+        System.out.println("ext load is ended");
     }
     private static void loadDefConcepts(Node conceptsNode){
         if (conceptsNode == null)
