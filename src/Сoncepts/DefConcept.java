@@ -53,6 +53,9 @@ public class DefConcept extends Concept{
             return true;
         else return super.ISA(arg);
     }
+    public Concept getBaseConcept(){
+        return baseConcept;
+    }
     public AbstractSimpleFrame getDefFrame() { return defFrame;}
     @Override
     public ConDesLanTag toConDesLanTag(){

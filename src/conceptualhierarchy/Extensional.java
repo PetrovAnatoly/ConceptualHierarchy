@@ -32,6 +32,12 @@ public class Extensional {
             roleConceptAccordance.put(slot.getRole(), slot.getDomen());
         }
     }
+    public Extensional(Extensional base){
+        predicate = base.predicate;
+        roles.addAll(base.roles);
+        domens.addAll(base.domens);
+        roleConceptAccordance = (HashMap<String, Concept>) base.roleConceptAccordance.clone();
+    }
     private AbstractSimpleFrame frame;
     private String predicate;
     private ArrayList<String> roles = new ArrayList();
@@ -41,7 +47,7 @@ public class Extensional {
     
     public HashMap<String, Concept> getRoleConceptAccordance() { return roleConceptAccordance;}
     public void setRoleConceptAccordance(HashMap<String, Concept> rc) {roleConceptAccordance = rc;}
-    public void setPredictae (String pred) { predicate = pred;}
+    public void setPredicate (String pred) { predicate = pred;}
     public void exploreRoles(Body body){
         for (Slot slot: body.getSlots()){
             if (!roleConceptAccordance.containsKey(slot.getRole())){
@@ -79,7 +85,7 @@ public class Extensional {
         return false;
     }
     public Extensional getProjection(Body frameBody){
-        Extensional rtrn = new Extensional(frame);
+        Extensional rtrn = new Extensional(this);
         for (HashMap<String,Constant> constants: arguments){
             boolean rolevant = true;
             for (Slot slot: frameBody.getSlots()){
@@ -106,7 +112,7 @@ public class Extensional {
         return rtrn;
     }
     public Extensional getProjection(String Role, Constant constant){
-        Extensional rtrn = new Extensional(frame);
+        Extensional rtrn = new Extensional(this);
         for (HashMap<String,Constant> constants: arguments){
             boolean rolevant = true;
             if (constant != constants.get(Role))
@@ -116,7 +122,13 @@ public class Extensional {
         }
         return rtrn;
     }
-    public ArrayList<String> getRoles() { return roles;}
+    public ArrayList<String> getRoles() { 
+        
+        /*return roles;*/ 
+        ArrayList<String> rtrn = new ArrayList<>();
+        rtrn.addAll(roleConceptAccordance.keySet());
+        return rtrn;
+    }
     public boolean contains(HashMap<String, Constant> arg){
         for (HashMap<String, Constant> extension: arguments){
             boolean isOk = true;

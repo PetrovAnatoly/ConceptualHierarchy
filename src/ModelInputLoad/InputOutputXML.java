@@ -270,13 +270,9 @@ public class InputOutputXML {
         for (int i = 0; i < ExtensionalsNode.getChildNodes().getLength(); i++){
             Node predNode = ExtensionalsNode.getChildNodes().item(i);
             String predicate = predNode.getAttributes().getNamedItem("val").getNodeValue();
-            Extensional ext;
-            if (ActualData.getFrameWithThisPredicate(predicate) != null)
-                ext = new Extensional(ActualData.getFrameWithThisPredicate(predicate));
-            else{
-                ext = new Extensional();
-                ext.setPredicate(predicate);
-            }
+            if (ActualData.getFrameWithThisPredicate(predicate) == null)
+                continue;
+            Extensional ext = new Extensional(ActualData.getFrameWithThisPredicate(predicate));
             predicateExtensionals.put(predicate, ext);
             Node roleConcNodeRoot = predNode.getChildNodes().item(0);
             HashMap<String, Concept> roleConc = new HashMap<>();

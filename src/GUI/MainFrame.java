@@ -83,9 +83,13 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         modelMenu = new javax.swing.JMenu();
-        clearModelMenuItem = new javax.swing.JMenuItem();
-        clearExtensionalsMenuItem = new javax.swing.JMenuItem();
         generateMenuItem = new javax.swing.JMenuItem();
+        clearingMenu = new javax.swing.JMenu();
+        clearExtensionalsMenuItem = new javax.swing.JMenuItem();
+        removeAllNotDefFramesMenuItem = new javax.swing.JMenuItem();
+        removeAllNotUsedConceptsMenuItem = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        clearModelMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Модель предметной области");
@@ -162,7 +166,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        fileMenu.setText("File");
+        fileMenu.setText("Файл");
 
         jMenuItem2.setText("Сохранить");
         jMenuItem2.setToolTipText("");
@@ -183,26 +187,54 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(fileMenu);
 
-        modelMenu.setText("Model");
+        modelMenu.setText("Модель");
 
-        clearModelMenuItem.setText("Clear Model");
-        clearModelMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        generateMenuItem.setText("Генерация элементов");
+        generateMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clearModelMenuItemActionPerformed(evt);
+                generateMenuItemActionPerformed(evt);
             }
         });
-        modelMenu.add(clearModelMenuItem);
+        modelMenu.add(generateMenuItem);
 
-        clearExtensionalsMenuItem.setText("Clear Extensionals");
+        clearingMenu.setText("Очистка модели");
+
+        clearExtensionalsMenuItem.setText("Удалить все экстенсионалы");
         clearExtensionalsMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearExtensionalsMenuItemActionPerformed(evt);
             }
         });
-        modelMenu.add(clearExtensionalsMenuItem);
+        clearingMenu.add(clearExtensionalsMenuItem);
 
-        generateMenuItem.setText("Generate");
-        modelMenu.add(generateMenuItem);
+        removeAllNotDefFramesMenuItem.setText("Удалить все не def-фреймы");
+        removeAllNotDefFramesMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeAllNotDefFramesMenuItemActionPerformed(evt);
+            }
+        });
+        clearingMenu.add(removeAllNotDefFramesMenuItem);
+
+        removeAllNotUsedConceptsMenuItem.setText("Удалить все неиспользуемые конценты");
+        removeAllNotUsedConceptsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeAllNotUsedConceptsMenuItemActionPerformed(evt);
+            }
+        });
+        clearingMenu.add(removeAllNotUsedConceptsMenuItem);
+
+        jMenuItem4.setText("Удалить все неиспользуемые константы");
+        clearingMenu.add(jMenuItem4);
+
+        clearModelMenuItem.setText("Удалить все (!) элементы ");
+        clearModelMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearModelMenuItemActionPerformed(evt);
+            }
+        });
+        clearingMenu.add(clearModelMenuItem);
+
+        modelMenu.add(clearingMenu);
 
         jMenuBar1.add(modelMenu);
 
@@ -285,8 +317,14 @@ public class MainFrame extends javax.swing.JFrame {
         DefaultMutableTreeNode TC = (DefaultMutableTreeNode)TP.getLastPathComponent();
         
         String s = (String) TC.getUserObject();
-        if ((!s.equals("Frames")) && (!(s == null))) {
-            ActualData.removeFrameByName(s);
+        if (!s.equals("Frames")) {
+            AbstractFrame frame = ActualData.getFrameByName(s);
+            if (ActualData.frameIsUsedInDefDemension(frame)){
+                new errorDialog(this, true, "Фрейм используется в def-измерении, сначала удалите все его def-концепты!").setVisible(true);
+                return;
+            }
+            else
+                ActualData.removeFrameByName(s);
         }
         updateFrameIsaTree();
     }//GEN-LAST:event_deleteFrameButtonActionPerformed
@@ -380,9 +418,8 @@ public class MainFrame extends javax.swing.JFrame {
         DefaultMutableTreeNode TC = (DefaultMutableTreeNode)TP.getLastPathComponent();
         String s = (String) TC.getUserObject();
         if (!s.equals("Concepts")) {
-            HashSet<String> framesThatUseConcept = ActualData.getNamesOfFramesThatUseConcept(ActualData.getConceptByName(s));
-            if (!framesThatUseConcept.isEmpty()){
-                String errMess ="Концепт задействован в фреймах "+framesThatUseConcept.toString()+", сначала удалите их!";
+            if (ActualData.conceptIsUsed(ActualData.getConceptByName(s))){
+                String errMess ="Концепт задействован во фреймах или является базой для def-концептов, сначала удалите их!";
                 errorDialog errorD = new errorDialog(new javax.swing.JFrame(), true, errMess);
                 errorD.setVisible(true);
                 return;
@@ -475,6 +512,22 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         ActualData.clearExtensionals();
     }//GEN-LAST:event_clearExtensionalsMenuItemActionPerformed
+
+    private void generateMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_generateMenuItemActionPerformed
+
+    private void removeAllNotDefFramesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeAllNotDefFramesMenuItemActionPerformed
+        // TODO add your handling code here:
+        ActualData.removeAllNotDefFrames();
+        updateFrameIsaTree();
+        updateConceptIsaTree();
+    }//GEN-LAST:event_removeAllNotDefFramesMenuItemActionPerformed
+
+    private void removeAllNotUsedConceptsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeAllNotUsedConceptsMenuItemActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_removeAllNotUsedConceptsMenuItemActionPerformed
     public static void viewFrame(AbstractFrame fr){
         if (fr instanceof AndFrame){
             BinaryFrameViewDialog frViewDialog = new BinaryFrameViewDialog(new javax.swing.JFrame(), true);
@@ -538,6 +591,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton addFrameButton;
     private javax.swing.JMenuItem clearExtensionalsMenuItem;
     private javax.swing.JMenuItem clearModelMenuItem;
+    private javax.swing.JMenu clearingMenu;
     private javax.swing.JTree conceptTree;
     private javax.swing.JButton conceptViewButton;
     private javax.swing.JButton constantViewButton;
@@ -552,9 +606,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JMenu modelMenu;
+    private javax.swing.JMenuItem removeAllNotDefFramesMenuItem;
+    private javax.swing.JMenuItem removeAllNotUsedConceptsMenuItem;
     private javax.swing.JButton removeConceptButton;
     // End of variables declaration//GEN-END:variables
 

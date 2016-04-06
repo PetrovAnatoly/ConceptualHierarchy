@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
@@ -318,7 +319,7 @@ public class ActualData {
         nameConceptAccordance.put(arg.getName(), arg);
         if (!constantNameMap.containsKey(arg))
             constantNameMap.put(arg, new ArrayList());
-        if (!constantsInDomen.containsKey(arg))
+        if (!constantsInDomen.containsKey(arg) && !(arg instanceof DefConcept))
             constantsInDomen.put(arg, new ArrayList());
         if (!variableNameMap.containsKey(arg))
             variableNameMap.put(arg, new ArrayList());
@@ -446,7 +447,6 @@ public class ActualData {
 
     public static void removeFrameByName(String frName) {
         AbstractFrame fr = getFrameByName(frName);
-        
         FrameNode node = frameNodeAccordance.get(fr);
         for (FrameNode prnt : node.parents) {
             prnt.childNodes.remove(node);
@@ -473,10 +473,10 @@ public class ActualData {
             }
         }
         if (fr instanceof AbstractSimpleFrame){
+            defFrameConcept.remove(fr);
             String predicate = ((AbstractSimpleFrame) fr).getPredicate();
-            if (getFrameWithThisPredicate(predicate) == null){
-                predicateExtensionals.remove(predicate);
-            }
+            //if (getFrameWithThisPredicate(predicate) == null)
+            //    predicateExtensionals.remove(predicate);
         }
     }
     
@@ -499,6 +499,8 @@ public class ActualData {
         }
         for (ConceptNode prnt : node.parents) {
             prnt.childNodes.remove(node);
+            if (prnt.value.getName().equals(concName))
+                break;
             if (domesHasConstants){
                 ArrayList<Constant> constantsOfThisParent = new ArrayList();
                 if (constantsInDomen.containsKey(prnt.getValue()))
@@ -512,9 +514,20 @@ public class ActualData {
         }
         node.parents.clear(); // ?
         conceptSet.remove(conc);
+        constantsInDomen.remove(conc);
+        variablesInDomen.remove(conc);
         conceptNodeAccordance.remove(conc);
         nameConceptAccordance.remove(conc.getName());
         conceptNameSet.remove(conc.getName());
+        Set defFrames = defFrameConcept.keySet();
+        if (conc instanceof DefConcept){
+            for (Object defFrame: defFrames){
+                ArrayList<DefConcept> defConcepts = defFrameConcept.get(defFrame);
+                defConcepts.remove(conc);
+                if (defConcepts.isEmpty())
+                    defFrameConcept.remove(defFrame);
+            }
+        }
         ArrayList<ConceptNode> chNodes = (ArrayList<ConceptNode>) node.childNodes.clone();
         node.childNodes.clear();
         for (ConceptNode ch : chNodes) {
@@ -530,7 +543,6 @@ public class ActualData {
                     parentNode.addChild(ch);
                     ch.addParent(parentNode);
                 }
-                
             }
         }
     }  
@@ -548,6 +560,15 @@ public class ActualData {
                 frameNames.add(fr.getName()); 
         }
         return frameNames;
+    }
+    public static boolean conceptIsUsed(Concept concept){
+        if (!getNamesOfFramesThatUseConcept(concept).isEmpty())
+            return true;
+        for (Concept cncpt: getConcepts())
+            if (cncpt instanceof DefConcept)
+                if (((DefConcept) cncpt).getBaseConcept() == concept)
+                    return true;
+        return false;
     }
     public static HashSet<AbstractFrame> getFramesThatUseConcept(Concept concept){
         HashSet<AbstractFrame> frames = new HashSet();
@@ -876,4 +897,19 @@ public class ActualData {
             predicateExtensionals.get(predicate).clear();
         }
     }
+    public static void removeAllNotDefFrames(){
+        ArrayList<AbstractFrame> framesToRemove = new ArrayList<>();
+        for (AbstractFrame frame: frameSet)
+            if (!defFrameConcept.containsKey(frame))
+                framesToRemove.add(frame);
+        for (AbstractFrame frame: framesToRemove)
+            removeFrameByName(frame.getName());
+    }
+    public static void removeAllNotUsedConcepts(){
+        
+    }
+    public static boolean frameIsUsedInDefDemension(AbstractFrame frame){
+        return defFrameConcept.containsKey(frame) && !defFrameConcept.get(frame).isEmpty();
+    }
+    
 }

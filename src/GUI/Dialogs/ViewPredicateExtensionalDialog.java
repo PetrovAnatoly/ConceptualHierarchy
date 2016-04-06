@@ -87,7 +87,10 @@ public class ViewPredicateExtensionalDialog extends javax.swing.JDialog {
     
     public void setPredicate(String pr){
         predicate = pr;
-        ext = ActualData.getExtensionalOfPredicate(predicate);
+        System.out.println("trying for pred:\n" + predicate);
+        ext = ActualData.getExtensionalOfPredicate(predicate); 
+        System.out.println("role-conc of pred_ext:");
+        System.out.println(ext.getRoleConceptAccordance());
         myTableModel = new ExtensionalTableModel(ext);
         titleLabel.setText("Означивания предиката \"" +  predicate + "\":");
         extensionalTable.setModel(myTableModel);
