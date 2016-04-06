@@ -33,6 +33,7 @@ public class Extensional {
         }
     }
     public Extensional(Extensional base){
+        frame = base.frame;
         predicate = base.predicate;
         roles.addAll(base.roles);
         domens.addAll(base.domens);
