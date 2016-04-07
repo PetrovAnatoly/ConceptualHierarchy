@@ -105,6 +105,8 @@ public class InputOutputConDesLan {
     }
     private static void loadBasicConcepts(ConDesLanTag conceptsTag){
         ArrayList<ConDesLanTag> basicConceptTags = conceptsTag.getComplexTagPropertyValue("basicConcepts");
+        if (basicConceptTags == null)
+            return;
         String name, comment;
         ArrayList<String> properties;
         for (ConDesLanTag conceptTag: basicConceptTags){
@@ -232,6 +234,8 @@ public class InputOutputConDesLan {
     }
     private static void loadDefConcepts(ConDesLanTag conceptsTag){
         ArrayList<ConDesLanTag> defConceptTags = conceptsTag.getComplexTagProperties().get("defConcepts");
+        if (defConceptTags == null)
+            return;
         for (ConDesLanTag defConceptTag: defConceptTags){
             String name = defConceptTag.getSimplePropertyValue("имя");
             String comment = defConceptTag.getSimplePropertyValue("комментарий");
@@ -259,8 +263,9 @@ public class InputOutputConDesLan {
                 predicateExtensional = new Extensional();
                 predicateExtensional.setPredicate(predicate);
             }
-            predicateExtensionals.put(predicate, predicateExtensional);
             HashMap<String, Concept> roleConc = new HashMap<>();
+            if (predicateExtensionalTag.getComplexTagPropertyValue("role-concept-accordance") == null || predicateExtensionalTag.getComplexTagPropertyValue("role-concept-accordance").isEmpty())
+                continue;
             for (ConDesLanTag roleConceptAccordanceTag: predicateExtensionalTag.getComplexTagPropertyValue("role-concept-accordance")){
                 String role = roleConceptAccordanceTag.getSimplePropertyValue("role");
                 String concName = roleConceptAccordanceTag.getSimplePropertyValue("concept");
@@ -273,7 +278,12 @@ public class InputOutputConDesLan {
                     predicateExtensional.getDomens().add(concept);
                 roleConc.put(role, concept);
             }
+            if (roleConc.isEmpty())
+                return;
             predicateExtensional.setRoleConceptAccordance(roleConc);
+            predicateExtensionals.put(predicate, predicateExtensional);
+            if (predicateExtensionalTag.getComplexTagPropertyValue("extensions") == null)
+                continue;
             for (ConDesLanTag ExtensionTag: predicateExtensionalTag.getComplexTagPropertyValue("extensions")){
                 HashMap<String,Constant> extension = new HashMap<>();
                 for (ConDesLanTag roleConstantTag: ExtensionTag.getComplexTagPropertyValue("role-constants")){

@@ -143,8 +143,13 @@ public class ConDesLanTag {
                 }
                 nameHasBeenReaded = true;
                 rtrn.setName(name);
-                while (s.charAt(counter) == '\n' || s.charAt(counter) == '\t' || s.charAt(counter) == ' ')
+                if (counter == inputLength)
+                    return rtrn;
+                while (s.charAt(counter) == '\n' || s.charAt(counter) == '\t' || s.charAt(counter) == ' '){
                     counter++;
+                    if (counter == inputLength)
+                        return rtrn;
+                }
             }
             else {
                 while (!propertyNameHasBeenReaded){
