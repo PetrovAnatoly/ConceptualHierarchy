@@ -40,12 +40,15 @@ public class Extensional {
         roleConceptAccordance = (HashMap<String, Concept>) base.roleConceptAccordance.clone();
     }
     private AbstractSimpleFrame frame;
-    private String predicate;
-    private ArrayList<String> roles = new ArrayList();
-    private ArrayList<Concept> domens = new ArrayList();
+    private String predicate; 
+    private ArrayList<String> roles = new ArrayList<>();
+    private ArrayList<Concept> domens = new ArrayList<>();
     private HashMap<String, Concept> roleConceptAccordance = new HashMap<>();
-    private ArrayList<HashMap<String, Constant>> arguments = new ArrayList(); // <role:arg>
+    private ArrayList<HashMap<String, Constant>> arguments = new ArrayList<>(); // <role:arg>
     
+    public ArrayList<Concept> getDomens(){
+        return domens;
+    }
     public HashMap<String, Concept> getRoleConceptAccordance() { return roleConceptAccordance;}
     public void setRoleConceptAccordance(HashMap<String, Concept> rc) {roleConceptAccordance = rc;}
     public void setPredicate (String pred) { predicate = pred;}
@@ -124,11 +127,7 @@ public class Extensional {
         return rtrn;
     }
     public ArrayList<String> getRoles() { 
-        
-        /*return roles;*/ 
-        ArrayList<String> rtrn = new ArrayList<>();
-        rtrn.addAll(roleConceptAccordance.keySet());
-        return rtrn;
+        return roles;
     }
     public boolean contains(HashMap<String, Constant> arg){
         for (HashMap<String, Constant> extension: arguments){

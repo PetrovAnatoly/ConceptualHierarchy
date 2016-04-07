@@ -221,7 +221,6 @@ public class ViewFrameExtensionalDialog extends javax.swing.JDialog {
         if (rowIndex == -1)
             return;
         HashMap<String, String> extensionLine = new HashMap();
-        HashMap<String, Concept> roleConc = frame.getBody().getRoleConceptAccordance();
         for (int i = 0; i < extensionalTable.getColumnCount(); i++){
             String role = extensionalTable.getColumnName(i);
             String constName = (String) extensionalTable.getValueAt(rowIndex, i);
@@ -255,6 +254,8 @@ public class ViewFrameExtensionalDialog extends javax.swing.JDialog {
     
     public void setFrame(AbstractSimpleFrame arg){
         frame = arg;
+        System.out.println("предакат:\n" + arg.getPredicate());
+        System.out.println(ActualData.getAllExtensionals().get(arg.getPredicate()).getExtensions());
         extensional = new Extensional(frame);
         myTableModel = new ExtensionalTableModel(frame, extensional);
         frameNameField.setText(frame.getName());

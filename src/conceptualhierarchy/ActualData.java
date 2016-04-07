@@ -46,7 +46,6 @@ public class ActualData {
     private static HashMap<Concept, ArrayList<String>> variableNameMap = new HashMap();
     private static HashMap<Concept, ArrayList<Constant>> constantsInDomen = new HashMap();
     private static HashMap<Concept, ArrayList<Variable>> variablesInDomen = new HashMap();
-    private static HashMap<String, HashMap<AbstractSimpleFrame, Extensional>> extensionals = new HashMap();
     static HashMap<String, Extensional> predicateExtensionals = new HashMap();
     private static HashMap<AbstractSimpleFrame, ArrayList<DefConcept>> defFrameConcept = new HashMap<>();
     //methods
@@ -283,20 +282,12 @@ public class ActualData {
         nameFrameAccordance.put(arg.getName(), arg);
         if (arg instanceof AbstractSimpleFrame) {
             String predicate = ((AbstractSimpleFrame) arg).getPredicate();
-            if (!predicateExtensionals.containsKey(predicate)){
+            if (!predicateExtensionals.containsKey(predicate))
                 predicateExtensionals.put(predicate, new Extensional((AbstractSimpleFrame) arg));
-                HashMap<AbstractSimpleFrame, Extensional> thisPredicateExtensionals = new HashMap();
-                thisPredicateExtensionals.put((AbstractSimpleFrame) arg, new Extensional((AbstractSimpleFrame) arg));
-                extensionals.put(predicate, thisPredicateExtensionals); 
-            }
-            else {
+            else 
                 predicateExtensionals.get(predicate).exploreRoles(((AbstractSimpleFrame)arg).getBody());
-                extensionals.get(predicate).put((AbstractSimpleFrame) arg, new Extensional((AbstractSimpleFrame) arg));
-            }
-            
         }
     }
-
     public static void addConceptToHierarchy(Concept arg) {
         ConceptNode newNode = new ConceptNode(arg);  
         ArrayList<Concept> forefatherSet = getIsaSetForConcept(arg);
@@ -519,11 +510,11 @@ public class ActualData {
         conceptNodeAccordance.remove(conc);
         nameConceptAccordance.remove(conc.getName());
         conceptNameSet.remove(conc.getName());
-        Set defFrames = defFrameConcept.keySet();
+        Set<AbstractSimpleFrame> defFrames = defFrameConcept.keySet();
         if (conc instanceof DefConcept){
-            for (Object defFrame: defFrames){
+            for (AbstractSimpleFrame defFrame: defFrames){
                 ArrayList<DefConcept> defConcepts = defFrameConcept.get(defFrame);
-                defConcepts.remove(conc);
+                defConcepts.remove((DefConcept) conc);
                 if (defConcepts.isEmpty())
                     defFrameConcept.remove(defFrame);
             }
@@ -882,7 +873,6 @@ public class ActualData {
         variableNameMap = new HashMap();
         constantsInDomen = new HashMap();
         variablesInDomen = new HashMap();
-        extensionals = new HashMap();
         predicateExtensionals = new HashMap();
         defFrameConcept = new HashMap<>();
     }
@@ -892,7 +882,6 @@ public class ActualData {
     }
 
     public static void clearExtensionals() {
-        extensionals = new HashMap();
         for (String predicate: predicateExtensionals.keySet()){
             predicateExtensionals.get(predicate).clear();
         }

@@ -40,6 +40,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import Сoncepts.Concept;
+import Сoncepts.Constant;
 
 /**
  *
@@ -88,7 +89,7 @@ public class MainFrame extends javax.swing.JFrame {
         clearExtensionalsMenuItem = new javax.swing.JMenuItem();
         removeAllNotDefFramesMenuItem = new javax.swing.JMenuItem();
         removeAllNotUsedConceptsMenuItem = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        removeAllNotUsedConstantsMenuItem = new javax.swing.JMenuItem();
         clearModelMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -223,10 +224,15 @@ public class MainFrame extends javax.swing.JFrame {
         });
         clearingMenu.add(removeAllNotUsedConceptsMenuItem);
 
-        jMenuItem4.setText("Удалить все неиспользуемые константы");
-        clearingMenu.add(jMenuItem4);
+        removeAllNotUsedConstantsMenuItem.setText("Удалить все неиспользуемые константы");
+        removeAllNotUsedConstantsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeAllNotUsedConstantsMenuItemActionPerformed(evt);
+            }
+        });
+        clearingMenu.add(removeAllNotUsedConstantsMenuItem);
 
-        clearModelMenuItem.setText("Удалить все (!) элементы ");
+        clearModelMenuItem.setText("Удалить все элементы ");
         clearModelMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearModelMenuItemActionPerformed(evt);
@@ -526,8 +532,21 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void removeAllNotUsedConceptsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeAllNotUsedConceptsMenuItemActionPerformed
         // TODO add your handling code here:
-        
+        for (Concept concept: (ArrayList<Concept>) ActualData.getConcepts().clone())
+            if (!ActualData.conceptIsUsed(concept))
+                ActualData.removeConceptByName(concept.getName());
+        updateConceptIsaTree();
     }//GEN-LAST:event_removeAllNotUsedConceptsMenuItemActionPerformed
+
+    private void removeAllNotUsedConstantsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeAllNotUsedConstantsMenuItemActionPerformed
+        // TODO add your handling code here:
+        for (Concept concept: ActualData.getConstants().keySet()){
+            for (Constant constant: (ArrayList<Constant>)ActualData.getConstants().get(concept).clone()){
+                if (!(ActualData.constantIsUsedInFrame(constant) || ActualData.constantIsUsedInFrame(constant)))
+                    ActualData.removeConstantInDomenByName(constant.getName(), concept);
+            }
+        }
+    }//GEN-LAST:event_removeAllNotUsedConstantsMenuItemActionPerformed
     public static void viewFrame(AbstractFrame fr){
         if (fr instanceof AndFrame){
             BinaryFrameViewDialog frViewDialog = new BinaryFrameViewDialog(new javax.swing.JFrame(), true);
@@ -606,12 +625,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JMenu modelMenu;
     private javax.swing.JMenuItem removeAllNotDefFramesMenuItem;
     private javax.swing.JMenuItem removeAllNotUsedConceptsMenuItem;
+    private javax.swing.JMenuItem removeAllNotUsedConstantsMenuItem;
     private javax.swing.JButton removeConceptButton;
     // End of variables declaration//GEN-END:variables
 
