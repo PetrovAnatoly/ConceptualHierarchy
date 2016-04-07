@@ -6,11 +6,15 @@
 package ModelInputLoad;
 
 import Frames.AbstractFrame;
+import Frames.AbstractSimpleFrame;
 import Frames.AndFrame;
 import Frames.CharacteristicFrame;
 import Frames.EventFrame;
 import Frames.NotFrame;
 import Frames.OrFrame;
+import Frames.Structure.Body;
+import Frames.Structure.Quantor;
+import Frames.Structure.Slot;
 import conceptualhierarchy.ActualData;
 import conceptualhierarchy.Extensional;
 import java.io.File;
@@ -58,6 +62,8 @@ public class InputOutputConDesLan {
         fr.read(buffer);
         String fileContent = new String(buffer);
         ConDesLanTag cdl = ConDesLanTag.parseString(fileContent);
+        System.out.println("file is parsed, parse result:\n");
+        System.out.println(cdl.getConDesLanStructure());
         ArrayList<ConDesLanTag> content = cdl.getComplexTagPropertyValue("содержимое");
         if (content == null)
             throw new IOException();
@@ -85,11 +91,17 @@ public class InputOutputConDesLan {
             throw new IOException();
         ActualData.clear();
         loadBasicConcepts(conceptsTag);
+        System.out.println("basic concepts is loaded");
         loadConstants(constantsTag);
+        System.out.println("constants is loaded");
         loadVariables(variablesTag);
+        System.out.println("variables is loaded");
         loadFrames(framesTag);
-        loadDefConcepts(constantsTag);
+        System.out.println("all frames is loaded");
+        loadDefConcepts(conceptsTag);
+        System.out.println("def-concepts is loaded");
         loadExtensionals(extensionalsTag);
+        System.out.println("extensionals is loaded");
     }
     private static void loadBasicConcepts(ConDesLanTag conceptsTag){
         ArrayList<ConDesLanTag> basicConceptTags = conceptsTag.getComplexTagPropertyValue("basicConcepts");
@@ -109,20 +121,176 @@ public class InputOutputConDesLan {
         }
     }
     private static void loadConstants(ConDesLanTag constantsTag){
-        
+        HashMap<Concept, ArrayList<Constant>> newConstants = new HashMap<>();
+        for (String conceptName: constantsTag.getComplexStringProperties().keySet()){
+            Concept domen = ActualData.getConceptByName(conceptName);
+            ArrayList<Constant> constants = new ArrayList<>();
+            newConstants.put(domen, constants);
+            for (String constantName: constantsTag.getComplexStringPropertyValue(conceptName)){
+                constants.add(new Constant(constantName, domen));
+            }
+        }
+        ActualData.addNewConstants(newConstants);
     }
     private static void loadVariables(ConDesLanTag variablesTag){
-        
+        HashMap<Concept, ArrayList<Variable>> newVariables = new HashMap<>();
+        for (String conceptName: variablesTag.getComplexStringProperties().keySet()){
+            Concept domen = ActualData.getConceptByName(conceptName);
+            ArrayList<Variable> variables = new ArrayList<>();
+            newVariables.put(domen, variables);
+            for (String constantName: variablesTag.getComplexStringPropertyValue(conceptName)){
+                variables.add(new Variable(constantName, domen));
+            }
+        }
+        ActualData.addNewVariables(newVariables);
     }
     private static void loadFrames(ConDesLanTag framesTag){
-        
+        ArrayList<ConDesLanTag> notAddedFrames = new ArrayList<>();
+        ArrayList<ConDesLanTag> simpleFrameTags = new ArrayList<>();
+        if (framesTag.getComplexTagProperties().containsKey("eventFrames"))
+            simpleFrameTags.addAll(framesTag.getComplexTagPropertyValue("eventFrames"));
+        if (framesTag.getComplexTagProperties().containsKey("characteristicFrames"))
+            simpleFrameTags.addAll(framesTag.getComplexTagPropertyValue("characteristicFrames"));
+        if (framesTag.getComplexTagProperties().containsKey("notFrames"))
+            notAddedFrames.addAll(framesTag.getComplexTagPropertyValue("notFrames"));
+        if (framesTag.getComplexTagProperties().containsKey("orFrames"))
+            notAddedFrames.addAll(framesTag.getComplexTagPropertyValue("orFrames"));
+        if (framesTag.getComplexTagProperties().containsKey("andFrames"))
+            notAddedFrames.addAll(framesTag.getComplexTagPropertyValue("andFrames"));
+        for (ConDesLanTag simpleFrameTag: simpleFrameTags){
+            AbstractSimpleFrame fr;
+            String name = simpleFrameTag.getSimplePropertyValue("имя");
+            String predicate = simpleFrameTag.getSimplePropertyValue("предикат");
+            String quantors = simpleFrameTag.getSimplePropertyValue("кванторы");
+            Body frameBody = new Body();
+            for (ConDesLanTag slotTag: simpleFrameTag.getComplexTagPropertyValue("слоты")){
+                Slot slot = new Slot();
+                boolean argIsVar = false;
+                String argName = slotTag.getSimplePropertyValue("аргумент");
+                if (!((argName.charAt(0) == '\'') && (argName.charAt(argName.length()-1) == '\'')))
+                    argIsVar = true;
+                String domenName = slotTag.getSimplePropertyValue("домен");
+                Concept domen = ActualData.getConceptByName(domenName);
+                slot.setDomen(domen);
+                String role = slotTag.getSimplePropertyValue("роль");
+                slot.setRole(role);
+                if (argIsVar)
+                    slot.setArgument(ActualData.getVariableInDomenByName(argName, domen));
+                else 
+                    slot.setArgument(ActualData.getConstantInDomenByName(argName, domen));
+                frameBody.addSlot(slot);
+            }
+            ArrayList<Quantor> qntrs = Quantor.getQuantorArray(quantors, frameBody.getAllVariablesInBody());
+            if (simpleFrameTag.getSimplePropertyValue("тип").equals("характеристика"))
+                    fr = new CharacteristicFrame(name, predicate, qntrs, frameBody);
+                else 
+                    fr = new EventFrame(name, predicate, qntrs, frameBody);
+                ActualData.addFrameToHierarchy(fr);
+        }
+        System.out.println("simple frames is loaded");
+        while (!notAddedFrames.isEmpty()){
+            for (ConDesLanTag frameTag: notAddedFrames){
+                if (frameTag.getSimplePropertyValue("тип").equals("NOT")){
+                    String operandName = frameTag.getSimplePropertyValue("аргумент");
+                    if (!ActualData.avalibleFrameName(operandName)){
+                        String notFrameName = frameTag.getSimplePropertyValue("имя");
+                        NotFrame newFrame = new NotFrame(notFrameName, ActualData.getFrameByName(operandName));
+                        ActualData.addFrameToHierarchy(newFrame);
+                        notAddedFrames.remove(frameTag);
+                        break;
+                    }
+                }
+                else if (frameTag.getSimplePropertyValue("тип").equals("AND")){
+                    System.out.println("AND frame checking");
+                    String firstOperandName = frameTag.getSimplePropertyValue("аргумент1");
+                    String secondOperandName = frameTag.getSimplePropertyValue("аргумент2");
+                    if (!ActualData.avalibleFrameName(firstOperandName) && !ActualData.avalibleFrameName(secondOperandName)){
+                        String andFrameName = frameTag.getSimplePropertyValue("имя");
+                        AbstractFrame frst = ActualData.getFrameByName(firstOperandName);
+                        AbstractFrame scnd = ActualData.getFrameByName(secondOperandName);
+                        AndFrame newFrame = new AndFrame(andFrameName, frst, scnd);
+                        ActualData.addFrameToHierarchy(newFrame);
+                        notAddedFrames.remove(frameTag);
+                        break;
+                    }
+                }
+                else if (frameTag.getSimplePropertyValue("тип").equals("OR")){
+                    String firstOperandName = frameTag.getSimplePropertyValue("аргумент1");
+                    String secondOperandName = frameTag.getSimplePropertyValue("аргумент2");
+                    if (!ActualData.avalibleFrameName(firstOperandName) && !ActualData.avalibleFrameName(secondOperandName)){
+                        String andFrameName = frameTag.getSimplePropertyValue("имя");
+                        AbstractFrame frst = ActualData.getFrameByName(firstOperandName);
+                        AbstractFrame scnd = ActualData.getFrameByName(secondOperandName);
+                        OrFrame newFrame = new OrFrame(andFrameName, frst, scnd);
+                        ActualData.addFrameToHierarchy(newFrame);
+                        notAddedFrames.remove(frameTag);
+                        break;
+                    }
+                }
+            }
+        }
     }
     private static void loadDefConcepts(ConDesLanTag conceptsTag){
         ArrayList<ConDesLanTag> defConceptTags = conceptsTag.getComplexTagProperties().get("defConcepts");
-        
+        for (ConDesLanTag defConceptTag: defConceptTags){
+            String name = defConceptTag.getSimplePropertyValue("имя");
+            String comment = defConceptTag.getSimplePropertyValue("комментарий");
+            String role = defConceptTag.getSimplePropertyValue("роль");
+            String defFrName = defConceptTag.getSimplePropertyValue("def-фрейм");
+            AbstractSimpleFrame defFrame = (AbstractSimpleFrame) ActualData.getFrameByName(defFrName);
+            ArrayList<String> properties = new ArrayList<>();
+            if (defConceptTag.getComplexStringProperties().containsKey("свойства"))
+                properties.addAll(defConceptTag.getComplexStringPropertyValue("свойства"));
+            DefConcept conc = new DefConcept(defFrame, role);
+            conc.setName(name);
+            conc.setComment(comment);
+            conc.setProperties(properties);
+            ActualData.addConceptToHierarchy(conc);
+        }
     }
     private static void loadExtensionals(ConDesLanTag extensionalsTag){
-        
+        HashMap<String, Extensional> predicateExtensionals = new HashMap<>();
+        for (String predicate: extensionalsTag.getComplexTagProperties().keySet()){
+            ConDesLanTag predicateExtensionalTag = extensionalsTag.getComplexTagPropertyValue(predicate).get(0);
+            Extensional predicateExtensional;
+            if (ActualData.getFrameWithThisPredicate(predicate) != null)
+                predicateExtensional = new Extensional(ActualData.getFrameWithThisPredicate(predicate));
+            else{
+                predicateExtensional = new Extensional();
+                predicateExtensional.setPredicate(predicate);
+            }
+            predicateExtensionals.put(predicate, predicateExtensional);
+            HashMap<String, Concept> roleConc = new HashMap<>();
+            for (ConDesLanTag roleConceptAccordanceTag: predicateExtensionalTag.getComplexTagPropertyValue("role-concept-accordance")){
+                String role = roleConceptAccordanceTag.getSimplePropertyValue("role");
+                String concName = roleConceptAccordanceTag.getSimplePropertyValue("concept");
+                Concept concept = ActualData.getConceptByName(concName);
+                if (concept == null)
+                    continue;
+                if (!predicateExtensional.getRoles().contains(role))
+                    predicateExtensional.getRoles().add(role);
+                if (!predicateExtensional.getDomens().contains(concept))
+                    predicateExtensional.getDomens().add(concept);
+                roleConc.put(role, concept);
+            }
+            predicateExtensional.setRoleConceptAccordance(roleConc);
+            for (ConDesLanTag ExtensionTag: predicateExtensionalTag.getComplexTagPropertyValue("extensions")){
+                HashMap<String,Constant> extension = new HashMap<>();
+                for (ConDesLanTag roleConstantTag: ExtensionTag.getComplexTagPropertyValue("role-constants")){
+                    String role = roleConstantTag.getSimplePropertyValue("role");
+                    if (!predicateExtensional.getRoles().contains(role))
+                        continue;
+                    String constName = roleConstantTag.getSimplePropertyValue("constant");
+                    Constant constant = ActualData.getConstantInDomenByName(constName, roleConc.get(role));
+                    if (constant == null)
+                        continue;
+                    extension.put(role, constant);
+                }
+                if (!extension.isEmpty())
+                    predicateExtensional.addExtension(extension);
+            }
+        }
+        ActualData.setPredicateExtensionals(predicateExtensionals);
     }
     
     private static ConDesLanTag getFramesTag(ArrayList<AbstractFrame> frames){

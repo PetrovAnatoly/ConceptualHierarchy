@@ -277,6 +277,8 @@ public class InputOutputXML {
                 String role = roleConceptNode.getAttributes().getNamedItem("role").getNodeValue();
                 String concName = roleConceptNode.getAttributes().getNamedItem("concept").getNodeValue();
                 Concept concept = ActualData.getConceptByName(concName);
+                if (concept == null)
+                    continue;
                 if (!ext.getRoles().contains(role))
                     ext.getRoles().add(role);
                 if (!ext.getDomens().contains(concept))
@@ -290,11 +292,16 @@ public class InputOutputXML {
                 for (int j = 0; j < extensionNode.getChildNodes().getLength(); j++){
                     Node atomNode = extensionNode.getChildNodes().item(j);
                     String role = atomNode.getAttributes().getNamedItem("role").getNodeValue();
+                    if (!ext.getRoles().contains(role))
+                        continue;
                     String constName = atomNode.getAttributes().getNamedItem("constant").getNodeValue();
                     Constant constant = ActualData.getConstantInDomenByName(constName, roleConc.get(role));
+                    if (constant == null)
+                        continue;
                     extension.put(role, constant);
                 }
-                ext.addExtension(extension);
+                if (!extension.isEmpty())
+                    ext.addExtension(extension);
             }
         }
         ActualData.setPredicateExtensionals(predicateExtensionals);

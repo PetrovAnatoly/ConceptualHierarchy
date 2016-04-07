@@ -178,9 +178,9 @@ public class ConDesLanTag {
                     counter++;
                     int depth = 1; 
                     while (depth > 0){
-                        if (s.charAt(counter) == '[')
+                        if (s.charAt(counter) == '[' || s.charAt(counter) == '{')
                             depth++;
-                        else if (s.charAt(counter) == ']')
+                        else if (s.charAt(counter) == ']' || s.charAt(counter) == '}')
                             depth--;
                         if (depth > 0)
                             propertyValue += s.charAt(counter);
