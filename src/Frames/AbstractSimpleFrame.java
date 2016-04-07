@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;  
 import Сoncepts.Concept;
 import Сoncepts.Constant;
+import Сoncepts.DefConcept;
 import Сoncepts.Variable;
 
 /**
@@ -237,7 +238,22 @@ public class AbstractSimpleFrame extends AbstractFrame {
     public boolean isClosed(){
         return getVariableCount() == quantors.size();
     }
-
+    public AbstractSimpleFrame getBaseFrameWithoutDefConcepts(){
+        AbstractSimpleFrame rtrn = new AbstractSimpleFrame();
+        rtrn.setName(name);
+        rtrn.setPredicate(predicate);
+        rtrn.quantors = quantors;
+        for (Slot slot: body.getSlots()){
+            Concept domen = slot.getDomen();
+            while (domen instanceof DefConcept){
+               // if (slot.getArgument() instanceof Variable){
+               // }
+                domen = ((DefConcept)domen).getBaseConcept();
+            }
+            rtrn.body.addSlot(new Slot(slot.getRole(), slot.getArgument(), domen));
+        }
+        return rtrn;
+    }
     public ConDesLanTag toConDesLanTag() {
         ConDesLanTag rtrn = new ConDesLanTag("фрейм");
         rtrn.addSimpleProperty("имя", name);

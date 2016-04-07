@@ -68,10 +68,12 @@ public class InputOutputConDesLan {
         if (content == null)
             throw new IOException();
         ConDesLanTag conceptsTag = null, constantsTag = null, variablesTag = null, framesTag = null, extensionalsTag = null;
+        ArrayList<ConDesLanTag> defConceptsTag = new ArrayList<>();
         for (ConDesLanTag tag: content){
             switch (tag.getName()) {
                 case "concepts":
                     conceptsTag = tag;
+                    defConceptsTag = conceptsTag.getComplexTagPropertyValue("defConcepts");
                     break;
                 case "constants":
                     constantsTag = tag;
@@ -96,9 +98,9 @@ public class InputOutputConDesLan {
         System.out.println("constants is loaded");
         loadVariables(variablesTag);
         System.out.println("variables is loaded");
-        loadFrames(framesTag);
+        loadFrames(framesTag, conceptsTag, constantsTag, variablesTag);
         System.out.println("all frames is loaded");
-        loadDefConcepts(conceptsTag);
+        //loadDefConcepts(conceptsTag);
         System.out.println("def-concepts is loaded");
         loadExtensionals(extensionalsTag);
         System.out.println("extensionals is loaded");
@@ -126,6 +128,8 @@ public class InputOutputConDesLan {
         HashMap<Concept, ArrayList<Constant>> newConstants = new HashMap<>();
         for (String conceptName: constantsTag.getComplexStringProperties().keySet()){
             Concept domen = ActualData.getConceptByName(conceptName);
+            if (domen == null)
+                continue;
             ArrayList<Constant> constants = new ArrayList<>();
             newConstants.put(domen, constants);
             for (String constantName: constantsTag.getComplexStringPropertyValue(conceptName)){
@@ -138,6 +142,8 @@ public class InputOutputConDesLan {
         HashMap<Concept, ArrayList<Variable>> newVariables = new HashMap<>();
         for (String conceptName: variablesTag.getComplexStringProperties().keySet()){
             Concept domen = ActualData.getConceptByName(conceptName);
+            if (domen == null)
+                continue;
             ArrayList<Variable> variables = new ArrayList<>();
             newVariables.put(domen, variables);
             for (String constantName: variablesTag.getComplexStringPropertyValue(conceptName)){
@@ -146,8 +152,9 @@ public class InputOutputConDesLan {
         }
         ActualData.addNewVariables(newVariables);
     }
-    private static void loadFrames(ConDesLanTag framesTag){
+    private static void loadFrames(ConDesLanTag framesTag, ConDesLanTag conceptsTag, ConDesLanTag constantsTag, ConDesLanTag variablesTag){
         ArrayList<ConDesLanTag> notAddedFrames = new ArrayList<>();
+        ArrayList<ConDesLanTag> defConceptTags = conceptsTag.getComplexTagPropertyValue("defConcepts");
         ArrayList<ConDesLanTag> simpleFrameTags = new ArrayList<>();
         if (framesTag.getComplexTagProperties().containsKey("eventFrames"))
             simpleFrameTags.addAll(framesTag.getComplexTagPropertyValue("eventFrames"));
@@ -159,35 +166,92 @@ public class InputOutputConDesLan {
             notAddedFrames.addAll(framesTag.getComplexTagPropertyValue("orFrames"));
         if (framesTag.getComplexTagProperties().containsKey("andFrames"))
             notAddedFrames.addAll(framesTag.getComplexTagPropertyValue("andFrames"));
-        for (ConDesLanTag simpleFrameTag: simpleFrameTags){
-            AbstractSimpleFrame fr;
-            String name = simpleFrameTag.getSimplePropertyValue("имя");
-            String predicate = simpleFrameTag.getSimplePropertyValue("предикат");
-            String quantors = simpleFrameTag.getSimplePropertyValue("кванторы");
-            Body frameBody = new Body();
-            for (ConDesLanTag slotTag: simpleFrameTag.getComplexTagPropertyValue("слоты")){
-                Slot slot = new Slot();
-                boolean argIsVar = false;
-                String argName = slotTag.getSimplePropertyValue("аргумент");
-                if (!((argName.charAt(0) == '\'') && (argName.charAt(argName.length()-1) == '\'')))
-                    argIsVar = true;
-                String domenName = slotTag.getSimplePropertyValue("домен");
-                Concept domen = ActualData.getConceptByName(domenName);
-                slot.setDomen(domen);
-                String role = slotTag.getSimplePropertyValue("роль");
-                slot.setRole(role);
-                if (argIsVar)
-                    slot.setArgument(ActualData.getVariableInDomenByName(argName, domen));
-                else 
-                    slot.setArgument(ActualData.getConstantInDomenByName(argName, domen));
-                frameBody.addSlot(slot);
-            }
-            ArrayList<Quantor> qntrs = Quantor.getQuantorArray(quantors, frameBody.getAllVariablesInBody());
-            if (simpleFrameTag.getSimplePropertyValue("тип").equals("характеристика"))
+        while (!simpleFrameTags.isEmpty()){
+            for (ConDesLanTag simpleFrameTag: simpleFrameTags){
+                AbstractSimpleFrame fr;
+                boolean frameIsAdded = true;
+                String name = simpleFrameTag.getSimplePropertyValue("имя");
+                String predicate = simpleFrameTag.getSimplePropertyValue("предикат");
+                String quantors = simpleFrameTag.getSimplePropertyValue("кванторы");
+                Body frameBody = new Body();
+                for (ConDesLanTag slotTag: simpleFrameTag.getComplexTagPropertyValue("слоты")){
+                    Slot slot = new Slot();
+                    boolean argIsVar = false;
+                    String argName = slotTag.getSimplePropertyValue("аргумент");
+                    if (!((argName.charAt(0) == '\'') && (argName.charAt(argName.length()-1) == '\'')))
+                        argIsVar = true;
+                    String domenName = slotTag.getSimplePropertyValue("домен");
+                    Concept domen = ActualData.getConceptByName(domenName);
+                    if (domen != null)
+                        slot.setDomen(domen);
+                    else {
+                        frameIsAdded = false;
+                        break;
+                    }
+                    String role = slotTag.getSimplePropertyValue("роль");
+                    slot.setRole(role);
+                    if (argIsVar){
+                        if (ActualData.getVariableInDomenByName(argName, domen) != null)
+                            slot.setArgument(ActualData.getVariableInDomenByName(argName, domen));
+                        else{
+                            ActualData.addNewVariableNameInDomen(argName, domen);
+                            slot.setArgument(ActualData.getVariableInDomenByName(argName, domen));
+                        }
+                    }
+                    else {
+                        if (ActualData.getConstantInDomenByName(argName, domen) != null)
+                            slot.setArgument(ActualData.getConstantInDomenByName(argName, domen));
+                        else {
+                            ActualData.addNewConstantInDomen(argName, domen);
+                            slot.setArgument(ActualData.getConstantInDomenByName(argName, domen));
+                        }
+                    }
+                    frameBody.addSlot(slot);
+                }
+                if (!frameIsAdded)
+                    continue;
+                ArrayList<Quantor> qntrs = Quantor.getQuantorArray(quantors, frameBody.getAllVariablesInBody());
+                if (simpleFrameTag.getSimplePropertyValue("тип").equals("характеристика"))
                     fr = new CharacteristicFrame(name, predicate, qntrs, frameBody);
                 else 
                     fr = new EventFrame(name, predicate, qntrs, frameBody);
                 ActualData.addFrameToHierarchy(fr);
+                System.out.println("frame + " + fr.getName() + " is added...");
+                simpleFrameTags.remove(simpleFrameTag);
+                if (defConceptTags == null)
+                    break;
+                for (ConDesLanTag defConceptTag: defConceptTags){
+                    if (defConceptTag.getSimplePropertyValue("def-фрейм").equals(fr.getName())){
+                        String defConceptName = defConceptTag.getSimplePropertyValue("имя");
+                        String comment = defConceptTag.getSimplePropertyValue("комментарий");
+                        String role = defConceptTag.getSimplePropertyValue("роль");
+                        String defFrName = defConceptTag.getSimplePropertyValue("def-фрейм");
+                        AbstractSimpleFrame defFrame = (AbstractSimpleFrame) ActualData.getFrameByName(defFrName);
+                        ArrayList<String> properties = new ArrayList<>();
+                        if (defConceptTag.getComplexStringProperties().containsKey("свойства"))
+                            properties.addAll(defConceptTag.getComplexStringPropertyValue("свойства"));
+                        DefConcept conc = new DefConcept(defFrame, role);
+                        conc.setName(defConceptName);
+                        conc.setComment(comment);
+                        conc.setProperties(properties);
+                        ActualData.addConceptToHierarchy(conc);
+                        System.out.println("\tdefConcept" + defConceptName + " is added");
+                        HashMap<Concept,ArrayList<Constant>> newConstants = new HashMap<>();
+                        newConstants.put(conc, new ArrayList<Constant>());
+                        HashMap<Concept,ArrayList<Variable>> newVariables = new HashMap<>();
+                        newVariables.put(conc, new ArrayList<Variable>());
+                        for (String defConceptConstantName: constantsTag.getComplexStringPropertyValue(defConceptName))
+                            newConstants.get(conc).add(new Constant(defConceptConstantName, conc));
+                        ActualData.addNewConstants(newConstants);
+                        System.out.println("\t\t"+ newConstants.get(conc) + "added");
+                        for (String defConceptVariableName: variablesTag.getComplexStringPropertyValue(defConceptName))
+                            newVariables.get(conc).add(new Variable(defConceptVariableName, conc));
+                        ActualData.addNewVariables(newVariables);
+                        System.out.println("\t\t"+ newVariables.get(conc) + "added");
+                    }
+                }
+                break;
+            }
         }
         System.out.println("simple frames is loaded");
         while (!notAddedFrames.isEmpty()){

@@ -111,9 +111,10 @@ public class ActualData {
         return rtrn;
     }
     public static ArrayList<Constant> getAllConstantsInDomen(Concept concept){
+        System.out.println("getting constants of " + concept.getName());
         ArrayList<Constant> rtrn = new ArrayList();
-        if (concept instanceof DefConcept)
-            return rtrn;
+        //if (concept instanceof DefConcept)
+          //  return rtrn;
         if (constantsInDomen.containsKey(concept)) {
             ArrayList<Constant> constants = constantsInDomen.get(concept);
             for(Constant cnst: constants)
@@ -131,8 +132,10 @@ public class ActualData {
     }
     
     public static int getConstantInDomenCount(Concept concept){
-        if (concept instanceof DefConcept) return 0;
-        return getAllConstantsInDomen(concept).size();
+        if (concept instanceof DefConcept) 
+            return ActualData.getConstantsOfDefConcept((DefConcept) concept).size();
+        else
+            return getAllConstantsInDomen(concept).size();
     }
     
     public static Variable getVariableInDomenByName(String varName, Concept concept) {
@@ -515,8 +518,8 @@ public class ActualData {
             for (AbstractSimpleFrame defFrame: defFrames){
                 ArrayList<DefConcept> defConcepts = defFrameConcept.get(defFrame);
                 defConcepts.remove((DefConcept) conc);
-                if (defConcepts.isEmpty())
-                    defFrameConcept.remove(defFrame);
+                //if (defConcepts.isEmpty())
+                  //  defFrameConcept.remove(defFrame);
             }
         }
         ArrayList<ConceptNode> chNodes = (ArrayList<ConceptNode>) node.childNodes.clone();
@@ -620,7 +623,33 @@ public class ActualData {
     }
     
     // для открытых фреймов
+    private static Extensional getExtensionalOfFrameWithDefConcepts(AbstractSimpleFrame frame){
+        AbstractSimpleFrame frameWithoutDefConcepts = frame.getBaseFrameWithoutDefConcepts();
+        Extensional extOfBase = getExtensional(frameWithoutDefConcepts);
+        Extensional rtrn = new Extensional(frame);
+        HashMap<String, ArrayList<Constant>> constantsOfFrameDefConcepts = new HashMap<>();
+        for (Slot slot: frame.getBody().getSlots())
+            if (slot.getDomen() instanceof DefConcept)
+                constantsOfFrameDefConcepts.put(slot.getRole(), ActualData.getConstantsOfDefConcept((DefConcept)slot.getDomen()));
+        for (HashMap<String, Constant> extension: extOfBase.getExtensions()){
+            boolean isOk = true;
+            for (String role: extension.keySet()){
+                if (constantsOfFrameDefConcepts.containsKey(role) && !constantsOfFrameDefConcepts.get(role).contains(extension.get(role))){
+                    isOk = false;
+                    break;
+                }
+            }
+            if (isOk)
+                rtrn.addExtension(extension);
+        }
+        return rtrn;
+    }
     public static Extensional getExtensional(AbstractSimpleFrame frame){
+        for (Slot slot: frame.getBody().getSlots()){
+            if (slot.getDomen() instanceof DefConcept){
+                return getExtensionalOfFrameWithDefConcepts(frame);
+            }
+        }
         gettableCheckResult = predicateExtensionals.get(frame.getPredicate()).getProjection(frame);
         ArrayList<Variable> quantifiedVariables = frame.getQuantifiedVariables();
         ArrayList<Quantor> newQuantors = (ArrayList<Quantor>) frame.getQuantors().clone();
@@ -674,7 +703,11 @@ public class ActualData {
         else 
             return extIsOk(bodyProjectedExt, frame.getQuantors(), frame.getBody().getSlots());
     }
-    public static Extensional getLastExtensionalCheckResult() { return gettableCheckResult;}
+    public static Extensional getLastExtensionalCheckResult() { 
+        Extensional rtrn = gettableCheckResult;
+        gettableCheckResult = new Extensional();
+        return rtrn;
+    }
     //вызывать после проекции
     private static boolean extIsOk(Extensional ext, ArrayList<Quantor> quantors, ArrayList<Slot> slots){
         if (quantors.isEmpty()){

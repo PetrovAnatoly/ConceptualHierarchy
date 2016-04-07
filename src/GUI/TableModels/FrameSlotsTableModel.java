@@ -18,6 +18,12 @@ public class FrameSlotsTableModel extends DefaultTableModel {
         Object[] headers = { "Роль", "Аргумент", "Концепт" };
         setColumnIdentifiers(headers);
         for (Slot slot: frame.getBody().getSlots()){
+            if (slot.getRole() == null)
+                System.out.println("role is null!");
+            if (slot.getArgument() == null)
+                System.out.println(slot.getRole() + " arg is null!");
+            if (slot.getDomen() == null)
+                System.out.println("domen is null!");
             Object[] row = {slot.getRole(), slot.getArgument().getName(), slot.getDomen().getName()};
             addRow(row);
         }

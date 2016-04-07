@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import Сoncepts.Concept;
 import Сoncepts.Constant;
+import Сoncepts.DefConcept;
 import Сoncepts.Variable;
 
 /**
@@ -162,16 +163,24 @@ public class Extensional {
     }
     //вызывать только после getProjection
     public Extensional getProjection(AbstractSimpleFrame frame){
-        Extensional rtrn = new Extensional(frame);
+        Extensional rtrn = this;
+       // for (Slot slot: frame.getBody().getSlots()){
+         //   if (slot.getArgument() instanceof Constant)
+           //     rtrn = rtrn.getProjection(slot.getRole(), (Constant) slot.getArgument());
+       // }
+        HashMap<Variable, String> variableRoleAccordance = frame.getVariableRoleAccordance();
         ArrayList<Quantor> reversedQuantors = new ArrayList<>(frame.getQuantors());
         Collections.reverse(reversedQuantors);
-        HashMap<Variable, String> variableRoleAccordance = frame.getVariableRoleAccordance();
-        for (Quantor quantor: reversedQuantors){
-            
-        }
+        for (Quantor quantor: reversedQuantors){ }
         for (Quantor quantor: frame.getQuantors()){
             Concept concept = frame.getBody().getConceptByVariable(quantor.getVariable());
-            ArrayList<Constant> constantsOfThisConcept = ActualData.getAllConstantsInDomen(concept);
+            ArrayList<Constant> constantsOfThisConcept;
+            if (concept instanceof DefConcept){
+                constantsOfThisConcept = ActualData.getConstantsOfDefConcept((DefConcept) concept);
+                constantsOfThisConcept.addAll(ActualData.getConstants().get(concept));
+            }
+            else
+                constantsOfThisConcept = ActualData.getAllConstantsInDomen(concept);
             String role = variableRoleAccordance.get(quantor.getVariable());
             for (Constant constant: constantsOfThisConcept){
                 Extensional thisConstExt = this.getProjection(role, constant);
