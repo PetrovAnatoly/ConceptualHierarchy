@@ -339,17 +339,20 @@ public class ActualData {
 
     public static void addNewConstants(HashMap<Concept, ArrayList<Constant>> newConstants) {
         for (Concept key : newConstants.keySet()) {
+            Concept realKey = key;
+            while (key instanceof DefConcept)
+                key = ((DefConcept)key).getBaseConcept();
             if (constantsInDomen.containsKey(key)) {
                 ArrayList<Constant> constantsOfThisConcept = constantsInDomen.get(key);
                 ArrayList<String> constNamesOfThisConcept = constantNameMap.get(key);
-                for (Constant cnst : newConstants.get(key)) {
+                for (Constant cnst : newConstants.get(realKey)) {
                     constantsOfThisConcept.add(cnst);
                     constNamesOfThisConcept.add(cnst.getName());
                 }
             } else {
                 ArrayList<Constant> constantsOfThisConcept = new ArrayList();
                 ArrayList<String> constNamesOfThisConcept = new ArrayList();
-                for (Constant cnst : newConstants.get(key)) {
+                for (Constant cnst : newConstants.get(realKey)) {
                     constantsOfThisConcept.add(cnst);
                     constNamesOfThisConcept.add(cnst.getName());
                 }
@@ -639,7 +642,7 @@ public class ActualData {
                     break;
                 }
             }
-            if (isOk)
+            if (isOk && !rtrn.contains(extension))
                 rtrn.addExtension(extension);
         }
         return rtrn;
@@ -733,7 +736,9 @@ public class ActualData {
                 }
             if (conc==null)
                 return false;
-            ArrayList<Constant> allConstantsInDomen = getAllConstantsInDomen(conc);
+            ArrayList<Constant> allConstantsInDomen = (conc instanceof DefConcept) ?
+                    ActualData.getConstantsOfDefConcept((DefConcept)conc):
+                    getAllConstantsInDomen(conc);
             int count = 0;
             for (Constant constant: allConstantsInDomen){
                 Extensional projectedExt = ext.getProjection(role, constant);
@@ -824,7 +829,9 @@ public class ActualData {
             break;
         }
         if (roleConc.isEmpty())
-            for (Constant cnst: ActualData.getAllConstantsInDomen(concept)){
+            for (Constant cnst: (concept instanceof DefConcept) ?
+                    ActualData.getConstantsOfDefConcept((DefConcept) concept):
+                    ActualData.getAllConstantsInDomen(concept)){
                 HashMap<String, Constant> newExt = new HashMap();
                 newExt.put(role, cnst);
                 rtrn.add(newExt);

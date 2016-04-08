@@ -11,6 +11,7 @@ import conceptualhierarchy.ActualData;
 import java.util.HashMap;
 import Сoncepts.Concept;
 import Сoncepts.Constant;
+import Сoncepts.DefConcept;
 
 /**
  *
@@ -177,6 +178,8 @@ public final class AddExtensionDialog extends javax.swing.JDialog {
                 constName ="\'" +constName+"\'";
             String domenName = ((String) extensionTable.getValueAt(i, 2)).trim();
             Concept domen = ActualData.getConceptByName(domenName);
+            while (domen instanceof DefConcept)
+                domen = ((DefConcept)domen).getBaseConcept();
             if (ActualData.avalibleConstantNameInDomen(constName, domen)){
                 newConstIndicator = true;
                 ActualData.addNewConstantInDomen(constName, domen);

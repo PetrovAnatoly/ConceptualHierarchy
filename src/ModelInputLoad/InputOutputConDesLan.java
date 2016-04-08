@@ -240,12 +240,14 @@ public class InputOutputConDesLan {
                         newConstants.put(conc, new ArrayList<Constant>());
                         HashMap<Concept,ArrayList<Variable>> newVariables = new HashMap<>();
                         newVariables.put(conc, new ArrayList<Variable>());
-                        for (String defConceptConstantName: constantsTag.getComplexStringPropertyValue(defConceptName))
-                            newConstants.get(conc).add(new Constant(defConceptConstantName, conc));
+                        if (constantsTag.getComplexStringPropertyValue(defConceptName) != null)
+                            for (String defConceptConstantName: constantsTag.getComplexStringPropertyValue(defConceptName))
+                                newConstants.get(conc).add(new Constant(defConceptConstantName, conc));
                         ActualData.addNewConstants(newConstants);
                         System.out.println("\t\t"+ newConstants.get(conc) + "added");
-                        for (String defConceptVariableName: variablesTag.getComplexStringPropertyValue(defConceptName))
-                            newVariables.get(conc).add(new Variable(defConceptVariableName, conc));
+                        if (variablesTag.getComplexStringPropertyValue(defConceptName) != null)
+                            for (String defConceptVariableName: variablesTag.getComplexStringPropertyValue(defConceptName))
+                                newVariables.get(conc).add(new Variable(defConceptVariableName, conc));
                         ActualData.addNewVariables(newVariables);
                         System.out.println("\t\t"+ newVariables.get(conc) + "added");
                     }

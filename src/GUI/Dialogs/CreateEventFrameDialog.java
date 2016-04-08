@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import Сoncepts.Concept;
 import Сoncepts.Constant;
+import Сoncepts.DefConcept;
 import Сoncepts.Variable;
 
 /**
@@ -274,6 +275,8 @@ public class CreateEventFrameDialog extends javax.swing.JDialog {
                                         newConstInd = false;
                                     }
                                 if (newConstInd) {
+                                    Concept base = slotConc;
+                                    while (base instanceof DefConcept)
                                     slArg = new Constant(argumentStr, slotConc);
                                     newConstInDomen.add((Constant) slArg);
                                 }
