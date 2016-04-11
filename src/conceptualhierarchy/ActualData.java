@@ -111,7 +111,6 @@ public class ActualData {
         return rtrn;
     }
     public static ArrayList<Constant> getAllConstantsInDomen(Concept concept){
-        System.out.println("getting constants of " + concept.getName());
         ArrayList<Constant> rtrn = new ArrayList();
         //if (concept instanceof DefConcept)
           //  return rtrn;
@@ -471,7 +470,7 @@ public class ActualData {
         }
         if (fr instanceof AbstractSimpleFrame){
             defFrameConcept.remove(fr);
-            String predicate = ((AbstractSimpleFrame) fr).getPredicate();
+            //String predicate = ((AbstractSimpleFrame) fr).getPredicate();
             //if (getFrameWithThisPredicate(predicate) == null)
             //    predicateExtensionals.remove(predicate);
         }

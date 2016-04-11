@@ -254,8 +254,6 @@ public class ViewFrameExtensionalDialog extends javax.swing.JDialog {
     
     public void setFrame(AbstractSimpleFrame arg){
         frame = arg;
-        System.out.println("предакат:\n" + arg.getPredicate());
-        System.out.println(ActualData.getAllExtensionals().get(arg.getPredicate()).getExtensions());
         extensional = new Extensional(frame);
         myTableModel = new ExtensionalTableModel(frame, extensional);
         frameNameField.setText(frame.getName());

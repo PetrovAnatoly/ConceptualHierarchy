@@ -89,12 +89,13 @@ public class InputOutputXML {
                 }
             }
             ActualData.clear();
+            System.out.println("loading from "+absolutePath + " started");
             loadConcepts(conceptNode);
             loadConstants(constantNode);
             loadVariables(variableNode);
             loadFrames(frameNode, conceptNode, variableNode);
-            //loadDefConcepts(conceptNode);
             loadExtensionals(extensionalsNode);
+            System.out.println("loading from "+absolutePath + " ended\n---------------------------------------------");
         } catch (ParserConfigurationException ex) {
             Logger.getLogger(InputOutputXML.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -252,6 +253,7 @@ public class InputOutputXML {
                 }
                 Concept conc = new Concept(name, comment, properties);
                 ActualData.addConceptToHierarchy(conc);
+                System.out.println("\tconcept " + name + " loaded");
             }
         }
     }
@@ -303,49 +305,30 @@ public class InputOutputXML {
                 if (!extension.isEmpty())
                     ext.addExtension(extension);
             }
+            System.out.println("\textensional for predicate \"" + predicate + "\" loaded");
         }
         ActualData.setPredicateExtensionals(predicateExtensionals);
-    }
-    private static void loadDefConcepts(Node conceptsNode){
-        if (conceptsNode == null)
-            return;
-        for (int i = 0; i < conceptsNode.getChildNodes().getLength(); i++){
-            Node concept = conceptsNode.getChildNodes().item(i);
-            if (concept.getNodeName().equals("DefConcept")){
-                String name =concept.getAttributes().getNamedItem("name").getNodeValue();
-                String comment = concept.getAttributes().getNamedItem("comment").getNodeValue();
-                String role = concept.getAttributes().getNamedItem("role").getNodeValue();
-                String defFr = concept.getAttributes().getNamedItem("defFrame").getNodeValue();
-                AbstractSimpleFrame defFrame = (AbstractSimpleFrame) ActualData.getFrameByName(defFr);
-                ArrayList<String> properties = new ArrayList<>();
-                Node propertiesNode = concept.getChildNodes().item(0);
-                for (int l = 0; l < propertiesNode.getChildNodes().getLength();l++){
-                    String prop = propertiesNode.getChildNodes().item(l).getAttributes().getNamedItem("val").getNodeValue();
-                    properties.add(prop);
-                }
-                DefConcept conc = new DefConcept(defFrame, role);
-                conc.setName(name);
-                conc.setComment(comment);
-                conc.setProperties(properties);
-                ActualData.addConceptToHierarchy(conc);
-            }
-        }
     }
     private static void loadVariables(Node varNode){
         if (varNode == null)
             return;
         HashMap<Concept, ArrayList<Variable>> newVariables = new HashMap<>();
         for (int i = 0; i < varNode.getChildNodes().getLength(); i++){
+            
             Node concept = varNode.getChildNodes().item(i);
             Concept domen = ActualData.getConceptByName(concept.getAttributes().getNamedItem("name").getNodeValue());
             if (domen == null)
                 continue;
             ArrayList<Variable> vars = new ArrayList<>();
+            System.out.println("\tvariables for concept \"" + domen.getName() + "\" loading...");
             for (int k = 0; k < concept.getChildNodes().getLength(); k++){
                 Node variableNode = concept.getChildNodes().item(k);
-                vars.add(new Variable(variableNode.getAttributes().getNamedItem("name").getNodeValue(), domen));
+                String varName = variableNode.getAttributes().getNamedItem("name").getNodeValue();
+                vars.add(new Variable(varName, domen));
+                System.out.println("\t\tvariable \"" + varName + "\" loaded");
             }
             newVariables.put(domen, vars);
+            System.out.println("\t...variables for concept \"" + domen.getName() + "\" loaded");
         }
         ActualData.addNewVariables(newVariables);
     }
@@ -361,9 +344,12 @@ public class InputOutputXML {
                 continue;
             ArrayList<Constant> constants = new ArrayList<>();
             newConstants.put(domen, constants);
+            System.out.println("\tconstants for concept \"" + domen.getName() + "\" loading...");
             for (int k = 0; k < conceptNode.getChildNodes().getLength(); k++){
                 Node constantNode = conceptNode.getChildNodes().item(k);
-                constants.add(new Constant(constantNode.getAttributes().getNamedItem("name").getNodeValue(), domen));
+                String constName = constantNode.getAttributes().getNamedItem("name").getNodeValue();
+                constants.add(new Constant(constName, domen));
+                System.out.println("\t\tconstant \'" + constName + "\' loaded");
             }
         }
         ActualData.addNewConstants(newConstants);
@@ -421,7 +407,7 @@ public class InputOutputXML {
                 else 
                     fr = new EventFrame(name, predicate, qntrs, frameBody);
                 ActualData.addFrameToHierarchy(fr);
-                System.out.println("frame \"" + fr.getName() + "\" is added...");
+                System.out.println("\tframe \"" + fr.getName() + "\" is added...");
                 notAddedSimpleFrames.remove(frame);
                 if (conceptsNode == null)
                     break;
@@ -446,7 +432,7 @@ public class InputOutputXML {
                         conc.setComment(comment);
                         conc.setProperties(properties);
                         ActualData.addConceptToHierarchy(conc);
-                        System.out.println("\tdef-concept \"" + conc.getName() + "\" is added...");
+                        System.out.println("\t\tdef-concept \"" + conc.getName() + "\" is added...");
                         if (variablesNode != null){
                             for (int j = 0; j < variablesNode.getChildNodes().getLength(); j++){
                                 Node variablesOfConceptNode = variablesNode.getChildNodes().item(j);
@@ -457,7 +443,7 @@ public class InputOutputXML {
                                         Node variableNode = variablesOfConceptNode.getChildNodes().item(k);
                                         String varName = variableNode.getAttributes().getNamedItem("name").getNodeValue();
                                         vars.add(new Variable(varName, conc));
-                                        System.out.println("\t\tvariable \"" + varName + "\" is added...");
+                                        System.out.println("\t\t\tvariable \"" + varName + "\" is added...");
                                     }
                                     newVariables.put(conc, vars);
                                     ActualData.addNewVariables(newVariables);
