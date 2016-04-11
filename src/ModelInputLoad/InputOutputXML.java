@@ -92,8 +92,8 @@ public class InputOutputXML {
             loadConcepts(conceptNode);
             loadConstants(constantNode);
             loadVariables(variableNode);
-            loadFrames(frameNode);
-            loadDefConcepts(conceptNode);
+            loadFrames(frameNode, conceptNode, variableNode);
+            //loadDefConcepts(conceptNode);
             loadExtensionals(extensionalsNode);
         } catch (ParserConfigurationException ex) {
             Logger.getLogger(InputOutputXML.class.getName()).log(Level.SEVERE, null, ex);
@@ -338,6 +338,8 @@ public class InputOutputXML {
         for (int i = 0; i < varNode.getChildNodes().getLength(); i++){
             Node concept = varNode.getChildNodes().item(i);
             Concept domen = ActualData.getConceptByName(concept.getAttributes().getNamedItem("name").getNodeValue());
+            if (domen == null)
+                continue;
             ArrayList<Variable> vars = new ArrayList<>();
             for (int k = 0; k < concept.getChildNodes().getLength(); k++){
                 Node variableNode = concept.getChildNodes().item(k);
@@ -352,30 +354,41 @@ public class InputOutputXML {
             return;
         HashMap<Concept, ArrayList<Constant>> newConstants = new HashMap<>();
         for (int i = 0; i < constNode.getChildNodes().getLength(); i++){
-            Node concept = constNode.getChildNodes().item(i);
-            Concept domen = ActualData.getConceptByName(concept.getAttributes().getNamedItem("name").getNodeValue());
+            Node conceptNode = constNode.getChildNodes().item(i);
+            String conceptName = conceptNode.getAttributes().getNamedItem("name").getNodeValue();
+            Concept domen = ActualData.getConceptByName(conceptName);
+            if (domen == null)
+                continue;
             ArrayList<Constant> constants = new ArrayList<>();
             newConstants.put(domen, constants);
-            for (int k = 0; k < concept.getChildNodes().getLength(); k++){
-                Node constantNode = concept.getChildNodes().item(k);
+            for (int k = 0; k < conceptNode.getChildNodes().getLength(); k++){
+                Node constantNode = conceptNode.getChildNodes().item(k);
                 constants.add(new Constant(constantNode.getAttributes().getNamedItem("name").getNodeValue(), domen));
             }
         }
         ActualData.addNewConstants(newConstants);
     }
-    private static void loadFrames(Node frNode){
-        if (frNode == null)
+    private static void loadFrames(Node framesNode, Node conceptsNode, Node variablesNode){
+        if (framesNode == null)
             return;
-        ArrayList<Node> notAddedFrames = new ArrayList<>();
-        for (int i = 0; i < frNode.getChildNodes().getLength(); i++){
-            Node frame = frNode.getChildNodes().item(i);
-            if (frame.getAttributes().getNamedItem("type").getNodeValue().equals("simple")){
+        ArrayList<Node> notAddedComplexFrames = new ArrayList<>();
+        ArrayList<Node> notAddedSimpleFrames = new ArrayList<>();
+        for (int i = 0; i < framesNode.getChildNodes().getLength(); i++){
+            Node frame = framesNode.getChildNodes().item(i);
+            if (frame.getAttributes().getNamedItem("type").getNodeValue().equals("simple"))
+                notAddedSimpleFrames.add(frame);
+            else 
+                notAddedComplexFrames.add(frame);
+        }
+        while (!notAddedSimpleFrames.isEmpty()){
+            for (Node frame: notAddedSimpleFrames){
                 AbstractSimpleFrame fr;
                 String name = frame.getAttributes().getNamedItem("name").getNodeValue();
                 String predicate = frame.getAttributes().getNamedItem("predicate").getNodeValue();
                 String quantors = frame.getAttributes().getNamedItem("quantors").getNodeValue();
                 Body frameBody = new Body();
                 Node body = frame.getFirstChild();
+                boolean isOk = true;
                 for (int k = 0; k < body.getChildNodes().getLength(); k++){
                     Node slotNode = body.getChildNodes().item(k);
                     Slot slot = new Slot();
@@ -385,6 +398,10 @@ public class InputOutputXML {
                         argIsVar = true;
                     String domenName = slotNode.getAttributes().getNamedItem("domen").getNodeValue();
                     Concept domen = ActualData.getConceptByName(domenName);
+                    if (domen == null){
+                        isOk = false;
+                        break;
+                    }
                     slot.setDomen(domen);
                     String role = slotNode.getAttributes().getNamedItem("role").getNodeValue();
                     slot.setRole(role);
@@ -394,6 +411,8 @@ public class InputOutputXML {
                         slot.setArgument(ActualData.getConstantInDomenByName(argName, domen));
                     frameBody.addSlot(slot);
                 }
+                if (!isOk)
+                    continue;
                 ArrayList<Quantor> qntrs = Quantor.getQuantorArray(quantors, frameBody.getAllVariablesInBody());
                 if (frameBody.getRoleConceptAccordance().containsKey("характеристика") &&
                         frameBody.getRoleConceptAccordance().containsKey("значение") &&
@@ -402,50 +421,94 @@ public class InputOutputXML {
                 else 
                     fr = new EventFrame(name, predicate, qntrs, frameBody);
                 ActualData.addFrameToHierarchy(fr);
-            }
-            else 
-                notAddedFrames.add(frame);
-            while (!notAddedFrames.isEmpty()){
-                for (Node frameNode: notAddedFrames){
-                    if (frameNode.getAttributes().getNamedItem("type").getNodeValue().equals("notFrame")){
-                        String operandName = frameNode.getAttributes().getNamedItem("operand").getNodeValue();
-                        if (!ActualData.avalibleFrameName(operandName)){
-                            String notFrameName = frameNode.getAttributes().getNamedItem("name").getNodeValue();
-                            NotFrame newFrame = new NotFrame(notFrameName, ActualData.getFrameByName(operandName));
-                            ActualData.addFrameToHierarchy(newFrame);
-                            notAddedFrames.remove(frameNode);
-                            break;
+                System.out.println("frame \"" + fr.getName() + "\" is added...");
+                notAddedSimpleFrames.remove(frame);
+                if (conceptsNode == null)
+                    break;
+                for (int i = 0; i < conceptsNode.getChildNodes().getLength(); i++){
+                    Node conceptNode = conceptsNode.getChildNodes().item(i);
+                    if (conceptNode.getNodeName().equals("DefConcept")){
+                        String defFr = conceptNode.getAttributes().getNamedItem("defFrame").getNodeValue();
+                        if (!fr.getName().equals(defFr))
+                            continue;
+                        String conceptName =conceptNode.getAttributes().getNamedItem("name").getNodeValue();
+                        String comment = conceptNode.getAttributes().getNamedItem("comment").getNodeValue();
+                        String role = conceptNode.getAttributes().getNamedItem("role").getNodeValue();
+                        AbstractSimpleFrame defFrame = (AbstractSimpleFrame) ActualData.getFrameByName(defFr);
+                        ArrayList<String> properties = new ArrayList<>();
+                        Node propertiesNode = conceptNode.getChildNodes().item(0);
+                        for (int l = 0; l < propertiesNode.getChildNodes().getLength();l++){
+                            String prop = propertiesNode.getChildNodes().item(l).getAttributes().getNamedItem("val").getNodeValue();
+                            properties.add(prop);
                         }
-                    }
-                    else if (frameNode.getAttributes().getNamedItem("type").getNodeValue().equals("AND")){
-                        String firstOperandName = frameNode.getAttributes().getNamedItem("firstOperand").getNodeValue();
-                        String secondOperandName = frameNode.getAttributes().getNamedItem("secondOperand").getNodeValue();
-                        if (!ActualData.avalibleFrameName(firstOperandName) && !ActualData.avalibleFrameName(secondOperandName)){
-                            String andFrameName = frameNode.getAttributes().getNamedItem("name").getNodeValue();
-                            AbstractFrame frst = ActualData.getFrameByName(firstOperandName);
-                            AbstractFrame scnd = ActualData.getFrameByName(secondOperandName);
-                            AndFrame newFrame = new AndFrame(andFrameName, frst, scnd);
-                            ActualData.addFrameToHierarchy(newFrame);
-                            notAddedFrames.remove(frameNode);
-                            break;
-                        }
-                    }
-                    else if (frameNode.getAttributes().getNamedItem("type").getNodeValue().equals("OR")){
-                        String firstOperandName = frameNode.getAttributes().getNamedItem("firstOperand").getNodeValue();
-                        String secondOperandName = frameNode.getAttributes().getNamedItem("secondOperand").getNodeValue();
-                        if (!ActualData.avalibleFrameName(firstOperandName) && !ActualData.avalibleFrameName(secondOperandName)){
-                            String andFrameName = frameNode.getAttributes().getNamedItem("name").getNodeValue();
-                            AbstractFrame frst = ActualData.getFrameByName(firstOperandName);
-                            AbstractFrame scnd = ActualData.getFrameByName(secondOperandName);
-                            OrFrame newFrame = new OrFrame(andFrameName, frst, scnd);
-                            ActualData.addFrameToHierarchy(newFrame);
-                            notAddedFrames.remove(frameNode);
-                            break;
+                        DefConcept conc = new DefConcept(defFrame, role);
+                        conc.setName(conceptName);
+                        conc.setComment(comment);
+                        conc.setProperties(properties);
+                        ActualData.addConceptToHierarchy(conc);
+                        System.out.println("\tdef-concept \"" + conc.getName() + "\" is added...");
+                        if (variablesNode != null){
+                            for (int j = 0; j < variablesNode.getChildNodes().getLength(); j++){
+                                Node variablesOfConceptNode = variablesNode.getChildNodes().item(j);
+                                if (variablesOfConceptNode.getAttributes().getNamedItem("name").getNodeValue().equals(conceptName)){
+                                    HashMap<Concept, ArrayList<Variable>> newVariables = new HashMap<>();
+                                    ArrayList<Variable> vars = new ArrayList<>();
+                                    for (int k = 0; k < variablesOfConceptNode.getChildNodes().getLength(); k++){
+                                        Node variableNode = variablesOfConceptNode.getChildNodes().item(k);
+                                        String varName = variableNode.getAttributes().getNamedItem("name").getNodeValue();
+                                        vars.add(new Variable(varName, conc));
+                                        System.out.println("\t\tvariable \"" + varName + "\" is added...");
+                                    }
+                                    newVariables.put(conc, vars);
+                                    ActualData.addNewVariables(newVariables);
+                                    variablesNode.removeChild(variablesOfConceptNode);
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
+                break;
             }
         }
+        while (!notAddedComplexFrames.isEmpty())
+            for (Node frameNode: notAddedComplexFrames)
+                if (frameNode.getAttributes().getNamedItem("type").getNodeValue().equals("notFrame")){
+                    String operandName = frameNode.getAttributes().getNamedItem("operand").getNodeValue();
+                    if (!ActualData.avalibleFrameName(operandName)){
+                        String notFrameName = frameNode.getAttributes().getNamedItem("name").getNodeValue();
+                        NotFrame newFrame = new NotFrame(notFrameName, ActualData.getFrameByName(operandName));
+                        ActualData.addFrameToHierarchy(newFrame);
+                        notAddedComplexFrames.remove(frameNode);
+                        break;
+                    }
+                }
+                else if (frameNode.getAttributes().getNamedItem("type").getNodeValue().equals("AND")){
+                    String firstOperandName = frameNode.getAttributes().getNamedItem("firstOperand").getNodeValue();
+                    String secondOperandName = frameNode.getAttributes().getNamedItem("secondOperand").getNodeValue();
+                    if (!ActualData.avalibleFrameName(firstOperandName) && !ActualData.avalibleFrameName(secondOperandName)){
+                        String andFrameName = frameNode.getAttributes().getNamedItem("name").getNodeValue();
+                        AbstractFrame frst = ActualData.getFrameByName(firstOperandName);
+                        AbstractFrame scnd = ActualData.getFrameByName(secondOperandName);
+                        AndFrame newFrame = new AndFrame(andFrameName, frst, scnd);
+                        ActualData.addFrameToHierarchy(newFrame);
+                        notAddedComplexFrames.remove(frameNode);
+                        break;
+                    }
+                }
+                else if (frameNode.getAttributes().getNamedItem("type").getNodeValue().equals("OR")){
+                    String firstOperandName = frameNode.getAttributes().getNamedItem("firstOperand").getNodeValue();
+                    String secondOperandName = frameNode.getAttributes().getNamedItem("secondOperand").getNodeValue();
+                    if (!ActualData.avalibleFrameName(firstOperandName) && !ActualData.avalibleFrameName(secondOperandName)){
+                        String andFrameName = frameNode.getAttributes().getNamedItem("name").getNodeValue();
+                        AbstractFrame frst = ActualData.getFrameByName(firstOperandName);
+                        AbstractFrame scnd = ActualData.getFrameByName(secondOperandName);
+                        OrFrame newFrame = new OrFrame(andFrameName, frst, scnd);
+                        ActualData.addFrameToHierarchy(newFrame);
+                        notAddedComplexFrames.remove(frameNode);
+                        break;
+                    }
+                }
     }
     private static void writeDocument(Document document, String absolutePath) {
         try {

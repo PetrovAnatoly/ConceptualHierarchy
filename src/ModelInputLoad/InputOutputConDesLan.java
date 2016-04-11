@@ -68,12 +68,12 @@ public class InputOutputConDesLan {
         if (content == null)
             throw new IOException();
         ConDesLanTag conceptsTag = null, constantsTag = null, variablesTag = null, framesTag = null, extensionalsTag = null;
-        ArrayList<ConDesLanTag> defConceptsTag = new ArrayList<>();
+        ArrayList<ConDesLanTag> defConceptsTag;
         for (ConDesLanTag tag: content){
             switch (tag.getName()) {
                 case "concepts":
                     conceptsTag = tag;
-                    defConceptsTag = conceptsTag.getComplexTagPropertyValue("defConcepts");
+                    //defConceptsTag = conceptsTag.getComplexTagPropertyValue("defConcepts");
                     break;
                 case "constants":
                     constantsTag = tag;
@@ -298,7 +298,7 @@ public class InputOutputConDesLan {
             }
         }
     }
-    private static void loadDefConcepts(ConDesLanTag conceptsTag){
+    /*private static void loadDefConcepts(ConDesLanTag conceptsTag){
         ArrayList<ConDesLanTag> defConceptTags = conceptsTag.getComplexTagProperties().get("defConcepts");
         if (defConceptTags == null)
             return;
@@ -317,7 +317,7 @@ public class InputOutputConDesLan {
             conc.setProperties(properties);
             ActualData.addConceptToHierarchy(conc);
         }
-    }
+    }*/
     private static void loadExtensionals(ConDesLanTag extensionalsTag){
         HashMap<String, Extensional> predicateExtensionals = new HashMap<>();
         for (String predicate: extensionalsTag.getComplexTagProperties().keySet()){
