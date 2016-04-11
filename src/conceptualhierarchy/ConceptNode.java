@@ -6,7 +6,6 @@
 package conceptualhierarchy;
 
 import java.util.ArrayList;
-import Сoncepts.AbstractConcept;
 import Сoncepts.Concept;
 
 /**
@@ -15,10 +14,7 @@ import Сoncepts.Concept;
  */
 public class ConceptNode{
     //constructors
-    public ConceptNode(Concept arg)
-    {
-        value = arg; 
-    }
+    public ConceptNode(Concept arg){ value = arg;}
     
     //fields
     protected Concept value;

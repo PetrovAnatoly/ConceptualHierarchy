@@ -524,6 +524,8 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         GenerateDialog generateDialog = new GenerateDialog(new javax.swing.JFrame(), true);
         generateDialog.setVisible(true);
+        updateFrameIsaTree();
+        updateConceptIsaTree();
     }//GEN-LAST:event_generateMenuItemActionPerformed
 
     private void removeAllNotDefFramesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeAllNotDefFramesMenuItemActionPerformed
