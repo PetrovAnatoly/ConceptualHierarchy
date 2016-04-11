@@ -15,6 +15,7 @@ import GUI.Dialogs.BinaryFrameViewDialog;
 import GUI.Dialogs.ChoiceTypeOfNewFrameDialog;
 import GUI.Dialogs.ConceptViewDialog;
 import GUI.Dialogs.ConstantViewDialog;
+import GUI.Dialogs.GenerateDialog;
 import GUI.Dialogs.NotFrameViewDialog;
 import GUI.Dialogs.ViewSimpleFrameDialog;
 import GUI.Dialogs.errorDialog;
@@ -521,6 +522,8 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void generateMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateMenuItemActionPerformed
         // TODO add your handling code here:
+        GenerateDialog generateDialog = new GenerateDialog(new javax.swing.JFrame(), true);
+        generateDialog.setVisible(true);
     }//GEN-LAST:event_generateMenuItemActionPerformed
 
     private void removeAllNotDefFramesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeAllNotDefFramesMenuItemActionPerformed

@@ -29,8 +29,11 @@ public class Extensional {
         predicate = fr.getPredicate();
         for (Slot slot: fr.getBody().getSlots()){
             roles.add(slot.getRole());
-            domens.add(slot.getDomen());
-            roleConceptAccordance.put(slot.getRole(), slot.getDomen());
+            Concept domen = slot.getDomen();
+            while (domen instanceof DefConcept)
+                domen = ((DefConcept)domen).getBaseConcept();
+            domens.add(domen);
+            roleConceptAccordance.put(slot.getRole(), domen);
         }
     }
     public Extensional(Extensional base){

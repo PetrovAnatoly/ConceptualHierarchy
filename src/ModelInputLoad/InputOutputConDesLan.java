@@ -142,7 +142,7 @@ public class InputOutputConDesLan {
         HashMap<Concept, ArrayList<Variable>> newVariables = new HashMap<>();
         for (String conceptName: variablesTag.getComplexStringProperties().keySet()){
             Concept domen = ActualData.getConceptByName(conceptName);
-            if (domen == null)
+            if (domen == null || domen instanceof DefConcept)
                 continue;
             ArrayList<Variable> variables = new ArrayList<>();
             newVariables.put(domen, variables);
@@ -336,6 +336,8 @@ public class InputOutputConDesLan {
                 String role = roleConceptAccordanceTag.getSimplePropertyValue("role");
                 String concName = roleConceptAccordanceTag.getSimplePropertyValue("concept");
                 Concept concept = ActualData.getConceptByName(concName);
+                while (concept instanceof DefConcept)
+                    concept = ((DefConcept) concept).getBaseConcept();
                 if (concept == null)
                     continue;
                 if (!predicateExtensional.getRoles().contains(role))
