@@ -49,11 +49,18 @@ public class GenerateDialog extends javax.swing.JDialog {
         constantGenerateButton = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         constantCountMaxTextField = new javax.swing.JTextField();
-        nestingProbabilityTextField = new javax.swing.JTextField();
+        conceptNestingProbabilityTextField = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         conceptCountTextField = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        conceptGenerateButton = new javax.swing.JButton();
+        frameNestingProbabilityTextField = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        framesCountTextField = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        frameGenerateButton = new javax.swing.JButton();
+        slotCountTextField = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Генерация элементов");
@@ -80,12 +87,25 @@ public class GenerateDialog extends javax.swing.JDialog {
 
         jLabel8.setText("Количество концептов:");
 
-        jButton1.setText("Сгенерировать!");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        conceptGenerateButton.setText("Сгенерировать!");
+        conceptGenerateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                conceptGenerateButtonActionPerformed(evt);
             }
         });
+
+        jLabel5.setText("Вероятность вложенности (в процентах):");
+
+        jLabel7.setText("Количество фреймов:");
+
+        frameGenerateButton.setText("Сгенерировать!");
+        frameGenerateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frameGenerateButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setText("Количество слотов:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,7 +121,7 @@ public class GenerateDialog extends javax.swing.JDialog {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(constantGenerateButton))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(129, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel3)
@@ -115,15 +135,30 @@ public class GenerateDialog extends javax.swing.JDialog {
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(constantCountMaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(conceptGenerateButton, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel8)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel7))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(conceptCountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(framesCountTextField)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel5)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(frameNestingProbabilityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(conceptCountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(conceptNestingProbabilityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(frameGenerateButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel9)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(nestingProbabilityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(slotCountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -143,13 +178,25 @@ public class GenerateDialog extends javax.swing.JDialog {
                 .addComponent(constantGenerateButton)
                 .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nestingProbabilityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(conceptNestingProbabilityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
                     .addComponent(conceptCountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
-                .addContainerGap(276, Short.MAX_VALUE))
+                .addComponent(conceptGenerateButton)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(frameNestingProbabilityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(framesCountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(slotCountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(frameGenerateButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -197,19 +244,43 @@ public class GenerateDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_constantGenerateButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void conceptGenerateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conceptGenerateButtonActionPerformed
         // TODO add your handling code here:
         String conceptCountFieldValue = conceptCountTextField.getText().trim();
-        String nestingProbabilityFieldValue = nestingProbabilityTextField.getText().trim();
+        String nestingProbabilityFieldValue = conceptNestingProbabilityTextField.getText().trim();
         try{
             int conceptCount = Integer.valueOf(conceptCountFieldValue);
             int nestingProbability = Integer.valueOf(nestingProbabilityFieldValue);
+            if (conceptCount <= 0 || nestingProbability < 0 || nestingProbability > 100)
+                throw new NumberFormatException();
             Generator.generateConcepts(conceptCount, nestingProbability);
         }
         catch (NumberFormatException ex){
             new errorDialog(new JFrame(), true, "Некорректный ввод!").setVisible(true);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_conceptGenerateButtonActionPerformed
+
+    private void frameGenerateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frameGenerateButtonActionPerformed
+        // TODO add your handling code here:
+        String countFieldValue = framesCountTextField.getText().trim();
+        String nestingProbabilityFieldValue = frameNestingProbabilityTextField.getText().trim();
+        String slotCountFiledValue = slotCountTextField.getText().trim();
+        try{
+            int framesCount = Integer.valueOf(countFieldValue);
+            int nestingProbability = Integer.valueOf(nestingProbabilityFieldValue);
+            int slotCount = Integer.valueOf(slotCountFiledValue);
+            if (framesCount <= 0 || nestingProbability < 0 || nestingProbability > 100 || slotCount <= 0)
+                throw new NumberFormatException();
+            if (ActualData.getConcepts().isEmpty()){
+                new errorDialog(new JFrame(), true, "Нет концептов для использования в качестве доменов!").setVisible(true);
+                return;
+            }
+            Generator.generateSimpleFrames(framesCount, nestingProbability, slotCount); 
+        }
+        catch (NumberFormatException ex){
+            new errorDialog(new JFrame(), true, "Некорректный ввод!").setVisible(true);
+        }
+    }//GEN-LAST:event_frameGenerateButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -256,16 +327,23 @@ public class GenerateDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox conceptChooseComboBox;
     private javax.swing.JTextField conceptCountTextField;
+    private javax.swing.JButton conceptGenerateButton;
+    private javax.swing.JTextField conceptNestingProbabilityTextField;
     private javax.swing.JTextField constantCountMaxTextField;
     private javax.swing.JTextField constantCountMinTextField;
     private javax.swing.JButton constantGenerateButton;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton frameGenerateButton;
+    private javax.swing.JTextField frameNestingProbabilityTextField;
+    private javax.swing.JTextField framesCountTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JTextField nestingProbabilityTextField;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JTextField slotCountTextField;
     // End of variables declaration//GEN-END:variables
 }

@@ -36,7 +36,7 @@
                       <Component id="constantGenerateButton" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="129" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
@@ -51,15 +51,35 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="constantCountMaxTextField" min="-2" pref="49" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jButton1" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="conceptGenerateButton" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                              </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="conceptCountTextField" min="-2" pref="47" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="framesCountTextField" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="frameNestingProbabilityTextField" min="-2" pref="52" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="conceptCountTextField" min="-2" pref="47" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="conceptNestingProbabilityTextField" min="-2" pref="53" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <Component id="frameGenerateButton" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="nestingProbabilityTextField" min="-2" pref="53" max="-2" attributes="0"/>
+                              <Component id="slotCountTextField" min="-2" pref="52" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -86,14 +106,28 @@
               <Component id="constantGenerateButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="nestingProbabilityTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="conceptNestingProbabilityTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="conceptCountTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="276" max="32767" attributes="0"/>
+              <Component id="conceptGenerateButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="frameNestingProbabilityTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="framesCountTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="slotCountTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="frameGenerateButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -146,7 +180,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="constantCountMaxTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="nestingProbabilityTextField">
+    <Component class="javax.swing.JTextField" name="conceptNestingProbabilityTextField">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
@@ -160,13 +194,42 @@
         <Property name="text" type="java.lang.String" value="&#x41a;&#x43e;&#x43b;&#x438;&#x447;&#x435;&#x441;&#x442;&#x432;&#x43e; &#x43a;&#x43e;&#x43d;&#x446;&#x435;&#x43f;&#x442;&#x43e;&#x432;:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="conceptGenerateButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="&#x421;&#x433;&#x435;&#x43d;&#x435;&#x440;&#x438;&#x440;&#x43e;&#x432;&#x430;&#x442;&#x44c;!"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="conceptGenerateButtonActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="frameNestingProbabilityTextField">
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel5">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x412;&#x435;&#x440;&#x43e;&#x44f;&#x442;&#x43d;&#x43e;&#x441;&#x442;&#x44c; &#x432;&#x43b;&#x43e;&#x436;&#x435;&#x43d;&#x43d;&#x43e;&#x441;&#x442;&#x438; (&#x432; &#x43f;&#x440;&#x43e;&#x446;&#x435;&#x43d;&#x442;&#x430;&#x445;):"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="framesCountTextField">
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel7">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x41a;&#x43e;&#x43b;&#x438;&#x447;&#x435;&#x441;&#x442;&#x432;&#x43e; &#x444;&#x440;&#x435;&#x439;&#x43c;&#x43e;&#x432;:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="frameGenerateButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x421;&#x433;&#x435;&#x43d;&#x435;&#x440;&#x438;&#x440;&#x43e;&#x432;&#x430;&#x442;&#x44c;!"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frameGenerateButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="slotCountTextField">
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel9">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x41a;&#x43e;&#x43b;&#x438;&#x447;&#x435;&#x441;&#x442;&#x432;&#x43e; &#x441;&#x43b;&#x43e;&#x442;&#x43e;&#x432;:"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
