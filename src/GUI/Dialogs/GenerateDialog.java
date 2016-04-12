@@ -30,6 +30,7 @@ public class GenerateDialog extends javax.swing.JDialog {
         for (Concept  concept: ActualData.getConcepts())
             if (!(concept instanceof DefConcept))
                 conceptChooseComboBox.addItem(concept.getName());
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -64,6 +65,7 @@ public class GenerateDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Генерация элементов");
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Параметры:");
@@ -227,7 +229,7 @@ public class GenerateDialog extends javax.swing.JDialog {
                 int counter = 0;
                 int id = 0;
                 while (counter<count){
-                    String constantName = "\'" + concept.getName() + String.valueOf(id) + "\'";
+                    String constantName = "\'constant_of_" + concept.getName() + "_" + String.valueOf(id) + "\'";
                     if (ActualData.avalibleConstantNameInDomen(constantName, concept)){
                         ActualData.addNewConstantInDomen(constantName, concept);
                         counter++;
@@ -254,6 +256,9 @@ public class GenerateDialog extends javax.swing.JDialog {
             if (conceptCount <= 0 || nestingProbability < 0 || nestingProbability > 100)
                 throw new NumberFormatException();
             Generator.generateConcepts(conceptCount, nestingProbability);
+            errorDialog errD = new errorDialog(new JFrame(), true, "Концепты сгенерированы!");
+            errD.setTitle("Сгенерировано");
+            errD.setVisible(true);
         }
         catch (NumberFormatException ex){
             new errorDialog(new JFrame(), true, "Некорректный ввод!").setVisible(true);
@@ -276,6 +281,9 @@ public class GenerateDialog extends javax.swing.JDialog {
                 return;
             }
             Generator.generateSimpleFrames(framesCount, nestingProbability, slotCount); 
+            errorDialog errD = new errorDialog(new JFrame(), true, "Фреймы сгенерированы!");
+            errD.setTitle("Сгенерировано");
+            errD.setVisible(true);
         }
         catch (NumberFormatException ex){
             new errorDialog(new JFrame(), true, "Некорректный ввод!").setVisible(true);

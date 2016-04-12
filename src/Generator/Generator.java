@@ -27,7 +27,6 @@ public class Generator {
         int frameId = 0;
         int generatedFramestCount = 0;
         int predicateId = 0;
-        int slotId = 0;
         String predicate = "predicate0";
         ArrayList<EventFrame> generatedFrames = new ArrayList<>(); 
         while (!ActualData.avalibleFrameName("frame" + String.valueOf(frameId)))
@@ -36,20 +35,33 @@ public class Generator {
             predicate = "predicate" + String.valueOf(++predicateId);
         while (generatedFramestCount < count){
             EventFrame newFrame;
-            if (getRandInt(0, 100) < nestingProbability && !generatedFrames.isEmpty()){
+            if (getRandInt(0, 100) <= nestingProbability && !generatedFrames.isEmpty()){
                 EventFrame base = generatedFrames.get(getRandInt(0, generatedFrames.size()-1));
                 ArrayList<Quantor> quantors = (ArrayList<Quantor>) base.getQuantors().clone();
                 Body body = base.getBody();
                 String basePredicate = base.getPredicate();
+                newFrame = new EventFrame("frame" + String.valueOf(frameId), basePredicate, quantors, body);
                 if (quantors.isEmpty()){
-                    quantors.add(new Quantor("[1}", (Variable) body.getSlots().get(0).getArgument()));
+                    int k = getRandInt(0, body.getSlots().size()-1);
+                    quantors.add(new Quantor("[1}", (Variable) body.getSlots().get(k).getArgument()));
+                }
+                else {
+                    if (getRandInt(0, 100) <= 100/slotCount || quantors.size() == body.getSlots().size()){
+                        int k = getRandInt(0, quantors.size()-1);
+                        quantors.get(k).setValue(quantors.get(k).getValue() + 1);
+                    }
+                    else {
+                        ArrayList<Variable> notQuantifVars = newFrame.getBody().getAllVariablesInBody();
+                        notQuantifVars.removeAll(newFrame.getQuantifiedVariables());
+                        quantors.add(new Quantor("[1}", (Variable) notQuantifVars.get(0)));
+                    }
+                }
+                if (!ActualData.thisFrameAlreadyExist(newFrame)){
+                    generatedFrames.add(newFrame);
+                    ActualData.addFrameToHierarchy(newFrame);
                 }
                 else 
-                    quantors.get(0).setValue(quantors.get(0).getValue() + 1);
-                generatedFrames.remove(base);
-                newFrame = new EventFrame("frame" + String.valueOf(frameId), basePredicate, quantors, body);
-                generatedFrames.add(newFrame);
-                ActualData.addFrameToHierarchy(newFrame);
+                    continue;
             }
             else {
                 ArrayList<Slot> slots = new ArrayList<>();
@@ -95,7 +107,7 @@ public class Generator {
             ArrayList<String> properties = new ArrayList<>();
             properties.add("property" + String.valueOf(propertyId));
             propertyId++;
-            if (getRandInt(0, 100) < nestingProbability){
+            if (getRandInt(0, 100) <= nestingProbability){
                 ArrayList<Concept> actualConcepts = ActualData.getConcepts();
                 if (!actualConcepts.isEmpty())
                     properties.addAll(actualConcepts.get(getRandInt(0, actualConcepts.size()-1)).getProperties());
