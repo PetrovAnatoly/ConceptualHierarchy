@@ -5,8 +5,6 @@
  */
 package Frames.Structure;
 
-import Сoncepts.Variable;
-
 /**
  *
  * @author Anatoly

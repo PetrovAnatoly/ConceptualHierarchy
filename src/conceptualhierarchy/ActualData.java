@@ -928,8 +928,9 @@ public class ActualData {
     public static void removeAllNotDefFrames(){
         ArrayList<AbstractFrame> framesToRemove = new ArrayList<>();
         for (AbstractFrame frame: frameSet)
-            if (!defFrameConcept.containsKey(frame))
-                framesToRemove.add(frame);
+            if (frame instanceof AbstractSimpleFrame)
+                if (!defFrameConcept.containsKey(frame))
+                    framesToRemove.add(frame);
         for (AbstractFrame frame: framesToRemove)
             removeFrameByName(frame.getName());
     }
@@ -937,7 +938,9 @@ public class ActualData {
         
     }
     public static boolean frameIsUsedInDefDemension(AbstractFrame frame){
-        return defFrameConcept.containsKey(frame) && !defFrameConcept.get(frame).isEmpty();
+        if(frame instanceof AbstractSimpleFrame)
+            return defFrameConcept.containsKey(frame) && !defFrameConcept.get(frame).isEmpty();
+        else return false;
     }
     
 }

@@ -62,18 +62,14 @@ public class InputOutputConDesLan {
         fr.read(buffer);
         String fileContent = new String(buffer);
         ConDesLanTag cdl = ConDesLanTag.parseString(fileContent);
-        System.out.println("file is parsed, parse result:\n");
-        System.out.println(cdl.getConDesLanStructure());
         ArrayList<ConDesLanTag> content = cdl.getComplexTagPropertyValue("содержимое");
         if (content == null)
             throw new IOException();
         ConDesLanTag conceptsTag = null, constantsTag = null, variablesTag = null, framesTag = null, extensionalsTag = null;
-        ArrayList<ConDesLanTag> defConceptsTag;
         for (ConDesLanTag tag: content){
             switch (tag.getName()) {
                 case "concepts":
                     conceptsTag = tag;
-                    //defConceptsTag = conceptsTag.getComplexTagPropertyValue("defConcepts");
                     break;
                 case "constants":
                     constantsTag = tag;
@@ -93,17 +89,10 @@ public class InputOutputConDesLan {
             throw new IOException();
         ActualData.clear();
         loadBasicConcepts(conceptsTag);
-        System.out.println("basic concepts is loaded");
         loadConstants(constantsTag);
-        System.out.println("constants is loaded");
         loadVariables(variablesTag);
-        System.out.println("variables is loaded");
         loadFrames(framesTag, conceptsTag, constantsTag, variablesTag);
-        System.out.println("all frames is loaded");
-        //loadDefConcepts(conceptsTag);
-        System.out.println("def-concepts is loaded");
         loadExtensionals(extensionalsTag);
-        System.out.println("extensionals is loaded");
     }
     private static void loadBasicConcepts(ConDesLanTag conceptsTag){
         ArrayList<ConDesLanTag> basicConceptTags = conceptsTag.getComplexTagPropertyValue("basicConcepts");
@@ -216,7 +205,6 @@ public class InputOutputConDesLan {
                 else 
                     fr = new EventFrame(name, predicate, qntrs, frameBody);
                 ActualData.addFrameToHierarchy(fr);
-                System.out.println("frame + " + fr.getName() + " is added...");
                 simpleFrameTags.remove(simpleFrameTag);
                 if (defConceptTags == null)
                     break;
@@ -235,7 +223,6 @@ public class InputOutputConDesLan {
                         conc.setComment(comment);
                         conc.setProperties(properties);
                         ActualData.addConceptToHierarchy(conc);
-                        System.out.println("\tdefConcept" + defConceptName + " is added");
                         HashMap<Concept,ArrayList<Constant>> newConstants = new HashMap<>();
                         newConstants.put(conc, new ArrayList<Constant>());
                         HashMap<Concept,ArrayList<Variable>> newVariables = new HashMap<>();
@@ -244,18 +231,15 @@ public class InputOutputConDesLan {
                             for (String defConceptConstantName: constantsTag.getComplexStringPropertyValue(defConceptName))
                                 newConstants.get(conc).add(new Constant(defConceptConstantName, conc));
                         ActualData.addNewConstants(newConstants);
-                        System.out.println("\t\t"+ newConstants.get(conc) + "added");
                         if (variablesTag.getComplexStringPropertyValue(defConceptName) != null)
                             for (String defConceptVariableName: variablesTag.getComplexStringPropertyValue(defConceptName))
                                 newVariables.get(conc).add(new Variable(defConceptVariableName, conc));
                         ActualData.addNewVariables(newVariables);
-                        System.out.println("\t\t"+ newVariables.get(conc) + "added");
                     }
                 }
                 break;
             }
         }
-        System.out.println("simple frames is loaded");
         while (!notAddedFrames.isEmpty()){
             for (ConDesLanTag frameTag: notAddedFrames){
                 if (frameTag.getSimplePropertyValue("тип").equals("NOT")){
@@ -269,7 +253,6 @@ public class InputOutputConDesLan {
                     }
                 }
                 else if (frameTag.getSimplePropertyValue("тип").equals("AND")){
-                    System.out.println("AND frame checking");
                     String firstOperandName = frameTag.getSimplePropertyValue("аргумент1");
                     String secondOperandName = frameTag.getSimplePropertyValue("аргумент2");
                     if (!ActualData.avalibleFrameName(firstOperandName) && !ActualData.avalibleFrameName(secondOperandName)){

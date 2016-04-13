@@ -13,7 +13,6 @@ import java.util.ArrayList;
  * @author Anatoly
  */
 public class Concept extends AbstractConcept{   
-    //constructors
     public Concept(){}
     public Concept(String argName){
         name = argName;
@@ -23,7 +22,6 @@ public class Concept extends AbstractConcept{
         name = argName;
         comment = argComment;
     }
-    //fields
     protected String comment;
     public String getComment() { return comment;}
     public void setComment(String cmmnt) { comment = cmmnt;}

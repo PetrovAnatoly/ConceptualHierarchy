@@ -16,14 +16,8 @@ import Сoncepts.Variable;
  * @author Anatoly
  */
 public class Body {
-    //constructors
-    public Body(){
-        slots = new ArrayList();
-    }
-    public Body(ArrayList<Slot> arg){
-        slots = arg;
-    }
-    //fields
+    public Body(){ slots = new ArrayList();}
+    public Body(ArrayList<Slot> arg){ slots = arg;}
     private ArrayList<Slot> slots = new ArrayList();
     public ArrayList<Variable> getAllVariablesInBody(){
         ArrayList<Variable> rtrn = new ArrayList();
@@ -35,7 +29,7 @@ public class Body {
         }
         return rtrn;
     }
-    //methods
+    
     public ArrayList<Slot> getSlots(){ return slots;}
     public void addSlot(Slot slot) { slots.add(slot);}
     public boolean coveredAndSimilar(Body arg){

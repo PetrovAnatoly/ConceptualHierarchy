@@ -8,12 +8,12 @@ package conceptualhierarchy;
 import java.util.ArrayList;
 import java.util.HashMap;
 import Сoncepts.Concept;
-import Сoncepts.Variable;
 
 /**  
  *
  * @author Anatoly
  */
+//for use in ActualData, not yet implemented
 public  class SetOfNames {
     //fields
     private static ArrayList<String> conceptNameSet;

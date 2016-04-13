@@ -106,102 +106,100 @@ public class Quantor {
         }
     }
     public boolean isContrary(Quantor arg){
-        if (type.equals("A")){
-            if (arg.type.equals("A") || arg.type.equals("[}")){
-                mergeResult = "A";
-                return false;
-            }
-            else 
-                return true;
-        }
-        else if (type.equals("[}")){
-            switch (arg.type) {
-                case "[]":
-                    if (arg.value<value)
-                        return true;
-                    else {
-                        mergeResult = "[" + String.valueOf(arg.value) + "]";
-                        return false;
-                    }
-                case "[}":
-                    if (arg.value<value){
-                        mergeResult = "[" + String.valueOf(value) + "}";
-                        return false;
-                    }
-                    else {
-                        mergeResult = "[" + String.valueOf(arg.value) + "}";
-                        return false;
-                }
-                case "{]":
-                    if (arg.value<value)
-                        return true;
-                    else if (arg.value == value){
-                        mergeResult = "[" + String.valueOf(arg.value) + "]";
-                        return false;
-                    }
-                    else if (arg.value>value){
-                        mergeResult = "[" + String.valueOf(value) + "-" + String.valueOf(arg.value) + "]";
-                        return false;
-                }
-                case "A":{
+        switch (type) {
+            case "A":
+                if (arg.type.equals("A") || arg.type.equals("[}")){
                     mergeResult = "A";
                     return false;
                 }
-            }
-        }
-        else if (type.equals("{]")){
-            switch (arg.type) {
-                case "[]":
-                    if (arg.value>value)
-                        return true;
-                    else {
-                        mergeResult = "[" + String.valueOf(arg.value) + "]";
-                        return false;
-                    }
-                case "{]":
-                    if (arg.value>value){
-                        mergeResult = "{" + String.valueOf(value) + "]";
-                        return false;
-                    }
-                    else {
-                        mergeResult = "[" + String.valueOf(arg.value) + "}";
-                        return false;
-                }
-                case "[}":
-                    if (arg.value>value)
-                        return true;
-                    else if (arg.value == value){
-                        mergeResult = "[" + String.valueOf(arg.value) + "]";
-                        return false;
-                    }
-                    else if (arg.value<value){
-                        mergeResult = "[" + String.valueOf(arg.value) + "-" + String.valueOf(value) + "]";
-                        return false;
-                }
-                case "A":{
+                else
                     return true;
-                }
-            }
-        }
-        else if (type.equals("[]")){
-            switch (arg.type) {
-                case "A":
-                    return true;
-                case "[]":
-                    if (arg.value != value)
-                        return true;
-                    else {
-                        mergeResult = "[" + String.valueOf(value) + "]";
+            case "[}":
+                switch (arg.type) {
+                    case "[]":
+                        if (arg.value<value)
+                            return true;
+                        else {
+                            mergeResult = "[" + String.valueOf(arg.value) + "]";
+                            return false;
+                        }
+                    case "[}":
+                        if (arg.value<value){
+                            mergeResult = "[" + String.valueOf(value) + "}";
+                            return false;
+                        }
+                        else {
+                            mergeResult = "[" + String.valueOf(arg.value) + "}";
+                            return false;
+                        }
+                    case "{]":
+                        if (arg.value<value)
+                            return true;
+                        else if (arg.value == value){
+                            mergeResult = "[" + String.valueOf(arg.value) + "]";
+                            return false;
+                        }
+                        else if (arg.value>value){
+                            mergeResult = "[" + String.valueOf(value) + "-" + String.valueOf(arg.value) + "]";
+                            return false;
+                        }
+                    case "A":{
+                        mergeResult = "A";
                         return false;
                     }
-                case "[}":
-                    if (arg.value > value)
-                        return true;
-                    else {
-                        mergeResult = "[" + String.valueOf(value) + "]";
-                        return false;
                 }
-                case "{]":
+            case "{]":
+                switch (arg.type) {
+                    case "[]":
+                        if (arg.value>value)
+                            return true;
+                        else {
+                            mergeResult = "[" + String.valueOf(arg.value) + "]";
+                            return false;
+                        }
+                    case "{]":
+                        if (arg.value>value){
+                            mergeResult = "{" + String.valueOf(value) + "]";
+                            return false;
+                        }
+                        else {
+                            mergeResult = "[" + String.valueOf(arg.value) + "}";
+                            return false;
+                        }
+                    case "[}":
+                        if (arg.value>value)
+                            return true;
+                        else if (arg.value == value){
+                            mergeResult = "[" + String.valueOf(arg.value) + "]";
+                            return false;
+                        }
+                        else if (arg.value<value){
+                            mergeResult = "[" + String.valueOf(arg.value) + "-" + String.valueOf(value) + "]";
+                            return false;
+                        }
+                    case "A":{
+                        return true;
+                    }
+                }
+            case "[]":
+                switch (arg.type) {
+                    case "A":
+                        return true;
+                    case "[]":
+                        if (arg.value != value)
+                            return true;
+                        else {
+                            mergeResult = "[" + String.valueOf(value) + "]";
+                            return false;
+                        }
+                    case "[}":
+                        if (arg.value > value)
+                            return true;
+                        else {
+                            mergeResult = "[" + String.valueOf(value) + "]";
+                            return false;
+                        }
+                    case "{]":
                     if (arg.value < value)
                         return true;
                     else {
@@ -213,9 +211,6 @@ public class Quantor {
         return true;
     }
     public static String mergeResult;
-    public static void main(String[] args){
-        
-    }
 }
 
 

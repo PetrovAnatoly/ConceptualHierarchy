@@ -36,6 +36,7 @@ public class OrFrame extends AbstractBinaryFrame{
     @Override
     public String getOperation() { return "OR";}
 
+    @Override
     public ConDesLanTag toConDesLanTag() {
         ConDesLanTag rtrn = new ConDesLanTag("фрейм");
         rtrn.addSimpleProperty("имя", name);

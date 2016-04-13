@@ -17,9 +17,9 @@ public class ConDesLanTag {
         tagName = tag;
     }
     private String tagName;
-    private HashMap<String, String> simpleProperties = new HashMap<>();
-    private HashMap<String, ArrayList<ConDesLanTag>> complexTagProperties = new HashMap<>();
-    private HashMap<String, ArrayList<String>> complexStringProperties = new HashMap<>();
+    private final HashMap<String, String> simpleProperties = new HashMap<>();
+    private final HashMap<String, ArrayList<ConDesLanTag>> complexTagProperties = new HashMap<>();
+    private final HashMap<String, ArrayList<String>> complexStringProperties = new HashMap<>();
     
     public void setName(String name){
         tagName = name;
@@ -252,8 +252,7 @@ public class ConDesLanTag {
                         else if (s.charAt(counter) == '>')
                             depth--;
                         counter++;
-                    }
-                    while (depth > 0);
+                    } while (depth > 0);
                     atomValue = atomValue.trim();
                     rtrn.add(atomValue);
                     atomValue = "";

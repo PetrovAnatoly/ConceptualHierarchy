@@ -21,6 +21,8 @@ public class GenerateDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form GenerateDialog
+     * @param parent
+     * @param modal
      */
     public GenerateDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -204,39 +206,18 @@ public class GenerateDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private static int getRandInt(int from, int to){
-        return from + (new Random()).nextInt(to-from+1);
-    }
     private void constantGenerateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_constantGenerateButtonActionPerformed
         // TODO add your handling code here:
-        String conceptName = conceptChooseComboBox.getSelectedItem().toString();
-        boolean forAll = false;
-        if (conceptName.equals("All concepts"))
-            forAll = true;
+        String location = conceptChooseComboBox.getSelectedItem().toString();
         String constantCountMinTextFieldValue = constantCountMinTextField.getText().trim();
         String constantCountMaxTextFieldValue = constantCountMaxTextField.getText().trim();
         int constantCountMin, constantCountMax;
         try{
             constantCountMin = Integer.valueOf(constantCountMinTextFieldValue);
             constantCountMax = Integer.valueOf(constantCountMaxTextFieldValue);
-            ArrayList<Concept> concepts = new ArrayList<>();
-            if (forAll)
-                concepts = ActualData.getConcepts();
-            else 
-                concepts.add(ActualData.getConceptByName(conceptName));
-            for (Concept concept: concepts){
-                int count = getRandInt(constantCountMin, constantCountMax);
-                int counter = 0;
-                int id = 0;
-                while (counter<count){
-                    String constantName = "\'constant_of_" + concept.getName() + "_" + String.valueOf(id) + "\'";
-                    if (ActualData.avalibleConstantNameInDomen(constantName, concept)){
-                        ActualData.addNewConstantInDomen(constantName, concept);
-                        counter++;
-                    }
-                    id++;
-                }
-            }
+            if (constantCountMin>constantCountMax)
+                throw new NumberFormatException();
+            Generator.generateConstants(location, constantCountMin, constantCountMax);
             errorDialog errD = new errorDialog(new JFrame(), true, "Константы сгенерированы!");
             errD.setTitle("Сгенерировано");
             errD.setVisible(true);

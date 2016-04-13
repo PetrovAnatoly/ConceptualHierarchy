@@ -84,6 +84,7 @@ public class AndFrame extends AbstractBinaryFrame{
     @Override
     public String getOperation() { return "AND";}
 
+    @Override
     public ConDesLanTag toConDesLanTag() {
         ConDesLanTag rtrn = new ConDesLanTag("фрейм");
         rtrn.addSimpleProperty("имя", name);

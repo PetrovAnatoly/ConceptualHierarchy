@@ -14,14 +14,10 @@ import Сoncepts.Constant;
  * @author Anatoly
  */
 public abstract class AbstractFrame{
-    //fields
     protected String name;
-    
-    //methods
     public String getName() {return name;}
     public void setName(String str) { name = str;}
     public void rename(String arg) {name = arg;}
-    
     public abstract boolean ISA(AbstractSimpleFrame argument);
     public boolean ISA(ScriptFrame arg) { return false;}
     public boolean ISA(AndFrame arg) { return false;}

@@ -5,7 +5,6 @@
  */
 package Generator;
 
-import Frames.AbstractFrame;
 import Frames.AbstractSimpleFrame;
 import Frames.EventFrame;
 import Frames.Structure.Body;
@@ -59,6 +58,8 @@ public class Generator {
                 if (!ActualData.thisFrameAlreadyExist(newFrame)){
                     generatedFrames.add(newFrame);
                     ActualData.addFrameToHierarchy(newFrame);
+                    if (getRandInt(1,5)<=2)
+                        generatedFrames.remove(base);
                 }
                 else 
                     continue;
@@ -117,19 +118,30 @@ public class Generator {
             generatedConceptCount++;
         }
     }
-    public static void generateConstants(String location, int min, int max){
-        
+    public static void generateConstants(String location, int constantCountMin, int constantCountMax){
+        boolean forAll = false;
+        if (location.equals("All concepts"))
+            forAll = true;
+        ArrayList<Concept> concepts = new ArrayList<>();
+        if (forAll)
+            concepts = ActualData.getConcepts();
+        else 
+            concepts.add(ActualData.getConceptByName(location));
+        for (Concept concept: concepts){
+            int count = getRandInt(constantCountMin, constantCountMax);
+            int counter = 0;
+            int id = 0;
+            while (counter<count){
+                String constantName = "\'constant_of_" + concept.getName() + "_" + String.valueOf(id) + "\'";
+                if (ActualData.avalibleConstantNameInDomen(constantName, concept)){
+                    ActualData.addNewConstantInDomen(constantName, concept);
+                    counter++;
+                }
+                id++;
+            }
+        }
     }
     private static int getRandInt(int from, int to){
         return from + (new Random()).nextInt(to-from+1);
     }
-    private boolean frameIsUsable(AbstractSimpleFrame frame){
-        boolean rtrn = false;
-        for (Quantor quantor: frame.getQuantors()){
-            if (!quantor.getType().equals("[]"))
-                return true;
-        }
-        return rtrn;
-    }
-    
 }

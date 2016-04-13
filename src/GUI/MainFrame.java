@@ -24,12 +24,7 @@ import conceptualhierarchy.ActualData;
 import conceptualhierarchy.ConceptNode;
 import conceptualhierarchy.FrameNode;
 import ModelInputLoad.InputOutputXML;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JTree;
 import javax.swing.filechooser.FileFilter;
@@ -37,9 +32,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 import Сoncepts.Concept;
 import Сoncepts.Constant;
 
@@ -82,8 +74,8 @@ public class MainFrame extends javax.swing.JFrame {
         constantViewButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        saveModelMenuItem = new javax.swing.JMenuItem();
+        loadModelMenuItem = new javax.swing.JMenuItem();
         modelMenu = new javax.swing.JMenu();
         generateMenuItem = new javax.swing.JMenuItem();
         clearingMenu = new javax.swing.JMenu();
@@ -170,22 +162,22 @@ public class MainFrame extends javax.swing.JFrame {
 
         fileMenu.setText("Файл");
 
-        jMenuItem2.setText("Сохранить");
-        jMenuItem2.setToolTipText("");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        saveModelMenuItem.setText("Сохранить");
+        saveModelMenuItem.setToolTipText("");
+        saveModelMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                saveModelMenuItemActionPerformed(evt);
             }
         });
-        fileMenu.add(jMenuItem2);
+        fileMenu.add(saveModelMenuItem);
 
-        jMenuItem1.setText("Загрузить");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        loadModelMenuItem.setText("Загрузить");
+        loadModelMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                loadModelMenuItemActionPerformed(evt);
             }
         });
-        fileMenu.add(jMenuItem1);
+        fileMenu.add(loadModelMenuItem);
 
         jMenuBar1.add(fileMenu);
 
@@ -343,14 +335,13 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void frameTreeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_frameTreeKeyPressed
         // TODO add your handling code here:
-        int extendedKeyCode = evt.getExtendedKeyCode();
         TreeSelectionModel TSM = frameTree.getSelectionModel();
         TreePath TP = TSM.getSelectionPath();
         if (TP == null) 
             return;
         DefaultMutableTreeNode TC = (DefaultMutableTreeNode)TP.getLastPathComponent();
         String s = (String) TC.getUserObject();
-        if ((!s.equals("Frames")) && (!(s == null))) {
+        if (!s.equals("Frames")) {
             AbstractFrame fr = ActualData.getFrameByName(s);
             viewFrame(fr);
         }
@@ -364,7 +355,7 @@ public class MainFrame extends javax.swing.JFrame {
             return;
         DefaultMutableTreeNode TC = (DefaultMutableTreeNode)TP.getLastPathComponent();
         String s = (String) TC.getUserObject();
-        if ((!s.equals("Frames")) && (!(s == null))) {
+        if (!s.equals("Frames")) {
             AbstractFrame fr = ActualData.getFrameByName(s);
             viewFrame(fr);
         }
@@ -393,7 +384,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         ConceptViewDialog cwd = new ConceptViewDialog(this, true);
-        
         cwd.setVisible(true);
         updateFrameIsaTree();
         updateConceptIsaTree();
@@ -437,7 +427,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_removeConceptButtonActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void saveModelMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveModelMenuItemActionPerformed
         // TODO add your handling code here:
         FileNameExtensionFilter filterXml = new FileNameExtensionFilter(".xml","xml");
         FileNameExtensionFilter filterConDesLan = new FileNameExtensionFilter(".condeslan","condeslan");
@@ -455,24 +445,30 @@ public class MainFrame extends javax.swing.JFrame {
                     if (!absolutePath.endsWith(".xml"))
                         absolutePath+=".xml";
                     try {
-                        ActualData.save(absolutePath);} 
-                    catch (ParserConfigurationException | SAXException | IOException ex) {
-                        new errorDialog(this, true, "Ошибка при сохранении файла!").setVisible(true);}
+                        ActualData.save(absolutePath);
+                        errorDialog errD = new errorDialog(this, true, "Сохранение в файл прошло успешно!");
+                        errD.setTitle("Модель сохранена");
+                        errD.setVisible(true);
+                    }catch (Exception ex) {
+                        new errorDialog(this, true, "Ошибка при сохранении модели в файл!").setVisible(true);}
                     break;
                 case ".condeslan":{
                     if (!absolutePath.endsWith(".condeslan"))
                         absolutePath+=".condeslan";
                     try {
                         InputOutputConDesLan.save(absolutePath);
-                    } catch (IOException ex) {
-                        new errorDialog(this, true, "Ошибка при сохранении файла!").setVisible(true);
+                        errorDialog errD = new errorDialog(this, true, "Сохранение в файл прошло успешно!");
+                        errD.setTitle("Модель сохранена");
+                        errD.setVisible(true);
+                    } catch (Exception ex) {
+                        new errorDialog(this, true, "Ошибка при сохранении модели в файл!!").setVisible(true);
                     }
                 }
             }
         }
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_saveModelMenuItemActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void loadModelMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadModelMenuItemActionPerformed
         FileNameExtensionFilter filterXml = new FileNameExtensionFilter(".xml","xml");
         FileNameExtensionFilter filterConDesLan = new FileNameExtensionFilter(".condeslan","condeslan");
         JFileChooser fc = new JFileChooser();
@@ -490,16 +486,23 @@ public class MainFrame extends javax.swing.JFrame {
                     if (!absolutePath.endsWith(".xml"))
                         absolutePath+=".xml";
                     try {
-                        InputOutputXML.load(absolutePath);} 
-                    catch (SAXException | IOException ex) {
-                        new errorDialog(this, true, "Ошибка при загрузке модели из файла!").setVisible(true);}
+                        InputOutputXML.load(absolutePath);
+                        errorDialog errD = new errorDialog(this, true, "Загрузка из файла прошла успешно!");
+                        errD.setTitle("Модель загружена");
+                        errD.setVisible(true);
+                    }catch (Exception ex) {
+                        new errorDialog(this, true, "Ошибка при загрузке модели из файла!").setVisible(true);
+                    }
                     break;
                 case ".condeslan":{
                     if (!absolutePath.endsWith(".condeslan"))
                         absolutePath+=".condeslan";
                     try {
                         InputOutputConDesLan.load(absolutePath);
-                    } catch (IOException ex) {
+                        errorDialog errD = new errorDialog(this, true, "Загрузка из файла прошла успешно!");
+                        errD.setTitle("Модель загружена");
+                        errD.setVisible(true);
+                    } catch (Exception ex) {
                         new errorDialog(this, true, "Ошибка при загрузке модели из файла!").setVisible(true);
                     }
                 }
@@ -507,7 +510,7 @@ public class MainFrame extends javax.swing.JFrame {
             updateFrameIsaTree();
             updateConceptIsaTree();
         }
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_loadModelMenuItemActionPerformed
 
     private void clearModelMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearModelMenuItemActionPerformed
         ActualData.clear();
@@ -516,12 +519,10 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_clearModelMenuItemActionPerformed
 
     private void clearExtensionalsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearExtensionalsMenuItemActionPerformed
-        // TODO add your handling code here:
         ActualData.clearExtensionals();
     }//GEN-LAST:event_clearExtensionalsMenuItemActionPerformed
 
     private void generateMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateMenuItemActionPerformed
-        // TODO add your handling code here:
         GenerateDialog generateDialog = new GenerateDialog(new javax.swing.JFrame(), true);
         generateDialog.setVisible(true);
         updateFrameIsaTree();
@@ -529,14 +530,12 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_generateMenuItemActionPerformed
 
     private void removeAllNotDefFramesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeAllNotDefFramesMenuItemActionPerformed
-        // TODO add your handling code here:
         ActualData.removeAllNotDefFrames();
         updateFrameIsaTree();
         updateConceptIsaTree();
     }//GEN-LAST:event_removeAllNotDefFramesMenuItemActionPerformed
 
     private void removeAllNotUsedConceptsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeAllNotUsedConceptsMenuItemActionPerformed
-        // TODO add your handling code here:
         for (Concept concept: (ArrayList<Concept>) ActualData.getConcepts().clone())
             if (!ActualData.conceptIsUsed(concept))
                 ActualData.removeConceptByName(concept.getName());
@@ -544,7 +543,6 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_removeAllNotUsedConceptsMenuItemActionPerformed
 
     private void removeAllNotUsedConstantsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeAllNotUsedConstantsMenuItemActionPerformed
-        // TODO add your handling code here:
         for (Concept concept: ActualData.getConstants().keySet()){
             for (Constant constant: (ArrayList<Constant>)ActualData.getConstants().get(concept).clone()){
                 if (!(ActualData.constantIsUsedInFrame(constant) || ActualData.constantIsUsedInFrame(constant)))
@@ -628,15 +626,15 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JMenuItem loadModelMenuItem;
     private javax.swing.JMenu modelMenu;
     private javax.swing.JMenuItem removeAllNotDefFramesMenuItem;
     private javax.swing.JMenuItem removeAllNotUsedConceptsMenuItem;
     private javax.swing.JMenuItem removeAllNotUsedConstantsMenuItem;
     private javax.swing.JButton removeConceptButton;
+    private javax.swing.JMenuItem saveModelMenuItem;
     // End of variables declaration//GEN-END:variables
 
     private DefaultMutableTreeNode getFrameHierarchyTree(FrameNode node){

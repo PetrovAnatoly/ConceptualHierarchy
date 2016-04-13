@@ -12,13 +12,11 @@ import Frames.Structure.SlotArgument;
  * @author Anatoly
  */
 public class Constant extends AbstractConcept implements SlotArgument{
-    //constructors
     public Constant(String argName, Concept argDomen){
         name = argName;
         domen = argDomen;
     }
     
-    //fields
     private Concept domen;
 
     @Override

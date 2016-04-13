@@ -12,17 +12,14 @@ import Frames.Structure.SlotArgument;
  * @author Anatoly
  */
 public class Variable implements SlotArgument{
-    //constructors
     public Variable(String argName){ name = argName;}
     public Variable(String argName, Concept concept){ 
         name = argName;
         domen = concept;
     } 
-    //fields
-    private String name;
+    private final String name;
     private Concept domen;
     
-    //methods
     @Override
     public String getName() { return name;}
     @Override

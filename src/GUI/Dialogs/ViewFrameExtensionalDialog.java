@@ -10,7 +10,6 @@ import GUI.TableModels.ExtensionalTableModel;
 import conceptualhierarchy.ActualData;
 import conceptualhierarchy.Extensional;
 import java.util.HashMap;
-import Сoncepts.Concept;
 import Сoncepts.Constant;
 
 /**

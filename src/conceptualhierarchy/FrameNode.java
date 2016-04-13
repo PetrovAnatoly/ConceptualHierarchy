@@ -7,7 +7,6 @@ package conceptualhierarchy;
 
 import Frames.AbstractFrame;
 import java.util.ArrayList;
-import Сoncepts.AbstractConcept;
 
 /**
  *

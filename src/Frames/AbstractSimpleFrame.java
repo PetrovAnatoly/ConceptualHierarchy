@@ -10,7 +10,6 @@ import Frames.Structure.Quantor;
 import Frames.Structure.Slot;
 import Frames.Structure.SlotArgument;
 import ModelInputLoad.ConDesLanTag;
-import conceptualhierarchy.ActualData;
 import java.util.ArrayList;
 import java.util.HashMap;  
 import Сoncepts.Concept;
@@ -198,17 +197,16 @@ public class AbstractSimpleFrame extends AbstractFrame {
         for (Quantor qntr: quantors){
             String role = getRoleByVariable(qntr.getVariable());
             Variable argVar = arg.getVarByRole(role);
-            if (!argQuantifiedVariables.contains(argVar))
-                continue;
-            else{
+            if (!argQuantifiedVariables.contains(argVar)) {
+            } else{
                 while (arg.quantors.get(index).getVariable()!=argVar){
                     index++;
                     if (index>arg.quantors.size()-1)
-                        return false;
+                        return true;
                 }
             }
         }
-        return true;
+        return false;
     }
     @Override
     public boolean conceptIsUsed(Concept concept) {
@@ -254,6 +252,7 @@ public class AbstractSimpleFrame extends AbstractFrame {
         }
         return rtrn;
     }
+    @Override
     public ConDesLanTag toConDesLanTag() {
         ConDesLanTag rtrn = new ConDesLanTag("фрейм");
         rtrn.addSimpleProperty("имя", name);
