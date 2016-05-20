@@ -218,12 +218,12 @@ public class GenerateDialog extends javax.swing.JDialog {
             if (constantCountMin>constantCountMax)
                 throw new NumberFormatException();
             Generator.generateConstants(location, constantCountMin, constantCountMax);
-            errorDialog errD = new errorDialog(new JFrame(), true, "Константы сгенерированы!");
+            ErrorDialog errD = new ErrorDialog(new JFrame(), true, "Константы сгенерированы!");
             errD.setTitle("Сгенерировано");
             errD.setVisible(true);
         }
         catch (NumberFormatException ex){
-            new errorDialog(new JFrame(), true, "Некорректный ввод!").setVisible(true);
+            new ErrorDialog(new JFrame(), true, "Некорректный ввод!").setVisible(true);
         }
     }//GEN-LAST:event_constantGenerateButtonActionPerformed
 
@@ -237,12 +237,12 @@ public class GenerateDialog extends javax.swing.JDialog {
             if (conceptCount <= 0 || nestingProbability < 0 || nestingProbability > 100)
                 throw new NumberFormatException();
             Generator.generateConcepts(conceptCount, nestingProbability);
-            errorDialog errD = new errorDialog(new JFrame(), true, "Концепты сгенерированы!");
+            ErrorDialog errD = new ErrorDialog(new JFrame(), true, "Концепты сгенерированы!");
             errD.setTitle("Сгенерировано");
             errD.setVisible(true);
         }
         catch (NumberFormatException ex){
-            new errorDialog(new JFrame(), true, "Некорректный ввод!").setVisible(true);
+            new ErrorDialog(new JFrame(), true, "Некорректный ввод!").setVisible(true);
         }
     }//GEN-LAST:event_conceptGenerateButtonActionPerformed
 
@@ -258,16 +258,16 @@ public class GenerateDialog extends javax.swing.JDialog {
             if (framesCount <= 0 || nestingProbability < 0 || nestingProbability > 100 || slotCount <= 0)
                 throw new NumberFormatException();
             if (ActualData.getConcepts().isEmpty()){
-                new errorDialog(new JFrame(), true, "Нет концептов для использования в качестве доменов!").setVisible(true);
+                new ErrorDialog(new JFrame(), true, "Нет концептов для использования в качестве доменов!").setVisible(true);
                 return;
             }
             Generator.generateSimpleFrames(framesCount, nestingProbability, slotCount); 
-            errorDialog errD = new errorDialog(new JFrame(), true, "Фреймы сгенерированы!");
+            ErrorDialog errD = new ErrorDialog(new JFrame(), true, "Фреймы сгенерированы!");
             errD.setTitle("Сгенерировано");
             errD.setVisible(true);
         }
         catch (NumberFormatException ex){
-            new errorDialog(new JFrame(), true, "Некорректный ввод!").setVisible(true);
+            new ErrorDialog(new JFrame(), true, "Некорректный ввод!").setVisible(true);
         }
     }//GEN-LAST:event_frameGenerateButtonActionPerformed
 

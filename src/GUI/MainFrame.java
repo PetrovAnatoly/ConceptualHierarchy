@@ -11,14 +11,14 @@ import Frames.AbstractSimpleFrame;
 import Frames.AndFrame;
 import Frames.NotFrame;
 import Frames.OrFrame;
-import GUI.Dialogs.BinaryFrameViewDialog;
-import GUI.Dialogs.ChoiceTypeOfNewFrameDialog;
-import GUI.Dialogs.ConceptViewDialog;
-import GUI.Dialogs.ConstantViewDialog;
+import GUI.Dialogs.FramesDialogs.BinaryFrameViewDialog;
+import GUI.Dialogs.FramesDialogs.ChoiceTypeOfNewFrameDialog;
+import GUI.Dialogs.ConceptDialogs.ConceptViewDialog;
+import GUI.Dialogs.ConceptDialogs.ConstantViewDialog;
 import GUI.Dialogs.GenerateDialog;
-import GUI.Dialogs.NotFrameViewDialog;
-import GUI.Dialogs.ViewSimpleFrameDialog;
-import GUI.Dialogs.errorDialog;
+import GUI.Dialogs.FramesDialogs.NotFrameViewDialog;
+import GUI.Dialogs.FramesDialogs.ViewSimpleFrameDialog;
+import GUI.Dialogs.ErrorDialog;
 import ModelInputLoad.InputOutputCDL;
 import conceptualhierarchy.ActualData;
 import conceptualhierarchy.ConceptNode;
@@ -84,6 +84,11 @@ public class MainFrame extends javax.swing.JFrame {
         removeAllNotUsedConceptsMenuItem = new javax.swing.JMenuItem();
         removeAllNotUsedConstantsMenuItem = new javax.swing.JMenuItem();
         clearModelMenuItem = new javax.swing.JMenuItem();
+        framesMultipleInheritanceCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
+        conceptsMultipleInheritanceCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
+        viewMenu = new javax.swing.JMenu();
+        framesHierarchyTuningMenuItem = new javax.swing.JMenuItem();
+        conceptsHierarchyTuningMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Модель предметной области");
@@ -235,7 +240,35 @@ public class MainFrame extends javax.swing.JFrame {
 
         modelMenu.add(clearingMenu);
 
+        framesMultipleInheritanceCheckBoxMenuItem.setSelected(true);
+        framesMultipleInheritanceCheckBoxMenuItem.setText("Разрешить множественное наследование фреймов");
+        framesMultipleInheritanceCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                framesMultipleInheritanceCheckBoxMenuItemActionPerformed(evt);
+            }
+        });
+        modelMenu.add(framesMultipleInheritanceCheckBoxMenuItem);
+
+        conceptsMultipleInheritanceCheckBoxMenuItem.setSelected(true);
+        conceptsMultipleInheritanceCheckBoxMenuItem.setText("Разрешить множественное наследование концептов");
+        modelMenu.add(conceptsMultipleInheritanceCheckBoxMenuItem);
+
         jMenuBar1.add(modelMenu);
+
+        viewMenu.setText("Вид");
+
+        framesHierarchyTuningMenuItem.setText("Настройка иерархии фреймов");
+        framesHierarchyTuningMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                framesHierarchyTuningMenuItemActionPerformed(evt);
+            }
+        });
+        viewMenu.add(framesHierarchyTuningMenuItem);
+
+        conceptsHierarchyTuningMenuItem.setText("Настройка иерархии концептов");
+        viewMenu.add(conceptsHierarchyTuningMenuItem);
+
+        jMenuBar1.add(viewMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -319,7 +352,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (!s.equals("Frames")) {
             AbstractFrame frame = ActualData.getFrameByName(s);
             if (ActualData.frameIsUsedInDefDemension(frame)){
-                new errorDialog(this, true, "Фрейм используется в def-измерении, сначала удалите все его def-концепты!").setVisible(true);
+                new ErrorDialog(this, true, "Фрейм используется в def-измерении, сначала удалите все его def-концепты!").setVisible(true);
                 return;
             }
             else
@@ -417,7 +450,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (!s.equals("Concepts")) {
             if (ActualData.conceptIsUsed(ActualData.getConceptByName(s))){
                 String errMess ="Концепт задействован во фреймах или является базой для def-концептов, сначала удалите их!";
-                errorDialog errorD = new errorDialog(new javax.swing.JFrame(), true, errMess);
+                ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, errMess);
                 errorD.setVisible(true);
                 return;
             }
@@ -446,22 +479,22 @@ public class MainFrame extends javax.swing.JFrame {
                         absolutePath+=".xml";
                     try {
                         ActualData.save(absolutePath);
-                        errorDialog errD = new errorDialog(this, true, "Сохранение в файл прошло успешно!");
+                        ErrorDialog errD = new ErrorDialog(this, true, "Сохранение в файл прошло успешно!");
                         errD.setTitle("Модель сохранена");
                         errD.setVisible(true);
                     }catch (Exception ex) {
-                        new errorDialog(this, true, "Ошибка при сохранении модели в файл!").setVisible(true);}
+                        new ErrorDialog(this, true, "Ошибка при сохранении модели в файл!").setVisible(true);}
                     break;
                 case ".cdl":{
                     if (!absolutePath.endsWith(".cdl"))
                         absolutePath+=".cdl";
                     try {
                         InputOutputCDL.save(absolutePath);
-                        errorDialog errD = new errorDialog(this, true, "Сохранение в файл прошло успешно!");
+                        ErrorDialog errD = new ErrorDialog(this, true, "Сохранение в файл прошло успешно!");
                         errD.setTitle("Модель сохранена");
                         errD.setVisible(true);
                     } catch (Exception ex) {
-                        new errorDialog(this, true, "Ошибка при сохранении модели в файл!!").setVisible(true);
+                        new ErrorDialog(this, true, "Ошибка при сохранении модели в файл!!").setVisible(true);
                     }
                 }
             }
@@ -487,11 +520,11 @@ public class MainFrame extends javax.swing.JFrame {
                         absolutePath+=".xml";
                     try {
                         InputOutputXML.load(absolutePath);
-                        errorDialog errD = new errorDialog(this, true, "Загрузка из файла прошла успешно!");
+                        ErrorDialog errD = new ErrorDialog(this, true, "Загрузка из файла прошла успешно!");
                         errD.setTitle("Модель загружена");
                         errD.setVisible(true);
                     }catch (Exception ex) {
-                        new errorDialog(this, true, "Ошибка при загрузке модели из файла!").setVisible(true);
+                        new ErrorDialog(this, true, "Ошибка при загрузке модели из файла!").setVisible(true);
                     }
                     break;
                 case ".cdl":{
@@ -499,11 +532,11 @@ public class MainFrame extends javax.swing.JFrame {
                         absolutePath+=".cdl";
                     try {
                         InputOutputCDL.load(absolutePath);
-                        errorDialog errD = new errorDialog(this, true, "Загрузка из файла прошла успешно!");
+                        ErrorDialog errD = new ErrorDialog(this, true, "Загрузка из файла прошла успешно!");
                         errD.setTitle("Модель загружена");
                         errD.setVisible(true);
                     } catch (Exception ex) {
-                        new errorDialog(this, true, "Ошибка при загрузке модели из файла!").setVisible(true);
+                        new ErrorDialog(this, true, "Ошибка при загрузке модели из файла!").setVisible(true);
                     }
                 }
             }
@@ -550,6 +583,15 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_removeAllNotUsedConstantsMenuItemActionPerformed
+
+    private void framesHierarchyTuningMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_framesHierarchyTuningMenuItemActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_framesHierarchyTuningMenuItemActionPerformed
+    
+    private void framesMultipleInheritanceCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_framesMultipleInheritanceCheckBoxMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_framesMultipleInheritanceCheckBoxMenuItemActionPerformed
     public static void viewFrame(AbstractFrame fr){
         if (fr instanceof AndFrame){
             BinaryFrameViewDialog frViewDialog = new BinaryFrameViewDialog(new javax.swing.JFrame(), true);
@@ -616,11 +658,15 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu clearingMenu;
     private javax.swing.JTree conceptTree;
     private javax.swing.JButton conceptViewButton;
+    private javax.swing.JMenuItem conceptsHierarchyTuningMenuItem;
+    private javax.swing.JCheckBoxMenuItem conceptsMultipleInheritanceCheckBoxMenuItem;
     private javax.swing.JButton constantViewButton;
     private javax.swing.JButton deleteFrameButton;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JTree frameTree;
     private javax.swing.JButton frameViewButton;
+    private javax.swing.JMenuItem framesHierarchyTuningMenuItem;
+    private javax.swing.JCheckBoxMenuItem framesMultipleInheritanceCheckBoxMenuItem;
     private javax.swing.JMenuItem generateMenuItem;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -635,6 +681,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem removeAllNotUsedConstantsMenuItem;
     private javax.swing.JButton removeConceptButton;
     private javax.swing.JMenuItem saveModelMenuItem;
+    private javax.swing.JMenu viewMenu;
     // End of variables declaration//GEN-END:variables
 
     private DefaultMutableTreeNode getFrameHierarchyTree(FrameNode node){
