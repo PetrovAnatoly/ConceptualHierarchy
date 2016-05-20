@@ -5,7 +5,7 @@
  */
 package Frames;
 
-import ModelInputLoad.ConDesLanTag;
+import ModelInputLoad.CDLTag;
 
 /**
  *
@@ -23,8 +23,8 @@ public class NotFrame extends AbstractComplexFrame{
     }
 
     @Override
-    public ConDesLanTag toConDesLanTag() {
-        ConDesLanTag rtrn = new ConDesLanTag("фрейм");
+    public CDLTag toConDesLanTag() {
+        CDLTag rtrn = new CDLTag("фрейм");
         rtrn.addSimpleProperty("имя", name);
         rtrn.addSimpleProperty("тип", "NOT");
         rtrn.addSimpleProperty("аргумент", this.firstOperand.getName());

@@ -5,7 +5,7 @@
  */
 package Frames;
 
-import ModelInputLoad.ConDesLanTag;
+import ModelInputLoad.CDLTag;
 
 /**
  *
@@ -37,8 +37,8 @@ public class OrFrame extends AbstractBinaryFrame{
     public String getOperation() { return "OR";}
 
     @Override
-    public ConDesLanTag toConDesLanTag() {
-        ConDesLanTag rtrn = new ConDesLanTag("фрейм");
+    public CDLTag toConDesLanTag() {
+        CDLTag rtrn = new CDLTag("фрейм");
         rtrn.addSimpleProperty("имя", name);
         rtrn.addSimpleProperty("тип", "OR");
         rtrn.addSimpleProperty("аргумент1", this.firstOperand.getName());

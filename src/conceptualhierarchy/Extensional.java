@@ -9,7 +9,7 @@ import Frames.AbstractSimpleFrame;
 import Frames.Structure.Body;
 import Frames.Structure.Quantor;
 import Frames.Structure.Slot;
-import ModelInputLoad.ConDesLanTag;
+import ModelInputLoad.CDLTag;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -216,18 +216,18 @@ public class Extensional {
     public void removeExtension(HashMap<String, Constant> extension) {
         arguments.remove(extension);
     }
-    public ConDesLanTag toConDesLanTag(){
-        ConDesLanTag rtrn = new ConDesLanTag("Extensional");
+    public CDLTag toConDesLanTag(){
+        CDLTag rtrn = new CDLTag("Extensional");
         for (String role: roleConceptAccordance.keySet()){
-            ConDesLanTag roleConcept = new ConDesLanTag("role-concept");
+            CDLTag roleConcept = new CDLTag("role-concept");
             roleConcept.addSimpleProperty("role", role);
             roleConcept.addSimpleProperty("concept", roleConceptAccordance.get(role).getName());
             rtrn.addComplexTagProperty("role-concept-accordance", roleConcept);
         }
         for (HashMap<String, Constant> extension: arguments){
-            ConDesLanTag extensionTag = new ConDesLanTag("Extension");
+            CDLTag extensionTag = new CDLTag("Extension");
             for (String role: extension.keySet()){
-                ConDesLanTag roleConstantTag = new ConDesLanTag("role-constant");
+                CDLTag roleConstantTag = new CDLTag("role-constant");
                 roleConstantTag.addSimpleProperty("role", role);
                 roleConstantTag.addSimpleProperty("constant", extension.get(role).getName());
                 extensionTag.addComplexTagProperty("role-constants", roleConstantTag);

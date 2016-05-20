@@ -5,7 +5,7 @@
  */
 package Сoncepts;
 
-import ModelInputLoad.ConDesLanTag;
+import ModelInputLoad.CDLTag;
 import java.util.ArrayList;
 
 /**
@@ -87,8 +87,8 @@ public class Concept extends AbstractConcept{
         return s.toCharArray();
     }
 
-    public ConDesLanTag toConDesLanTag() {
-        ConDesLanTag rtrn = new ConDesLanTag("концепт");
+    public CDLTag toConDesLanTag() {
+        CDLTag rtrn = new CDLTag("концепт");
         rtrn.addSimpleProperty("имя", name);
         rtrn.addSimpleProperty("комментарий", comment);
         for (String prop: properties)

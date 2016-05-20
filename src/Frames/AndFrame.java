@@ -5,7 +5,7 @@
  */
 package Frames;
 
-import ModelInputLoad.ConDesLanTag;
+import ModelInputLoad.CDLTag;
 
 /**
  *
@@ -85,8 +85,8 @@ public class AndFrame extends AbstractBinaryFrame{
     public String getOperation() { return "AND";}
 
     @Override
-    public ConDesLanTag toConDesLanTag() {
-        ConDesLanTag rtrn = new ConDesLanTag("фрейм");
+    public CDLTag toConDesLanTag() {
+        CDLTag rtrn = new CDLTag("фрейм");
         rtrn.addSimpleProperty("имя", name);
         rtrn.addSimpleProperty("тип", "AND");
         rtrn.addSimpleProperty("аргумент1", this.firstOperand.getName());

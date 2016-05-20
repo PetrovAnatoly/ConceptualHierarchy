@@ -5,7 +5,7 @@
  */
 package Frames;
 
-import ModelInputLoad.ConDesLanTag;
+import ModelInputLoad.CDLTag;
 import Сoncepts.Concept;
 import Сoncepts.Constant;
 
@@ -41,5 +41,5 @@ public abstract class AbstractFrame{
     public abstract boolean conceptIsUsed(Concept concept); 
     public abstract boolean constantIsUsed(Constant constant);  
 
-    public abstract ConDesLanTag toConDesLanTag();
+    public abstract CDLTag toConDesLanTag();
 }

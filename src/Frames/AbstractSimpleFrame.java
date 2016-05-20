@@ -9,7 +9,7 @@ import Frames.Structure.Body;
 import Frames.Structure.Quantor;
 import Frames.Structure.Slot;
 import Frames.Structure.SlotArgument;
-import ModelInputLoad.ConDesLanTag;
+import ModelInputLoad.CDLTag;
 import java.util.ArrayList;
 import java.util.HashMap;  
 import Сoncepts.Concept;
@@ -253,13 +253,13 @@ public class AbstractSimpleFrame extends AbstractFrame {
         return rtrn;
     }
     @Override
-    public ConDesLanTag toConDesLanTag() {
-        ConDesLanTag rtrn = new ConDesLanTag("фрейм");
+    public CDLTag toConDesLanTag() {
+        CDLTag rtrn = new CDLTag("фрейм");
         rtrn.addSimpleProperty("имя", name);
         rtrn.addSimpleProperty("тип", this instanceof EventFrame ? "event":"characteristic");
         rtrn.addSimpleProperty("предикат", predicate);
         rtrn.addSimpleProperty("кванторы", getQuantorsLine());
-        for (ConDesLanTag slotTag : body.toConDesLanTags())
+        for (CDLTag slotTag : body.toConDesLanTags())
             rtrn.addComplexTagProperty("слоты", slotTag);
         return rtrn; 
     }

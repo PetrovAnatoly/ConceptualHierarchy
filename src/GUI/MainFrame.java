@@ -19,7 +19,7 @@ import GUI.Dialogs.GenerateDialog;
 import GUI.Dialogs.NotFrameViewDialog;
 import GUI.Dialogs.ViewSimpleFrameDialog;
 import GUI.Dialogs.errorDialog;
-import ModelInputLoad.InputOutputConDesLan;
+import ModelInputLoad.InputOutputCDL;
 import conceptualhierarchy.ActualData;
 import conceptualhierarchy.ConceptNode;
 import conceptualhierarchy.FrameNode;
@@ -209,7 +209,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         clearingMenu.add(removeAllNotDefFramesMenuItem);
 
-        removeAllNotUsedConceptsMenuItem.setText("Удалить все неиспользуемые конценты");
+        removeAllNotUsedConceptsMenuItem.setText("Удалить все неиспользуемые концепты");
         removeAllNotUsedConceptsMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 removeAllNotUsedConceptsMenuItemActionPerformed(evt);
@@ -430,7 +430,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void saveModelMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveModelMenuItemActionPerformed
         // TODO add your handling code here:
         FileNameExtensionFilter filterXml = new FileNameExtensionFilter(".xml","xml");
-        FileNameExtensionFilter filterConDesLan = new FileNameExtensionFilter(".condeslan","condeslan");
+        FileNameExtensionFilter filterConDesLan = new FileNameExtensionFilter(".cdl","cdl");
         JFileChooser fc = new JFileChooser();
         fc.removeChoosableFileFilter(fc.getFileFilter());
         fc.setFileFilter(filterConDesLan);
@@ -452,11 +452,11 @@ public class MainFrame extends javax.swing.JFrame {
                     }catch (Exception ex) {
                         new errorDialog(this, true, "Ошибка при сохранении модели в файл!").setVisible(true);}
                     break;
-                case ".condeslan":{
-                    if (!absolutePath.endsWith(".condeslan"))
-                        absolutePath+=".condeslan";
+                case ".cdl":{
+                    if (!absolutePath.endsWith(".cdl"))
+                        absolutePath+=".cdl";
                     try {
-                        InputOutputConDesLan.save(absolutePath);
+                        InputOutputCDL.save(absolutePath);
                         errorDialog errD = new errorDialog(this, true, "Сохранение в файл прошло успешно!");
                         errD.setTitle("Модель сохранена");
                         errD.setVisible(true);
@@ -470,7 +470,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void loadModelMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadModelMenuItemActionPerformed
         FileNameExtensionFilter filterXml = new FileNameExtensionFilter(".xml","xml");
-        FileNameExtensionFilter filterConDesLan = new FileNameExtensionFilter(".condeslan","condeslan");
+        FileNameExtensionFilter filterConDesLan = new FileNameExtensionFilter(".cdl","cdl");
         JFileChooser fc = new JFileChooser();
         fc.removeChoosableFileFilter(fc.getFileFilter());
         fc.setFileFilter(filterConDesLan);
@@ -494,11 +494,11 @@ public class MainFrame extends javax.swing.JFrame {
                         new errorDialog(this, true, "Ошибка при загрузке модели из файла!").setVisible(true);
                     }
                     break;
-                case ".condeslan":{
-                    if (!absolutePath.endsWith(".condeslan"))
-                        absolutePath+=".condeslan";
+                case ".cdl":{
+                    if (!absolutePath.endsWith(".cdl"))
+                        absolutePath+=".cdl";
                     try {
-                        InputOutputConDesLan.load(absolutePath);
+                        InputOutputCDL.load(absolutePath);
                         errorDialog errD = new errorDialog(this, true, "Загрузка из файла прошла успешно!");
                         errD.setTitle("Модель загружена");
                         errD.setVisible(true);

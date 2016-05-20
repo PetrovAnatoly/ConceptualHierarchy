@@ -12,13 +12,13 @@ import java.util.HashMap;
  *
  * @author Anatoly
  */
-public class ConDesLanTag {
-    public ConDesLanTag(String tag){
+public class CDLTag {
+    public CDLTag(String tag){
         tagName = tag;
     }
     private String tagName;
     private final HashMap<String, String> simpleProperties = new HashMap<>();
-    private final HashMap<String, ArrayList<ConDesLanTag>> complexTagProperties = new HashMap<>();
+    private final HashMap<String, ArrayList<CDLTag>> complexTagProperties = new HashMap<>();
     private final HashMap<String, ArrayList<String>> complexStringProperties = new HashMap<>();
     
     public void setName(String name){
@@ -36,22 +36,22 @@ public class ConDesLanTag {
     public ArrayList<String> getComplexStringPropertyValue(String property){
         return complexStringProperties.get(property);
     }
-    public ArrayList<ConDesLanTag> getComplexTagPropertyValue(String property){
+    public ArrayList<CDLTag> getComplexTagPropertyValue(String property){
         return complexTagProperties.get(property);
     }
     public HashMap<String, String> getSimpleProperties(){
         return simpleProperties;
     }
-    public void addComplexTagProperty(String property, ConDesLanTag value){
+    public void addComplexTagProperty(String property, CDLTag value){
         if (complexTagProperties.containsKey(property))
             complexTagProperties.get(property).add(value);
         else{
-            ArrayList<ConDesLanTag> values =  new ArrayList<>();
+            ArrayList<CDLTag> values =  new ArrayList<>();
             values.add(value);
             complexTagProperties.put(property, values);
         }
     }
-    public HashMap<String, ArrayList<ConDesLanTag>> getComplexTagProperties(){
+    public HashMap<String, ArrayList<CDLTag>> getComplexTagProperties(){
         return complexTagProperties;
     }
     public void addComplexStringProperty(String property, String value){
@@ -88,9 +88,9 @@ public class ConDesLanTag {
             for (int i = 0; i < shift; i++)
                 rtrn+="\t";
             rtrn+=property + ":" + "[\n";
-            ArrayList<ConDesLanTag> values = complexTagProperties.get(property);
+            ArrayList<CDLTag> values = complexTagProperties.get(property);
             tabShift++;
-            for (ConDesLanTag tag: values){
+            for (CDLTag tag: values){
                 rtrn+=tag.toCDSWithShift(tabShift);
             }
             tabShift--;
@@ -120,9 +120,9 @@ public class ConDesLanTag {
         rtrn+=">\n";
         return rtrn;
     }
-    static ConDesLanTag parseString(String s){
+    static CDLTag parseString(String s){
         s = s.trim();
-        ConDesLanTag rtrn = new ConDesLanTag("INPUT_STRING_IS_INCORRECT");
+        CDLTag rtrn = new CDLTag("INPUT_STRING_IS_INCORRECT");
         int inputLength = s.length();
         if (s.charAt(0) != '<' || s.charAt(inputLength-1) != '>')
             return rtrn;
@@ -205,7 +205,7 @@ public class ConDesLanTag {
                 if (atomValue.equals("") || atomValue.charAt(0) != '<')
                     rtrn.addComplexStringProperty(property, atomValue);
                 else if (atomValue.charAt(0) == '<'){
-                    ConDesLanTag valueTag = parseString(atomValue);
+                    CDLTag valueTag = parseString(atomValue);
                     rtrn.addComplexTagProperty(property, valueTag);
                 }
             }

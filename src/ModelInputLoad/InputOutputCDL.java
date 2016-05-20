@@ -32,25 +32,25 @@ import java.util.Date;
  *
  * @author Anatoly
  */
-public class InputOutputConDesLan {
+public class InputOutputCDL {
     public static void save(String absolutePath) throws IOException{
         FileWriter fw = new FileWriter(absolutePath, false);
-        ConDesLanTag root = new ConDesLanTag("data");
+        CDLTag root = new CDLTag("data");
         String username = System.getProperty("user.name");
         root.addSimpleProperty("Autor", username);
         Date date = new Date(System.currentTimeMillis());
         date = new Date(date.getTime());
         //сделать нормальную дату!!! (в нулевой или текущей временной зоне)
         root.addSimpleProperty("Creation_time", date.toString());
-        ConDesLanTag framesTag = getFramesTag(ActualData.getFrames());
+        CDLTag framesTag = getFramesTag(ActualData.getFrames());
         root.addComplexTagProperty("содержимое", framesTag);
-        ConDesLanTag conceptsTag = getConceptsTag(ActualData.getConcepts());
+        CDLTag conceptsTag = getConceptsTag(ActualData.getConcepts());
         root.addComplexTagProperty("содержимое", conceptsTag);
-        ConDesLanTag constantsTag = getConstantsTag(ActualData.getConstants());
+        CDLTag constantsTag = getConstantsTag(ActualData.getConstants());
         root.addComplexTagProperty("содержимое", constantsTag);
-        ConDesLanTag variablesTag = getVariablesTag(ActualData.getVariables());
+        CDLTag variablesTag = getVariablesTag(ActualData.getVariables());
         root.addComplexTagProperty("содержимое", variablesTag);
-        ConDesLanTag extensionalsTag = getExtensionalsTag(ActualData.getAllExtensionals());
+        CDLTag extensionalsTag = getExtensionalsTag(ActualData.getAllExtensionals());
         root.addComplexTagProperty("содержимое", extensionalsTag);
         fw.write(root.getConDesLanStructure());
         fw.flush();
@@ -61,12 +61,12 @@ public class InputOutputConDesLan {
         char[] buffer = new char[(int)file.length()];
         fr.read(buffer);
         String fileContent = new String(buffer);
-        ConDesLanTag cdl = ConDesLanTag.parseString(fileContent);
-        ArrayList<ConDesLanTag> content = cdl.getComplexTagPropertyValue("содержимое");
+        CDLTag cdl = CDLTag.parseString(fileContent);
+        ArrayList<CDLTag> content = cdl.getComplexTagPropertyValue("содержимое");
         if (content == null)
             throw new IOException();
-        ConDesLanTag conceptsTag = null, constantsTag = null, variablesTag = null, framesTag = null, extensionalsTag = null;
-        for (ConDesLanTag tag: content){
+        CDLTag conceptsTag = null, constantsTag = null, variablesTag = null, framesTag = null, extensionalsTag = null;
+        for (CDLTag tag: content){
             switch (tag.getName()) {
                 case "concepts":
                     conceptsTag = tag;
@@ -94,13 +94,13 @@ public class InputOutputConDesLan {
         loadFrames(framesTag, conceptsTag, constantsTag, variablesTag);
         loadExtensionals(extensionalsTag);
     }
-    private static void loadBasicConcepts(ConDesLanTag conceptsTag){
-        ArrayList<ConDesLanTag> basicConceptTags = conceptsTag.getComplexTagPropertyValue("basicConcepts");
+    private static void loadBasicConcepts(CDLTag conceptsTag){
+        ArrayList<CDLTag> basicConceptTags = conceptsTag.getComplexTagPropertyValue("basicConcepts");
         if (basicConceptTags == null)
             return;
         String name, comment;
         ArrayList<String> properties;
-        for (ConDesLanTag conceptTag: basicConceptTags){
+        for (CDLTag conceptTag: basicConceptTags){
             if (!conceptTag.getName().equals("концепт"))
                 continue;
             name = conceptTag.getSimplePropertyValue("имя");
@@ -113,7 +113,7 @@ public class InputOutputConDesLan {
             ActualData.addConceptToHierarchy(conc);
         }
     }
-    private static void loadConstants(ConDesLanTag constantsTag){
+    private static void loadConstants(CDLTag constantsTag){
         HashMap<Concept, ArrayList<Constant>> newConstants = new HashMap<>();
         for (String conceptName: constantsTag.getComplexStringProperties().keySet()){
             Concept domen = ActualData.getConceptByName(conceptName);
@@ -127,7 +127,7 @@ public class InputOutputConDesLan {
         }
         ActualData.addNewConstants(newConstants);
     }
-    private static void loadVariables(ConDesLanTag variablesTag){
+    private static void loadVariables(CDLTag variablesTag){
         HashMap<Concept, ArrayList<Variable>> newVariables = new HashMap<>();
         for (String conceptName: variablesTag.getComplexStringProperties().keySet()){
             Concept domen = ActualData.getConceptByName(conceptName);
@@ -141,10 +141,10 @@ public class InputOutputConDesLan {
         }
         ActualData.addNewVariables(newVariables);
     }
-    private static void loadFrames(ConDesLanTag framesTag, ConDesLanTag conceptsTag, ConDesLanTag constantsTag, ConDesLanTag variablesTag){
-        ArrayList<ConDesLanTag> notAddedFrames = new ArrayList<>();
-        ArrayList<ConDesLanTag> defConceptTags = conceptsTag.getComplexTagPropertyValue("defConcepts");
-        ArrayList<ConDesLanTag> simpleFrameTags = new ArrayList<>();
+    private static void loadFrames(CDLTag framesTag, CDLTag conceptsTag, CDLTag constantsTag, CDLTag variablesTag){
+        ArrayList<CDLTag> notAddedFrames = new ArrayList<>();
+        ArrayList<CDLTag> defConceptTags = conceptsTag.getComplexTagPropertyValue("defConcepts");
+        ArrayList<CDLTag> simpleFrameTags = new ArrayList<>();
         if (framesTag.getComplexTagProperties().containsKey("eventFrames"))
             simpleFrameTags.addAll(framesTag.getComplexTagPropertyValue("eventFrames"));
         if (framesTag.getComplexTagProperties().containsKey("characteristicFrames"))
@@ -156,14 +156,14 @@ public class InputOutputConDesLan {
         if (framesTag.getComplexTagProperties().containsKey("andFrames"))
             notAddedFrames.addAll(framesTag.getComplexTagPropertyValue("andFrames"));
         while (!simpleFrameTags.isEmpty()){
-            for (ConDesLanTag simpleFrameTag: simpleFrameTags){
+            for (CDLTag simpleFrameTag: simpleFrameTags){
                 AbstractSimpleFrame fr;
                 boolean frameIsAdded = true;
                 String name = simpleFrameTag.getSimplePropertyValue("имя");
                 String predicate = simpleFrameTag.getSimplePropertyValue("предикат");
                 String quantors = simpleFrameTag.getSimplePropertyValue("кванторы");
                 Body frameBody = new Body();
-                for (ConDesLanTag slotTag: simpleFrameTag.getComplexTagPropertyValue("слоты")){
+                for (CDLTag slotTag: simpleFrameTag.getComplexTagPropertyValue("слоты")){
                     Slot slot = new Slot();
                     boolean argIsVar = false;
                     String argName = slotTag.getSimplePropertyValue("аргумент");
@@ -208,7 +208,7 @@ public class InputOutputConDesLan {
                 simpleFrameTags.remove(simpleFrameTag);
                 if (defConceptTags == null)
                     break;
-                for (ConDesLanTag defConceptTag: defConceptTags){
+                for (CDLTag defConceptTag: defConceptTags){
                     if (defConceptTag.getSimplePropertyValue("def-фрейм").equals(fr.getName())){
                         String defConceptName = defConceptTag.getSimplePropertyValue("имя");
                         String comment = defConceptTag.getSimplePropertyValue("комментарий");
@@ -241,7 +241,7 @@ public class InputOutputConDesLan {
             }
         }
         while (!notAddedFrames.isEmpty()){
-            for (ConDesLanTag frameTag: notAddedFrames){
+            for (CDLTag frameTag: notAddedFrames){
                 if (frameTag.getSimplePropertyValue("тип").equals("NOT")){
                     String operandName = frameTag.getSimplePropertyValue("аргумент");
                     if (!ActualData.avalibleFrameName(operandName)){
@@ -301,10 +301,10 @@ public class InputOutputConDesLan {
             ActualData.addConceptToHierarchy(conc);
         }
     }*/
-    private static void loadExtensionals(ConDesLanTag extensionalsTag){
+    private static void loadExtensionals(CDLTag extensionalsTag){
         HashMap<String, Extensional> predicateExtensionals = new HashMap<>();
         for (String predicate: extensionalsTag.getComplexTagProperties().keySet()){
-            ConDesLanTag predicateExtensionalTag = extensionalsTag.getComplexTagPropertyValue(predicate).get(0);
+            CDLTag predicateExtensionalTag = extensionalsTag.getComplexTagPropertyValue(predicate).get(0);
             Extensional predicateExtensional;
             if (ActualData.getFrameWithThisPredicate(predicate) != null)
                 predicateExtensional = new Extensional(ActualData.getFrameWithThisPredicate(predicate));
@@ -315,7 +315,7 @@ public class InputOutputConDesLan {
             HashMap<String, Concept> roleConc = new HashMap<>();
             if (predicateExtensionalTag.getComplexTagPropertyValue("role-concept-accordance") == null || predicateExtensionalTag.getComplexTagPropertyValue("role-concept-accordance").isEmpty())
                 continue;
-            for (ConDesLanTag roleConceptAccordanceTag: predicateExtensionalTag.getComplexTagPropertyValue("role-concept-accordance")){
+            for (CDLTag roleConceptAccordanceTag: predicateExtensionalTag.getComplexTagPropertyValue("role-concept-accordance")){
                 String role = roleConceptAccordanceTag.getSimplePropertyValue("role");
                 String concName = roleConceptAccordanceTag.getSimplePropertyValue("concept");
                 Concept concept = ActualData.getConceptByName(concName);
@@ -335,9 +335,9 @@ public class InputOutputConDesLan {
             predicateExtensionals.put(predicate, predicateExtensional);
             if (predicateExtensionalTag.getComplexTagPropertyValue("extensions") == null)
                 continue;
-            for (ConDesLanTag ExtensionTag: predicateExtensionalTag.getComplexTagPropertyValue("extensions")){
+            for (CDLTag ExtensionTag: predicateExtensionalTag.getComplexTagPropertyValue("extensions")){
                 HashMap<String,Constant> extension = new HashMap<>();
-                for (ConDesLanTag roleConstantTag: ExtensionTag.getComplexTagPropertyValue("role-constants")){
+                for (CDLTag roleConstantTag: ExtensionTag.getComplexTagPropertyValue("role-constants")){
                     String role = roleConstantTag.getSimplePropertyValue("role");
                     if (!predicateExtensional.getRoles().contains(role))
                         continue;
@@ -354,10 +354,10 @@ public class InputOutputConDesLan {
         ActualData.setPredicateExtensionals(predicateExtensionals);
     }
     
-    private static ConDesLanTag getFramesTag(ArrayList<AbstractFrame> frames){
-        ConDesLanTag framesTag = new ConDesLanTag("frames");
+    private static CDLTag getFramesTag(ArrayList<AbstractFrame> frames){
+        CDLTag framesTag = new CDLTag("frames");
         for (AbstractFrame frame: frames){
-            ConDesLanTag frameTag = frame.toConDesLanTag();
+            CDLTag frameTag = frame.toConDesLanTag();
             if (frame instanceof EventFrame){
                 framesTag.addComplexTagProperty("eventFrames", frameTag);
             }
@@ -376,8 +376,8 @@ public class InputOutputConDesLan {
         }
         return framesTag;
     }
-    private static ConDesLanTag getConceptsTag(ArrayList<Concept> concepts) throws IOException {
-        ConDesLanTag rtrn = new ConDesLanTag("concepts");
+    private static CDLTag getConceptsTag(ArrayList<Concept> concepts) throws IOException {
+        CDLTag rtrn = new CDLTag("concepts");
         for (Concept conc: concepts){
             if (conc instanceof DefConcept){
                 rtrn.addComplexTagProperty("defConcepts", conc.toConDesLanTag());
@@ -389,8 +389,8 @@ public class InputOutputConDesLan {
         return rtrn;
     }
 
-    private static ConDesLanTag getConstantsTag(HashMap<Concept, ArrayList<Constant>> constants) {
-        ConDesLanTag rtrn = new ConDesLanTag("constants");
+    private static CDLTag getConstantsTag(HashMap<Concept, ArrayList<Constant>> constants) {
+        CDLTag rtrn = new CDLTag("constants");
         for (Concept conc: constants.keySet()){
             ArrayList<Constant> constOfConc = constants.get(conc);
             for (Constant cnstnt: constOfConc)
@@ -399,8 +399,8 @@ public class InputOutputConDesLan {
         return rtrn;
     }
 
-    private static ConDesLanTag getVariablesTag(HashMap<Concept, ArrayList<Variable>> variables) {
-        ConDesLanTag rtrn = new ConDesLanTag("variables");
+    private static CDLTag getVariablesTag(HashMap<Concept, ArrayList<Variable>> variables) {
+        CDLTag rtrn = new CDLTag("variables");
         for (Concept conc: variables.keySet()){
             ArrayList<Variable> varsOfConc = variables.get(conc);
             for (Variable var: varsOfConc)
@@ -409,8 +409,8 @@ public class InputOutputConDesLan {
         return rtrn;
     }
 
-    private static ConDesLanTag getExtensionalsTag(HashMap<String, Extensional> extensionals) {
-        ConDesLanTag rtrn = new ConDesLanTag("extensionals");
+    private static CDLTag getExtensionalsTag(HashMap<String, Extensional> extensionals) {
+        CDLTag rtrn = new CDLTag("extensionals");
         for (String predicate: extensionals.keySet())
             rtrn.addComplexTagProperty(predicate, extensionals.get(predicate).toConDesLanTag());
         return rtrn;

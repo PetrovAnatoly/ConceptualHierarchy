@@ -69,7 +69,7 @@ public class FrameNode {
     public void reformIfNeeded(FrameNode arg){
         ArrayList<FrameNode> toRemoveSet = new ArrayList();
         boolean childNodesContainsArg = childNodes.contains(arg);
-        for (FrameNode i: childNodes)
+        for (FrameNode i: (ArrayList<FrameNode>)childNodes.clone())
             if (!childNodesContainsArg || arg!=i){
                 if (i.value.ISA(arg.value)){
                     if (!arg.childNodes.contains(arg)){
