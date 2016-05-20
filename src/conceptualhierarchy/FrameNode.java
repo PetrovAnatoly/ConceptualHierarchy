@@ -70,8 +70,15 @@ public class FrameNode {
         ArrayList<FrameNode> toRemoveSet = new ArrayList();
         boolean childNodesContainsArg = childNodes.contains(arg);
         for (FrameNode i: (ArrayList<FrameNode>)childNodes.clone())
+            //try{
             if (!childNodesContainsArg || arg!=i){
                 if (i.value.ISA(arg.value)){
+                    /*if (arg.value.ISA(i.value)){
+                        System.out.println("\t\t\twtf!!");
+                        System.out.println("first:\n" + i.value.toConDesLanTag().getConDesLanStructure());
+                        System.out.println("second:\n" + arg.value.toConDesLanTag().getConDesLanStructure());
+                        new java.util.Scanner(System.in).nextLine();
+                    }*/
                     if (!arg.childNodes.contains(arg)){
                         arg.addChild(i);
                         i.addParent(arg);
@@ -85,6 +92,13 @@ public class FrameNode {
                 else 
                     i.reformIfNeeded(arg);
             }
+            /*}
+            catch(StackOverflowError er){
+                System.out.println("SOFE");
+                //System.out.println(i.value.toConDesLanTag().getConDesLanStructure());
+                //System.out.println(arg.value.toConDesLanTag().getConDesLanStructure());
+                //break;
+            }*/
         childNodes.removeAll(toRemoveSet);
     }
     

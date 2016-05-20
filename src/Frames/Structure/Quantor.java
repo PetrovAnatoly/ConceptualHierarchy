@@ -47,6 +47,14 @@ public class Quantor {
     int value;
     Variable var;
     
+    @Override
+    public Quantor clone(){
+        Quantor rtrn = new Quantor();
+        rtrn.type = type;
+        rtrn.value = value;
+        rtrn.var = var;
+        return rtrn;
+    }
     public static ArrayList<Quantor> getQuantorArray(String arg, ArrayList<Variable> variables){
         String quantor = "";
         ArrayList<Quantor> rtrn = new ArrayList();

@@ -27,16 +27,17 @@ public class Generator {
         int generatedFramestCount = 0;
         int predicateId = 0;
         String predicate = "predicate0";
-        ArrayList<EventFrame> generatedFrames = new ArrayList<>(); 
+        ArrayList<EventFrame> generatedFrames = new ArrayList<>();
+        ArrayList<EventFrame> generatedFramesToUseAsBase = new ArrayList<>();
         while (!ActualData.avalibleFrameName("frame" + String.valueOf(frameId)))
             frameId++;
         while (ActualData.getAllExtensionals().containsKey(predicate))
             predicate = "predicate" + String.valueOf(++predicateId);
         while (generatedFramestCount < count){
             EventFrame newFrame;
-            if (getRandInt(0, 100) <= nestingProbability && !generatedFrames.isEmpty()){
-                EventFrame base = generatedFrames.get(getRandInt(0, generatedFrames.size()-1));
-                ArrayList<Quantor> quantors = (ArrayList<Quantor>) base.getQuantors().clone();
+            if (getRandInt(0, 100) <= nestingProbability && !generatedFramesToUseAsBase.isEmpty()){
+                EventFrame base = generatedFramesToUseAsBase.get(getRandInt(getRandInt(0, generatedFramesToUseAsBase.size()-1), generatedFramesToUseAsBase.size()-1));
+                ArrayList<Quantor> quantors = base.cloneQuantors();
                 Body body = base.getBody();
                 String basePredicate = base.getPredicate();
                 newFrame = new EventFrame("frame" + String.valueOf(frameId), basePredicate, quantors, body);
@@ -50,16 +51,38 @@ public class Generator {
                         quantors.get(k).setValue(quantors.get(k).getValue() + 1);
                     }
                     else {
-                        ArrayList<Variable> notQuantifVars = newFrame.getBody().getAllVariablesInBody();
-                        notQuantifVars.removeAll(newFrame.getQuantifiedVariables());
+                        ArrayList<Variable> notQuantifVars = newFrame.getNotQuantifiedVariables();
                         quantors.add(new Quantor("[1}", (Variable) notQuantifVars.get(0)));
                     }
                 }
-                if (!ActualData.thisFrameAlreadyExist(newFrame)){
+                boolean frameIsAlreadyAdded = false;
+                for (EventFrame fr: generatedFrames)
+                    if (fr.ISA(newFrame) && newFrame.ISA(fr)){
+                        frameIsAlreadyAdded = true;
+                        break;
+                    }
+                while (frameIsAlreadyAdded){
+                    if (getRandInt(0, 100) <= 100/slotCount || quantors.size() == body.getSlots().size()){
+                        int k = getRandInt(0, quantors.size()-1);
+                        quantors.get(k).setValue(quantors.get(k).getValue() + 1);
+                    }
+                    else {
+                        ArrayList<Variable> notQuantifVars = newFrame.getNotQuantifiedVariables();
+                        quantors.add(new Quantor("[1}", (Variable) notQuantifVars.get(0)));
+                    }
+                    for (EventFrame fr: generatedFrames)
+                        if (fr.ISA(newFrame) && newFrame.ISA(fr))
+                            break;
+                    frameIsAlreadyAdded = false;
+                    if (getRandInt(1,100)<=75)
+                        generatedFramesToUseAsBase.remove(base);
+                }
+                if (!frameIsAlreadyAdded){
                     generatedFrames.add(newFrame);
+                    generatedFramesToUseAsBase.add(newFrame);
                     ActualData.addFrameToHierarchy(newFrame);
                     if (getRandInt(1,5)<=2)
-                        generatedFrames.remove(base);
+                        generatedFramesToUseAsBase.remove(base);
                 }
                 else 
                     continue;
@@ -86,6 +109,7 @@ public class Generator {
                 ActualData.addNewVariables(newVars);
                 ActualData.addFrameToHierarchy(newFrame);
                 generatedFrames.add(newFrame);
+                generatedFramesToUseAsBase.add(newFrame);
                 predicateId++;
             }
             frameId++;

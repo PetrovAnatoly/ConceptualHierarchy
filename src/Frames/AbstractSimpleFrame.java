@@ -52,6 +52,12 @@ public class AbstractSimpleFrame extends AbstractFrame {
     public void setPredicate(String str) { predicate = str;}
     public Body getBody(){ return body;}  
     public ArrayList<Quantor> getQuantors() { return quantors;}
+    public ArrayList<Quantor> cloneQuantors(){
+        ArrayList<Quantor> rtrn = new ArrayList<>();
+        for (Quantor qntr: quantors)
+            rtrn.add(qntr.clone());
+        return rtrn;
+    }
     public String getQuantorsLine() {
         String rtrn = "";
         for (Quantor qntr: quantors){
@@ -167,6 +173,12 @@ public class AbstractSimpleFrame extends AbstractFrame {
         ArrayList<Variable> rtrn = new ArrayList();
         for (Quantor quantor: quantors)
             rtrn.add(quantor.getVariable());
+        return rtrn;
+    }
+    public ArrayList<Variable> getNotQuantifiedVariables(){
+        ArrayList<Variable> rtrn = (ArrayList<Variable>) body.getAllVariablesInBody().clone();
+        for (Quantor quantor: quantors)
+            rtrn.remove(quantor.getVariable());
         return rtrn;
     }
     private boolean allQuantorsIsExistType(){
