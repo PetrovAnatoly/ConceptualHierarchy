@@ -452,6 +452,8 @@ public class CreateSimpleFrameDialog extends javax.swing.JDialog {
     private FrameSlotsTableModel myTableModel = new FrameSlotsTableModel("creatingEvFr");
     private void addRawToSlotsTable(){
         Object[] raw = {"","", ""};
+        if (type.equals("function"))
+            raw[0] = "аргумент" + myTableModel.getRowCount();
         myTableModel.addRow(raw);
     }
     private void predicateTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_predicateTextFieldActionPerformed
@@ -466,9 +468,18 @@ public class CreateSimpleFrameDialog extends javax.swing.JDialog {
     private void deleteSlotButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSlotButtonActionPerformed
         // TODO add your handling code here:
         int rowIndex = slotsTable.getSelectedRow();
-        if (type.equals("function") && rowIndex<2)
-            return;
-        if (rowIndex > -1)
+        if (type.equals("function")) 
+            if (rowIndex<2)
+                if (rowIndex == 0 || myTableModel.getRowCount() == 2)
+                    return;
+            else {
+                myTableModel.removeRow(rowIndex);
+                if (rowIndex >= myTableModel.getRowCount())
+                    return;
+                for (int i = rowIndex; i < myTableModel.getRowCount(); i++)
+                    myTableModel.setValueAt("аргумент" + String.valueOf(i), i, 0);
+            }
+        else if (rowIndex > -1)
             myTableModel.removeRow(rowIndex);
     }//GEN-LAST:event_deleteSlotButtonActionPerformed
 
