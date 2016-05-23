@@ -42,7 +42,7 @@ public class ChoiceTypeOfNewFrameDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Выбор типа");
 
-        frameTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Событие", "Характеристика", "AND", "OR", "NOT" }));
+        frameTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Событие", "Характеристика", "Функция", "AND", "OR", "NOT" }));
         frameTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 frameTypeComboBoxActionPerformed(evt);
@@ -99,10 +99,13 @@ public class ChoiceTypeOfNewFrameDialog extends javax.swing.JDialog {
         JDialog crFrDial = null;
         switch (s) {
             case "Событие":
-                crFrDial = new CreateEventFrameDialog(new JFrame(), true);
+                crFrDial = new CreateSimpleFrameDialog(new JFrame(), true, "event");
                 break;
             case "Характеристика":
-                crFrDial = new CreateCharacteristicFrameDialog(new JFrame(), true);
+                crFrDial = new CreateSimpleFrameDialog(new JFrame(), true, "characteristic");
+                break;
+            case "Функция":
+                crFrDial = new CreateSimpleFrameDialog(new JFrame(), true, "function");
                 break;
             case "AND":
                 crFrDial = new CreateAndFrameDialog(new JFrame(), true);

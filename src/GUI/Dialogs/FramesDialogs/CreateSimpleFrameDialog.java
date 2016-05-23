@@ -5,7 +5,10 @@
  */
 package GUI.Dialogs.FramesDialogs;
 
+import Frames.AbstractSimpleFrame;
+import Frames.CharacteristicFrame;
 import Frames.EventFrame;
+import Frames.FunctionalFrame;
 import Frames.Structure.Body;
 import Frames.Structure.Quantor;
 import Frames.Structure.Slot;
@@ -15,6 +18,7 @@ import GUI.TableModels.FrameSlotsTableModel;
 import conceptualhierarchy.ActualData;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.DefaultListModel;
 import Сoncepts.Concept;
 import Сoncepts.Constant;
 import Сoncepts.DefConcept;
@@ -24,17 +28,42 @@ import Сoncepts.Variable;
  *
  * @author Anatoly
  */
-public class CreateEventFrameDialog extends javax.swing.JDialog {
+public class CreateSimpleFrameDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form CreateEventFrameDialog
      * @param parent
      * @param modal
      */
-    public CreateEventFrameDialog(java.awt.Frame parent, boolean modal) {
+    public CreateSimpleFrameDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         pack();
+        setLocationRelativeTo(null);
+    }
+    private String type;
+    public CreateSimpleFrameDialog(java.awt.Frame parent, boolean modal, String typeOfFrame) {
+        super(parent, modal);
+        initComponents();
+        pack();
+        type = typeOfFrame;
+        switch (typeOfFrame) {
+            case "characteristic":
+                typeLabel.setText("Characteristic frame");
+                newSlotButton.setVisible(false);
+                deleteSlotButton.setVisible(false);
+                myTableModel = new FrameSlotsTableModel("creatingChFr");
+                break;
+            case "event":
+                typeLabel.setText("Event frame");
+                myTableModel = new FrameSlotsTableModel("creatingEvFr");
+                break;
+            case "function":
+                typeLabel.setText("Function frame");
+                myTableModel = new FrameSlotsTableModel("creatingFuncFr");
+                break;
+        }
+        slotsTable.setModel(myTableModel);
         setLocationRelativeTo(null);
     }
     /**
@@ -46,26 +75,31 @@ public class CreateEventFrameDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel4 = new javax.swing.JLabel();
+        typeLabel = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         newFrameNameTextField = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         predicateTextField = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        quantorsTextField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         slotsTable = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
         newSlotButton = new javax.swing.JButton();
         deleteSlotButton = new javax.swing.JButton();
+        addQuantorToEndingButton = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        quantorsList = new javax.swing.JList(listModel);
+        removeQuantorButton = new javax.swing.JButton();
+        addQuantorAfterSelectedItemButton = new javax.swing.JButton();
+        addQuantorBeforeSelectedItemButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Event-Frame:");
-        jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        typeLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        typeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        typeLabel.setText("Event-Frame:");
+        typeLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel3.setText("Имя нового фрейма:");
 
@@ -86,12 +120,6 @@ public class CreateEventFrameDialog extends javax.swing.JDialog {
 
         jLabel6.setText("Кванторы:");
 
-        quantorsTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                quantorsTextFieldActionPerformed(evt);
-            }
-        });
-
         slotsTable.setModel(myTableModel);
         jScrollPane1.setViewportView(slotsTable);
 
@@ -111,25 +139,45 @@ public class CreateEventFrameDialog extends javax.swing.JDialog {
             }
         });
 
+        addQuantorToEndingButton.setText("Добавить в конец");
+        addQuantorToEndingButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addQuantorToEndingButtonActionPerformed(evt);
+            }
+        });
+
+        jScrollPane2.setViewportView(quantorsList);
+
+        removeQuantorButton.setText("Удалить");
+        removeQuantorButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeQuantorButtonActionPerformed(evt);
+            }
+        });
+
+        addQuantorAfterSelectedItemButton.setText("Добавить после");
+        addQuantorAfterSelectedItemButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addQuantorAfterSelectedItemButtonActionPerformed(evt);
+            }
+        });
+
+        addQuantorBeforeSelectedItemButton.setText("Добавить перед");
+        addQuantorBeforeSelectedItemButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addQuantorBeforeSelectedItemButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel7)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(158, 158, 158)
-                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap(179, Short.MAX_VALUE)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)))
+                        .addGap(158, 158, 158)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
                         .addGap(148, 148, 148))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
@@ -142,41 +190,68 @@ public class CreateEventFrameDialog extends javax.swing.JDialog {
                                     .addComponent(jLabel6))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(quantorsTextField)
                                     .addComponent(predicateTextField)
-                                    .addComponent(newFrameNameTextField)))
+                                    .addComponent(newFrameNameTextField)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(addQuantorToEndingButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(addQuantorAfterSelectedItemButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(removeQuantorButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(addQuantorBeforeSelectedItemButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel7)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(newSlotButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(deleteSlotButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(typeLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(jLabel4)
+                .addComponent(typeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(newFrameNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(quantorsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(predicateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(predicateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(deleteSlotButton)
-                    .addComponent(newSlotButton))
-                .addGap(7, 7, 7)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(addQuantorToEndingButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)
+                                .addComponent(addQuantorAfterSelectedItemButton)))
+                        .addGap(5, 5, 5)
+                        .addComponent(addQuantorBeforeSelectedItemButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(removeQuantorButton)
+                        .addGap(0, 5, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(newSlotButton)
+                    .addComponent(deleteSlotButton))
+                .addGap(8, 8, 8)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
@@ -187,7 +262,6 @@ public class CreateEventFrameDialog extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String newFrName = newFrameNameTextField.getText();
         String newFrPredicate = predicateTextField.getText();
-        String quantorsStr = quantorsTextField.getText();
         if (!ActualData.avalibleFrameName(newFrName)) {
             ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Фрейм с таким именем уже есть");
             errorD.setVisible(true);
@@ -200,10 +274,10 @@ public class CreateEventFrameDialog extends javax.swing.JDialog {
             ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Введите имя фрейма!");
             errorD.setVisible(true);
         }
-        else if (!Quantor.correctQuantorString(quantorsStr)){
+       /* else if (!Quantor.correctQuantorString(quantorsStr)){
             ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Некорректная строка кванторов");
             errorD.setVisible(true);
-        }
+        }*/
         else {
             ArrayList<Concept> newConcepts = new ArrayList();
             HashMap<Concept, ArrayList<Constant>> newConstants = new HashMap();
@@ -277,7 +351,7 @@ public class CreateEventFrameDialog extends javax.swing.JDialog {
                                 if (newConstInd) {
                                     Concept base = slotConc;
                                     while (base instanceof DefConcept)
-                                    slArg = new Constant(argumentStr, slotConc);
+                                        slArg = new Constant(argumentStr, slotConc);//????
                                     newConstInDomen.add((Constant) slArg);
                                 }
                             }
@@ -341,8 +415,25 @@ public class CreateEventFrameDialog extends javax.swing.JDialog {
                 newFrBody.addSlot(slot);
             }
             ArrayList<Variable> vrbls = newFrBody.getAllVariablesInBody();
+            String quantorsStr = "";
+            for (int i=0; i < quantorsList.getModel().getSize(); i++){
+                String quantor = (String) quantorsList.getModel().getElementAt(i);
+                quantor = quantor.replace(" ", "") + ".";
+                quantorsStr+=quantor;
+            }
             ArrayList<Quantor> qntrs = Quantor.getQuantorArray(quantorsStr, vrbls);
-            EventFrame newFrame = new EventFrame(newFrName, newFrPredicate, qntrs, newFrBody);
+            AbstractSimpleFrame newFrame = null;
+            switch (type) {
+                case "event":
+                    newFrame = new EventFrame(newFrName, newFrPredicate, qntrs, newFrBody);
+                    break;
+                case "characteristic":
+                    newFrame = new CharacteristicFrame(newFrName, newFrPredicate, qntrs, newFrBody);
+                    break;
+                case "function":
+                    newFrame = new FunctionalFrame(newFrName, newFrPredicate, qntrs, newFrBody);
+                    break;
+            }
             if (ActualData.thisFrameAlreadyExist(newFrame)){
                 ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Фрейм с таким описанием уже есть!");
                 errorD.setVisible(true);
@@ -358,7 +449,7 @@ public class CreateEventFrameDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private final FrameSlotsTableModel myTableModel = new FrameSlotsTableModel("creatingEvFr");
+    private FrameSlotsTableModel myTableModel = new FrameSlotsTableModel("creatingEvFr");
     private void addRawToSlotsTable(){
         Object[] raw = {"","", ""};
         myTableModel.addRow(raw);
@@ -366,10 +457,6 @@ public class CreateEventFrameDialog extends javax.swing.JDialog {
     private void predicateTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_predicateTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_predicateTextFieldActionPerformed
-
-    private void quantorsTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quantorsTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_quantorsTextFieldActionPerformed
 
     private void newSlotButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSlotButtonActionPerformed
         // TODO add your handling code here:
@@ -379,10 +466,61 @@ public class CreateEventFrameDialog extends javax.swing.JDialog {
     private void deleteSlotButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSlotButtonActionPerformed
         // TODO add your handling code here:
         int rowIndex = slotsTable.getSelectedRow();
+        if (type.equals("function") && rowIndex<2)
+            return;
         if (rowIndex > -1)
             myTableModel.removeRow(rowIndex);
     }//GEN-LAST:event_deleteSlotButtonActionPerformed
 
+    
+    private void addQuantorToEndingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addQuantorToEndingButtonActionPerformed
+        // TODO add your handling code here:
+        int index = quantorsList.getModel().getSize();
+       // if (index != 0)
+         //   index++;
+        addQuantor(index);
+    }//GEN-LAST:event_addQuantorToEndingButtonActionPerformed
+
+    private void addQuantor(int index){
+        ArrayList<String> vars = new ArrayList<>();
+        for (int i = 0; i < slotsTable.getRowCount(); i++){
+            String argumentStr = (String) slotsTable.getValueAt(i, 1);
+            if (argumentStr.length()>0 && argumentStr.charAt(0) != '\'')
+                vars.add(argumentStr);
+        }
+        for (int i = 0; i < quantorsList.getModel().getSize(); i++){
+            String quantor = (String) quantorsList.getModel().getElementAt(i);
+            String[] qArr = quantor.split(" ");
+            vars.remove(qArr[1]);
+        }
+        QuantorsDialog quanDial = new QuantorsDialog(null, true, vars);
+        quanDial.setVisible(true);
+        String newQuantor = quanDial.quantor;
+        if (!newQuantor.equals("")){
+            listModel.add(index, newQuantor);
+        }
+    }
+    private void removeQuantorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeQuantorButtonActionPerformed
+        // TODO add your handling code here:
+        int index = quantorsList.getSelectedIndex();
+        if (index!=-1)
+            listModel.remove(index);
+    }//GEN-LAST:event_removeQuantorButtonActionPerformed
+
+    private void addQuantorAfterSelectedItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addQuantorAfterSelectedItemButtonActionPerformed
+        // TODO add your handling code here:
+        int index = quantorsList.getSelectedIndex();
+        if (index!=-1)
+            addQuantor(index+1);
+    }//GEN-LAST:event_addQuantorAfterSelectedItemButtonActionPerformed
+
+    private void addQuantorBeforeSelectedItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addQuantorBeforeSelectedItemButtonActionPerformed
+        // TODO add your handling code here:
+        int index = quantorsList.getSelectedIndex();
+        if (index!=-1)
+            addQuantor(index);
+    }//GEN-LAST:event_addQuantorBeforeSelectedItemButtonActionPerformed
+    DefaultListModel listModel = new DefaultListModel();
     /**
      * @param args the command line arguments
      */
@@ -400,20 +538,21 @@ public class CreateEventFrameDialog extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CreateEventFrameDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CreateSimpleFrameDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CreateEventFrameDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CreateSimpleFrameDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CreateEventFrameDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CreateSimpleFrameDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CreateEventFrameDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CreateSimpleFrameDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                CreateEventFrameDialog dialog = new CreateEventFrameDialog(new javax.swing.JFrame(), true);
+                CreateSimpleFrameDialog dialog = new CreateSimpleFrameDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -426,18 +565,23 @@ public class CreateEventFrameDialog extends javax.swing.JDialog {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addQuantorAfterSelectedItemButton;
+    private javax.swing.JButton addQuantorBeforeSelectedItemButton;
+    private javax.swing.JButton addQuantorToEndingButton;
     private javax.swing.JButton deleteSlotButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField newFrameNameTextField;
     private javax.swing.JButton newSlotButton;
     private javax.swing.JTextField predicateTextField;
-    private javax.swing.JTextField quantorsTextField;
+    private javax.swing.JList quantorsList;
+    private javax.swing.JButton removeQuantorButton;
     private javax.swing.JTable slotsTable;
+    private javax.swing.JLabel typeLabel;
     // End of variables declaration//GEN-END:variables
 }

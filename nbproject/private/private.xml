@@ -3,49 +3,47 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/MainFrame.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/HierarchyTuneDialog.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/GenerateDialog.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/MainFrame.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/FramesDialogs/BinaryFrameViewDialog.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/FramesDialogs/NotFrameViewDialog.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Сoncepts/AbstractConcept.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/AbstractSimpleFrame.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/CreateAndFrameDialog.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/errorDialog.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/NotFrameViewDialog.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/ModelInputLoad/CDLTag.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/FramesDialogs/ViewSimpleFrameDialog.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/TableModels/AddExtensionTableModel.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/TableModels/FrameSlotsTableModel.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/ConceptViewDialog.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/conceptualhierarchy/Extensional.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/AbstractBinaryFrame.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/Structure/Slot.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/CreateCharacteristicFrameDialog.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/AbstractBinaryFrame.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/TableModels/constantTableModel.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Сoncepts/Concept.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/conceptualhierarchy/ActualData.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/AbstractFrame.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/ModelInputLoad/InputOutputXML.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/ModelInputLoad/InputOutputCDL.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/ViewSimpleFrameDialog.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/ModelInputLoad/InputOutputXML.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/FramesDialogs/CreateAndFrameDialog.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/EventFrame.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Сoncepts/Variable.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/ScriptFrame.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Generator/Generator.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/FramesDialogs/CreateEventFrameDialog.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/test/Frames/AbstractSimpleFrameTest.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/OrFrame.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/ErrorDialog.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/Structure/Body.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/DefFrameDialog.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/FramesDialogs/CreateNotFrameDialog.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/FramesDialogs/QuantorsDialog.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/FramesDialogs/CreateOrFrameDialog.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/conceptualhierarchy/FrameNode.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/AbstractComplexFrame.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/ExtensionalDialogs/AddExtensionDialog.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/Structure/Quantor.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/CreateEventFrameDialog.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/AddExtensionDialog.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/FramesDialogs/ChoiceTypeOfNewFrameDialog.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/Structure/SlotArgument.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/ChoiceTypeOfNewFrameDialog.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/AndFrame.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/FramesDialogs/CreateCharacteristicFrameDialog.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/conceptualhierarchy/ActualConfiguration.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Сoncepts/DefConcept.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/CreateNotFrameDialog.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/BinaryFrameViewDialog.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/ConceptDialogs/ConceptViewDialog.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Сoncepts/Constant.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/CreateOrFrameDialog.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/NotFrame.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/ConceptDialogs/DefFrameDialog.java</file>
         </group>
     </open-files>
 </project-private>

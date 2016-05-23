@@ -28,7 +28,6 @@ public class FrameSlotsTableModel extends DefaultTableModel {
             addRow(row);
         }
         mode = "view";
-        
     }
     public FrameSlotsTableModel(String s){
         mode = s;
@@ -38,6 +37,12 @@ public class FrameSlotsTableModel extends DefaultTableModel {
             Object[] row1 = {"характеристика", "", ""};
             addRow(row1);
             Object[] row2 = {"значение", "", ""};
+            addRow(row2);
+        }
+        else if (s.equals("creatingFuncFr")){
+            Object[] row1 = {"результат", "", ""};
+            addRow(row1);
+            Object[] row2 = {"аргумент1", "", ""};
             addRow(row2);
         }
     }
@@ -50,6 +55,8 @@ public class FrameSlotsTableModel extends DefaultTableModel {
             case "creatingEvFr":
                 return true;
             case "creatingChFr":
+                return (k!=0);
+            case "creatingFuncFr":
                 return (k!=0);
         }
         return false;

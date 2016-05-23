@@ -8,6 +8,7 @@ package GUI.Dialogs.FramesDialogs;
 import Frames.AbstractSimpleFrame;
 import Frames.CharacteristicFrame;
 import Frames.EventFrame;
+import Frames.FunctionalFrame;
 import GUI.Dialogs.ConceptDialogs.DefFrameDialog;
 import GUI.Dialogs.ExtensionalDialogs.ViewFrameExtensionalDialog;
 import GUI.TableModels.FrameSlotsTableModel;
@@ -213,10 +214,13 @@ public class ViewSimpleFrameDialog extends javax.swing.JDialog {
     public void setFrame(AbstractSimpleFrame fr){
         frame = fr;
         if (fr instanceof EventFrame){
-            frameTypeLabel.setText("Event-Frame");
+            frameTypeLabel.setText("Event frame");
         }
         else if (fr instanceof CharacteristicFrame){
-            frameTypeLabel.setText("Characteristic-Frame");
+            frameTypeLabel.setText("Characteristic frame");
+        }
+        else if (fr instanceof FunctionalFrame){
+            frameTypeLabel.setText("Functional frame");
         }
         frameNameField.setText(fr.getName());
         predicateField.setText(fr.getPredicate());  
