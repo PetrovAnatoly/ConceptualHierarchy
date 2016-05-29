@@ -13,7 +13,7 @@ import Frames.NotFrame;
 import Frames.OrFrame;
 import GUI.Dialogs.FramesDialogs.BinaryFrameViewDialog;
 import GUI.Dialogs.FramesDialogs.ChoiceTypeOfNewFrameDialog;
-import GUI.Dialogs.ConceptDialogs.ConceptViewDialog;
+import GUI.Dialogs.ConceptDialogs.ConceptDialog;
 import GUI.Dialogs.ConceptDialogs.ConstantViewDialog;
 import GUI.Dialogs.GenerateDialog;
 import GUI.Dialogs.FramesDialogs.NotFrameViewDialog;
@@ -24,6 +24,8 @@ import conceptualhierarchy.ActualData;
 import conceptualhierarchy.ConceptNode;
 import conceptualhierarchy.FrameNode;
 import ModelInputLoad.InputOutputXML;
+import conceptualhierarchy.ActualConfiguration;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JTree;
@@ -32,6 +34,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+import org.xml.sax.SAXException;
 import Сoncepts.Concept;
 import Сoncepts.Constant;
 
@@ -251,6 +254,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         conceptsMultipleInheritanceCheckBoxMenuItem.setSelected(true);
         conceptsMultipleInheritanceCheckBoxMenuItem.setText("Разрешить множественное наследование концептов");
+        conceptsMultipleInheritanceCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                conceptsMultipleInheritanceCheckBoxMenuItemActionPerformed(evt);
+            }
+        });
         modelMenu.add(conceptsMultipleInheritanceCheckBoxMenuItem);
 
         jMenuBar1.add(modelMenu);
@@ -336,8 +344,10 @@ public class MainFrame extends javax.swing.JFrame {
     private void addFrameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFrameButtonActionPerformed
         ChoiceTypeOfNewFrameDialog chTOfNewWframe = new ChoiceTypeOfNewFrameDialog(this, true);
         chTOfNewWframe.setVisible(true);
-        updateFrameIsaTree();
-        updateConceptIsaTree();
+        if (ActualData.addingIsSucces()){
+            updateFrameIsaTree();
+            updateConceptIsaTree();
+        }
     }//GEN-LAST:event_addFrameButtonActionPerformed
 
     private void deleteFrameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteFrameButtonActionPerformed
@@ -406,7 +416,7 @@ public class MainFrame extends javax.swing.JFrame {
         String s = (String) TC.getUserObject();
         if (!s.equals("Concepts")) {
             Concept conc = ActualData.getConceptByName(s);
-            ConceptViewDialog cwd = new ConceptViewDialog(this, true);
+            ConceptDialog cwd = new ConceptDialog(this, true);
             cwd.setConcept(conc);
             cwd.setVisible(true);
         }
@@ -416,10 +426,12 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        ConceptViewDialog cwd = new ConceptViewDialog(this, true);
+        ConceptDialog cwd = new ConceptDialog(this, true);
         cwd.setVisible(true);
-        updateFrameIsaTree();
-        updateConceptIsaTree();
+        if (ActualData.addingIsSucces()){
+            updateFrameIsaTree();
+            updateConceptIsaTree();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void constantViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_constantViewButtonActionPerformed
@@ -591,7 +603,17 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void framesMultipleInheritanceCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_framesMultipleInheritanceCheckBoxMenuItemActionPerformed
         // TODO add your handling code here:
+        boolean b = framesMultipleInheritanceCheckBoxMenuItem.getState();
+        ActualConfiguration config = ActualData.getConfiguration();
+        config.putBoolSetting("framesMultipleInheritance", b);
     }//GEN-LAST:event_framesMultipleInheritanceCheckBoxMenuItemActionPerformed
+
+    private void conceptsMultipleInheritanceCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conceptsMultipleInheritanceCheckBoxMenuItemActionPerformed
+        // TODO add your handling code here:
+        boolean b = conceptsMultipleInheritanceCheckBoxMenuItem.getState();
+        ActualConfiguration config = ActualData.getConfiguration();
+        config.putBoolSetting("conceptsMultipleInheritance", b);
+    }//GEN-LAST:event_conceptsMultipleInheritanceCheckBoxMenuItemActionPerformed
     public static void viewFrame(AbstractFrame fr){
         if (fr instanceof AndFrame){
             BinaryFrameViewDialog frViewDialog = new BinaryFrameViewDialog(new javax.swing.JFrame(), true);

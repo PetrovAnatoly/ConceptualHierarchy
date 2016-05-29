@@ -22,9 +22,18 @@ import java.util.HashMap;
  */
 public class ActualConfiguration implements java.io.Serializable{
     public ActualConfiguration(){
+        boolSettings.put("framesMultipleInheritance", true);
+        boolSettings.put("conceptsMultipleInheritance", true);
         
     }
-    private HashMap<String, String> settings = new HashMap<>();
+    private HashMap<String, String> strSettings = new HashMap<>();
+    private HashMap<String, Boolean> boolSettings = new HashMap<>();
+    
+    public HashMap<String, String> getStrSettings(){ return strSettings;}
+    public HashMap<String, Boolean> getBoolSettings(){ return boolSettings;}
+    
+    public void putStrSetting(String setting, String value) { strSettings.put(setting, value);}
+    public void putBoolSetting(String setting, boolean value) { boolSettings.put(setting, value);}
     public void save() throws IOException{
         File out = new File("configuration");
         OutputStream os = new FileOutputStream(out);

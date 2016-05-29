@@ -7,6 +7,7 @@ package Сoncepts;
 
 import ModelInputLoad.CDLTag;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -25,39 +26,40 @@ public class Concept extends AbstractConcept{
     protected String comment;
     public String getComment() { return comment;}
     public void setComment(String cmmnt) { comment = cmmnt;}
-    protected ArrayList<String> properties = new ArrayList();
-    public ArrayList<String> getProperties() { return properties;}
-    public void setProperties(ArrayList<String> newProperties) { properties = newProperties;}
-    public void addAllProperties(ArrayList<String> props){
+    protected ArrayList<String> characteristics = new ArrayList();
+    protected HashMap<String, String> properties = new HashMap<>();
+    public ArrayList<String> getCharacteristics() { return characteristics;}
+    public void setCharacteristics(ArrayList<String> newProperties) { characteristics = newProperties;}
+    public void addAllCharacteristics(ArrayList<String> props){
         for (String prop: props)
-            if (!properties.contains(prop))
-                properties.add(prop);
+            if (!characteristics.contains(prop))
+                characteristics.add(prop);
     }
     public Concept (String s, ArrayList<String> argProperties){
         name = s;
         for (String prop : argProperties) {
-            properties.add(prop.trim());
+            characteristics.add(prop.trim());
         }
     }
     public Concept (String nameArg, String commentArg, ArrayList<String> argProperties){
         name = nameArg;
         comment = commentArg;
         for (String prop : argProperties) {
-            properties.add(prop.trim());
+            characteristics.add(prop.trim());
         }
     }
     //true, если свойства концепта this покрывают свойства концепта arg
     public boolean ISA(Concept arg){
         if (arg instanceof DefConcept)
             return false;
-        if (properties.isEmpty())
+        if (characteristics.isEmpty())
             return false;
-        if (arg.properties.isEmpty()) 
+        if (arg.characteristics.isEmpty()) 
             return false;
-        for (String argProperty: arg.properties){
-            for (int i = 0; i < properties.size(); i++){
-                if (argProperty.equals(properties.get(i))) break; 
-                if (i == properties.size() - 1) return false;
+        for (String argProperty: arg.characteristics){
+            for (int i = 0; i < characteristics.size(); i++){
+                if (argProperty.equals(characteristics.get(i))) break; 
+                if (i == characteristics.size() - 1) return false;
             }   
         }
         return true;
@@ -66,12 +68,12 @@ public class Concept extends AbstractConcept{
     public boolean equal(Concept arg){
         return ISA(arg) && arg.ISA(this); 
     }
-    public String propertiesString(){
+    public String characteristicsString(){
         String s = "(";
-        for (int i = 0; i < properties.size() - 1; i++) 
-            s+=properties.get(i) + ",";
-        if (!properties.isEmpty()) 
-            s+=properties.get(properties.size()-1);
+        for (int i = 0; i < characteristics.size() - 1; i++) 
+            s+=characteristics.get(i) + ",";
+        if (!characteristics.isEmpty()) 
+            s+=characteristics.get(characteristics.size()-1);
         s+=")";
         return s;
     }
@@ -81,7 +83,7 @@ public class Concept extends AbstractConcept{
         s+="<концепт\n";
         s+="имя:\""+ name +"\"\n";
         s+="свойтва:[";
-        for (String prop: properties)
+        for (String prop: characteristics)
             s+="\"" + prop + "\"\n";
         s+="]\n";
         return s.toCharArray();
@@ -91,7 +93,7 @@ public class Concept extends AbstractConcept{
         CDLTag rtrn = new CDLTag("концепт");
         rtrn.addSimpleProperty("имя", name);
         rtrn.addSimpleProperty("комментарий", comment);
-        for (String prop: properties)
+        for (String prop: characteristics)
             rtrn.addComplexStringProperty("свойства", prop);
         return rtrn;
     }

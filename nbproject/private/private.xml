@@ -11,13 +11,16 @@
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Сoncepts/AbstractConcept.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/AbstractSimpleFrame.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/FramesDialogs/ViewSimpleFrameDialog.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/FunctionalFrame.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/TableModels/AddExtensionTableModel.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/TableModels/FrameSlotsTableModel.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/conceptualhierarchy/Extensional.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/Structure/Slot.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/AbstractBinaryFrame.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/TableModels/constantTableModel.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Сoncepts/Concept.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/conceptualhierarchy/ActualData.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/conceptualhierarchy/ConceptNode.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/AbstractFrame.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/ModelInputLoad/InputOutputCDL.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/ModelInputLoad/InputOutputXML.java</file>
@@ -26,7 +29,7 @@
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Сoncepts/Variable.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/ScriptFrame.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Generator/Generator.java</file>
-            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/FramesDialogs/CreateEventFrameDialog.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/CharacteristicFrame.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/test/Frames/AbstractSimpleFrameTest.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/ErrorDialog.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Frames/Structure/Body.java</file>
@@ -44,6 +47,7 @@
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/ConceptDialogs/ConceptViewDialog.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/Сoncepts/Constant.java</file>
             <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/ConceptDialogs/DefFrameDialog.java</file>
+            <file>file:/C:/Users/Anatoly/Documents/NetBeansProjects/ConceptualHierarchy/src/GUI/Dialogs/FramesDialogs/CreateSimpleFrameDialog.java</file>
         </group>
     </open-files>
 </project-private>

@@ -120,7 +120,7 @@ public class Generator {
         int conceptId = 0;
         int propertyId = 0;
         for (Concept concept: ActualData.getConcepts()){
-            while (concept.getProperties().contains("property" + String.valueOf(propertyId)))
+            while (concept.getCharacteristics().contains("property" + String.valueOf(propertyId)))
                 propertyId++;
             while (!ActualData.avalibleConceptName("concept" + String.valueOf(conceptId)))
                 conceptId++;
@@ -135,9 +135,9 @@ public class Generator {
             if (getRandInt(0, 100) <= nestingProbability){
                 ArrayList<Concept> actualConcepts = ActualData.getConcepts();
                 if (!actualConcepts.isEmpty())
-                    properties.addAll(actualConcepts.get(getRandInt(0, actualConcepts.size()-1)).getProperties());
+                    properties.addAll(actualConcepts.get(getRandInt(0, actualConcepts.size()-1)).getCharacteristics());
             }
-            newConcept.setProperties(properties);
+            newConcept.setCharacteristics(properties);
             ActualData.addConceptToHierarchy(newConcept);
             generatedConceptCount++;
         }

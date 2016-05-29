@@ -5,24 +5,29 @@
  */
 package GUI.Dialogs.ConceptDialogs;
 
+import Frames.AbstractFrame;
+import Frames.AbstractSimpleFrame;
 import GUI.Dialogs.ErrorDialog;
 import conceptualhierarchy.ActualData;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import Сoncepts.Concept;
+import Сoncepts.Constant;
+import Сoncepts.DefConcept;
+import Сoncepts.Variable;
 
 /**
  *
  * @author Anatoly
  */
-public class ConceptViewDialog extends javax.swing.JDialog {
+public class ConceptDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form ConceptViewDialog
      * @param parent
      * @param modal
      */
-    public ConceptViewDialog(java.awt.Frame parent, boolean modal) {
+    public ConceptDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         pack();
@@ -163,6 +168,11 @@ public class ConceptViewDialog extends javax.swing.JDialog {
     private void deletePropertyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletePropertyButtonActionPerformed
         // TODO add your handling code here:
         int rowIndex = propertyTable.getSelectedRow();
+        if (concept instanceof DefConcept){
+            int basePropsSize = ((DefConcept)concept).getBaseConcept().getCharacteristics().size();
+            if (rowIndex < basePropsSize)
+                return;
+        }
         if (rowIndex > -1)
             myTableModel.removeRow(rowIndex);
     }//GEN-LAST:event_deletePropertyButtonActionPerformed
@@ -173,16 +183,20 @@ public class ConceptViewDialog extends javax.swing.JDialog {
         concept = conc;
         nameTextField.setText(conc.getName());
         commentTextField.setText(conc.getComment());
-        for (String property: conc.getProperties()){
+        for (String property: conc.getCharacteristics()){
             Object [] raw = {property};
             myTableModel.addRow(raw);
         }
         newConceptInd = false;
         titleLabel.setText("Редактирование свойств концепта");
         setTitle("Просмотр и редактирование концепта");
+        if (conc instanceof DefConcept){
+            newPropertyButton.setVisible(false);
+            deletePropertyButton.setVisible(false);
+        }
     }
     private boolean conceptPropertiesIsChanged(){
-        ArrayList<String> oldProp = concept.getProperties();
+        ArrayList<String> oldProp = concept.getCharacteristics();
         ArrayList<String> newProp = new ArrayList();
         for (int i = 0; i < propertyTable.getRowCount(); i++)
             newProp.add((String) propertyTable.getValueAt(i, 0));
@@ -212,6 +226,8 @@ public class ConceptViewDialog extends javax.swing.JDialog {
                         concept.setName(conceptName); 
                         concept.setComment(conceptComment);
                     }
+                else 
+                    concept.setComment(conceptComment);
             }
             else {
                 ArrayList<String> newProp = new ArrayList();
@@ -236,11 +252,33 @@ public class ConceptViewDialog extends javax.swing.JDialog {
                     return;
                 }
                 else {
+                    ArrayList<Constant> cnsts = ActualData.getAllConstantsInDomen(concept);
+                    ArrayList<Variable> vars = ActualData.getVariables().get(concept);
                     ActualData.removeConceptByName(concept.getName());
+                    String oldName = concept.getName();
+                    String oldComment = concept.getComment();
+                    ArrayList<String> oldCharacteristics = (ArrayList<String>) concept.getCharacteristics().clone();
                     concept.setName(conceptName);
                     concept.setComment(conceptComment);
-                    concept.setProperties(newProp);
+                    concept.setCharacteristics(newProp);
                     ActualData.addConceptToHierarchy(concept);
+                    if (!ActualData.addingIsSucces()){
+                        ActualData.removeConceptByName(concept.getName());
+                        concept.setName(oldName);
+                        concept.setComment(oldComment);
+                        concept.setCharacteristics(oldCharacteristics);
+                        ActualData.addConceptToHierarchy(concept);
+                        ActualData.getConstants().put(concept, cnsts);
+                        ActualData.getVariables().put(concept, vars);
+                        new ErrorDialog(null, true, "Множественное наследование концептов запрещено! Концепт не изменен").setVisible(true);
+                        return;
+                    }
+                    else {
+                        for (DefConcept defConc: ActualData.getDefConcepts(concept))
+                            defConc.setCharacteristics(concept.getCharacteristics());
+                        ActualData.getConstants().put(concept, cnsts);
+                        ActualData.getVariables().put(concept, vars);
+                    }
                 }
             }
         }
@@ -269,8 +307,12 @@ public class ConceptViewDialog extends javax.swing.JDialog {
                 concept = new Concept();
                 concept.setName(conceptName);
                 concept.setComment(conceptComment);
-                concept.setProperties(newProp);
+                concept.setCharacteristics(newProp);
                 ActualData.addConceptToHierarchy(concept);
+                if (!ActualData.addingIsSucces()){
+                    new ErrorDialog(null, true, "Множественное наследование концептов запрещено! Концепт не добавлен").setVisible(true);
+                    return;
+                }
             }
     }
     setVisible(false);
@@ -305,20 +347,21 @@ public class ConceptViewDialog extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ConceptViewDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConceptDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ConceptViewDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConceptDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ConceptViewDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConceptDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ConceptViewDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConceptDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ConceptViewDialog dialog = new ConceptViewDialog(new javax.swing.JFrame(), true);
+                ConceptDialog dialog = new ConceptDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

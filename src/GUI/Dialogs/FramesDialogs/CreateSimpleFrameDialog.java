@@ -440,6 +440,10 @@ public class CreateSimpleFrameDialog extends javax.swing.JDialog {
             }
             else{
                 ActualData.addFrameToHierarchy(newFrame);
+                if (!ActualData.addingIsSucces()){
+                    new ErrorDialog(null, true, "Множественное наследование фреймов запрещено!").setVisible(true);
+                    return;
+                }
                 ActualData.addNewConcepts(newConcepts);
                 ActualData.addNewConstants(newConstants);
                 ActualData.addNewVariables(newVariables);

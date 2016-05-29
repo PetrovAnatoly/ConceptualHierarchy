@@ -13,6 +13,7 @@ import Frames.Structure.Quantor;
 import Frames.Structure.Slot;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,7 +29,7 @@ import Сoncepts.Variable;
  * @author Anatoly
  */
 public class ActualData {
-    
+    private static ActualConfiguration configuration = new ActualConfiguration();
     private static ArrayList<AbstractFrame> frameSet = new ArrayList();
     private static ArrayList<Concept> conceptSet = new ArrayList();
     private static ConceptNode conceptHierarchyRoot = new ConceptNode(new Concept("Concepts"));
@@ -50,7 +51,15 @@ public class ActualData {
     public static FrameNode getFrameHoerarchy() {
         return frameHierarchyRoot;
     }
-
+    public static ArrayList<DefConcept> getDefConcepts(Concept base){
+        ArrayList<DefConcept> rtrn = new ArrayList<>();
+        for (ArrayList<DefConcept> dCs: defFrameConcept.values())
+            for (DefConcept dC: dCs)
+                if (dC.getBaseConcept() == base)
+                    rtrn.add(dC);
+        return rtrn;
+    }
+    public static ActualConfiguration getConfiguration() { return configuration;}
     public static ConceptNode getConceptHoerarchy() {
         return conceptHierarchyRoot;
     }
@@ -259,11 +268,38 @@ public class ActualData {
         }
         return true;
     }
-
+    
+    private static boolean succesAdding;
+    public static boolean addingIsSucces() { return succesAdding;}
+    public static ArrayList<AbstractFrame> getAllDirectChilds(AbstractFrame frame){
+        ArrayList<AbstractFrame> rtrn = new ArrayList<>();
+        for (AbstractFrame fr: frameSet)
+            if (fr.ISA(frame))
+                rtrn.add(fr);
+        int i = 0;
+        while (i < rtrn.size()-1){
+            FrameNode frstNode = ActualData.getFrameNode(rtrn.get(i));
+            for (int k = 0; k < rtrn.size(); k++){
+                FrameNode scndNode = ActualData.getFrameNode(rtrn.get(k));
+                if (scndNode.isDescedentOf(frstNode)){
+                    rtrn.remove(i);
+                    break;
+                }
+            }
+            i++;
+        }
+        return rtrn;
+    }
     public static void addFrameToHierarchy(AbstractFrame arg) {
         FrameNode newNode = new FrameNode(arg);
         ArrayList<AbstractFrame> forefatherSet = getIsaSetForFrame(arg);
         ArrayList<AbstractFrame> setOfParentFrames = getIsaSetForFrameWithoutTransitivity(forefatherSet);
+        if (!configuration.getBoolSettings().get("framesMultipleInheritance")){
+            if (setOfParentFrames.size()>1){
+                succesAdding = false;
+                return;
+            }
+        }
         if (setOfParentFrames.isEmpty()) {
             frameHierarchyRoot.addChild(newNode);
             newNode.addParent(frameHierarchyRoot);
@@ -280,6 +316,15 @@ public class ActualData {
         frameNameSet.add(arg.getName());
         frameNodeAccordance.put(arg, newNode);
         nameFrameAccordance.put(arg.getName(), arg);
+        if (!configuration.getBoolSettings().get("framesMultipleInheritance")){
+            for (FrameNode child: newNode.childNodes){
+                if (child.parents.size()>1){
+                    ActualData.removeFrameByName(arg.getName());
+                    succesAdding = false;
+                    return;
+                }
+            }
+        }
         if (arg instanceof AbstractSimpleFrame) {
             String predicate = ((AbstractSimpleFrame) arg).getPredicate();
             if (!predicateExtensionals.containsKey(predicate))
@@ -287,11 +332,18 @@ public class ActualData {
             else 
                 predicateExtensionals.get(predicate).exploreRoles(((AbstractSimpleFrame)arg).getBody());
         }
+        succesAdding = true;
     }
     public static void addConceptToHierarchy(Concept arg) {
         ConceptNode newNode = new ConceptNode(arg);  
         ArrayList<Concept> forefatherSet = getIsaSetForConcept(arg);
         ArrayList<Concept> setOfParent = getIsaSetForConceptWithoutTransitivity(forefatherSet);
+        if (!configuration.getBoolSettings().get("conceptsMultipleInheritance")){
+            if (setOfParent.size()>1){
+                succesAdding = false;
+                return;
+            }
+        }
         if (setOfParent.isEmpty()) {
             conceptHierarchyRoot.addChild(newNode);
             newNode.addParent(conceptHierarchyRoot);
@@ -308,6 +360,15 @@ public class ActualData {
         conceptNameSet.add(arg.getName());
         conceptNodeAccordance.put(arg, newNode);
         nameConceptAccordance.put(arg.getName(), arg);
+        if (!configuration.getBoolSettings().get("conceptsMultipleInheritance")){
+            for (ConceptNode child: newNode.childNodes){
+                if (child.parents.size()>1){
+                    ActualData.removeConceptByName(arg.getName());
+                    succesAdding = false;
+                    return;
+                }
+            }
+        }
         if (!constantNameMap.containsKey(arg))
             constantNameMap.put(arg, new ArrayList());
         if (!constantsInDomen.containsKey(arg) && !(arg instanceof DefConcept))
@@ -326,6 +387,7 @@ public class ActualData {
                 defFrameConcept.put(((DefConcept) arg).getDefFrame(), defConcepts);
             }
         }
+        succesAdding = true;
     }
 
     public static void addNewConcepts(ArrayList<Concept> newConcepts) {
@@ -477,7 +539,7 @@ public class ActualData {
     public static boolean conceptWithThisPropertiesIsExist(ArrayList<String> arg){
         if (arg.isEmpty()) return false;
         for (Concept conc: conceptSet){
-            if (conc.getProperties().containsAll(arg) && arg.containsAll(conc.getProperties()))
+            if (conc.getCharacteristics().containsAll(arg) && arg.containsAll(conc.getCharacteristics()))
                 return true;
         }
         return false;
@@ -940,5 +1002,9 @@ public class ActualData {
             return defFrameConcept.containsKey(frame) && !defFrameConcept.get(frame).isEmpty();
         else return false;
     }
-    
+    public boolean conceptWithThisPropertiesCreateMultipleInheritance(){
+        
+        
+        return false;
+    }
 }

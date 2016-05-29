@@ -221,7 +221,7 @@ public class InputOutputCDL {
                         DefConcept conc = new DefConcept(defFrame, role);
                         conc.setName(defConceptName);
                         conc.setComment(comment);
-                        conc.setProperties(properties);
+                        conc.setCharacteristics(properties);
                         ActualData.addConceptToHierarchy(conc);
                         HashMap<Concept,ArrayList<Constant>> newConstants = new HashMap<>();
                         newConstants.put(conc, new ArrayList<Constant>());

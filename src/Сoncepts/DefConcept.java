@@ -21,7 +21,7 @@ public class DefConcept extends Concept{
         role = argRole;
         baseConcept = defFrArg.getBody().getRoleConceptAccordance().get(role); //потом поправить
         ArrayList<FrameNode> parentsOfDefFrame = ActualData.getFrameNode(defFrame).getParents();
-        properties = (ArrayList<String>) baseConcept.getProperties().clone();
+        characteristics = (ArrayList<String>) baseConcept.getCharacteristics().clone();
         if (!parentsOfDefFrame.contains(ActualData.getFrameHoerarchy()))
             for (FrameNode parentNode: parentsOfDefFrame)
                 if (parentNode.getValue() instanceof AbstractSimpleFrame){
@@ -30,7 +30,7 @@ public class DefConcept extends Concept{
                     if (!defConc.isEmpty()){
                         for (DefConcept dc: defConc)
                             if (dc.role.equals(role))
-                                this.addAllProperties(dc.properties);
+                                this.setCharacteristics(characteristics);
                     }
                 }
     }
@@ -66,7 +66,7 @@ public class DefConcept extends Concept{
         rtrn.addSimpleProperty("роль", role);
         rtrn.addSimpleProperty("базовыйКонцепт", baseConcept.getName());
         rtrn.addSimpleProperty("роль", role);
-        for (String prop: properties)
+        for (String prop: characteristics)
             rtrn.addComplexStringProperty("свойства", prop);
         return rtrn;
     }

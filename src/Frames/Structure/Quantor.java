@@ -63,7 +63,8 @@ public class Quantor {
             if (arg.charAt(i) == '.') { 
                 for (Variable vrbl: variables){
                     if (quantor.endsWith(vrbl.getName())){
-                        rtrn.add(new Quantor(quantor.replace(vrbl.getName(), ""), vrbl));
+                        rtrn.add(new Quantor(quantor.replace(vrbl.getName(), ""), vrbl)); 
+                        //поправить для случая, когда переменная - число и совпадает с ограничением
                         break;
                     }
                 }

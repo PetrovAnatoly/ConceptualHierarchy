@@ -140,7 +140,7 @@ public class InputOutputXML {
                 conceptElem.setAttribute("name", concept.getName());
                 conceptElem.setAttribute("comment", concept.getComment());
                 Element props = document.createElement("Properties");
-                for (String property: concept.getProperties()){
+                for (String property: concept.getCharacteristics()){
                     Element propElem = document.createElement("Property");
                     propElem.setAttribute("val", property);
                     props.appendChild(propElem);
@@ -155,7 +155,7 @@ public class InputOutputXML {
                 defConceptElem.setAttribute("defFrame", ((DefConcept)concept).getDefFrame().getName());
                 defConceptElem.setAttribute("role", ((DefConcept)concept).getRole());
                 Element props = document.createElement("Properties");
-                for (String property: concept.getProperties()){
+                for (String property: concept.getCharacteristics()){
                     Element propElem = document.createElement("Property");
                     propElem.setAttribute("val", property);
                     props.appendChild(propElem);
@@ -418,7 +418,7 @@ public class InputOutputXML {
                         DefConcept conc = new DefConcept(defFrame, role);
                         conc.setName(conceptName);
                         conc.setComment(comment);
-                        conc.setProperties(properties);
+                        conc.setCharacteristics(properties);
                         ActualData.addConceptToHierarchy(conc);
                         if (variablesNode != null){
                             for (int j = 0; j < variablesNode.getChildNodes().getLength(); j++){
