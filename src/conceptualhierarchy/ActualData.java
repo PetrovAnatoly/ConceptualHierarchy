@@ -51,6 +51,18 @@ public class ActualData {
     public static FrameNode getFrameHoerarchy() {
         return frameHierarchyRoot;
     }
+    public static boolean framesMultipleInhIsExists(){
+        for (FrameNode frNode: frameNodeAccordance.values())
+            if (frNode.getParents().size()>1)
+                return true;
+        return false;
+    }
+    public static boolean conceptsMultipleInhIsExists(){
+        for (ConceptNode concNode: conceptNodeAccordance.values())
+            if (concNode.parents.size()>1)
+                return true;
+        return false;
+    }
     public static ArrayList<DefConcept> getDefConcepts(Concept base){
         ArrayList<DefConcept> rtrn = new ArrayList<>();
         for (ArrayList<DefConcept> dCs: defFrameConcept.values())

@@ -41,6 +41,7 @@ public class ChoiceTypeOfNewFrameDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Выбор типа");
+        setResizable(false);
 
         frameTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Событие", "Характеристика", "Функция", "AND", "OR", "NOT" }));
         frameTypeComboBox.addActionListener(new java.awt.event.ActionListener() {

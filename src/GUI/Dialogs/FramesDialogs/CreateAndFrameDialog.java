@@ -99,6 +99,7 @@ public class CreateAndFrameDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Выберите операнды");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setResizable(false);
 
         firstOperandComboBox.setEditable(true);
         firstOperandComboBox.setModel(new javax.swing.DefaultComboBoxModel(ActualData.getFrameNameSet().toArray()));
@@ -138,7 +139,7 @@ public class CreateAndFrameDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
-                                .addGap(0, 121, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(firstOperandComboBox, 0, 154, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)

@@ -508,6 +508,12 @@ public class CreateSimpleFrameDialog extends javax.swing.JDialog {
             String[] qArr = quantor.split(" ");
             vars.remove(qArr[1]);
         }
+        if (vars.isEmpty()){
+            ErrorDialog errD = new ErrorDialog(null, true, "Нет свободных переменных!");
+            errD.setTitle("Нет свободных переменных");
+            errD.setVisible(true);
+            return;
+        }
         QuantorsDialog quanDial = new QuantorsDialog(null, true, vars);
         quanDial.setVisible(true);
         String newQuantor = quanDial.quantor;

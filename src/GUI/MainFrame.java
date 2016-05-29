@@ -72,7 +72,7 @@ public class MainFrame extends javax.swing.JFrame {
         deleteFrameButton = new javax.swing.JButton();
         frameViewButton = new javax.swing.JButton();
         conceptViewButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        createConceptButton = new javax.swing.JButton();
         removeConceptButton = new javax.swing.JButton();
         constantViewButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -147,10 +147,10 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Добавить концепт");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        createConceptButton.setText("Добавить концепт");
+        createConceptButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                createConceptButtonActionPerformed(evt);
             }
         });
 
@@ -306,7 +306,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(conceptViewButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(createConceptButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(removeConceptButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -333,7 +333,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(deleteFrameButton)
                     .addComponent(addFrameButton)
-                    .addComponent(jButton1)
+                    .addComponent(createConceptButton)
                     .addComponent(removeConceptButton))
                 .addContainerGap())
         );
@@ -424,7 +424,7 @@ public class MainFrame extends javax.swing.JFrame {
         updateConceptIsaTree();
     }//GEN-LAST:event_conceptViewButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void createConceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createConceptButtonActionPerformed
         // TODO add your handling code here:
         ConceptDialog cwd = new ConceptDialog(this, true);
         cwd.setVisible(true);
@@ -432,7 +432,7 @@ public class MainFrame extends javax.swing.JFrame {
             updateFrameIsaTree();
             updateConceptIsaTree();
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_createConceptButtonActionPerformed
 
     private void constantViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_constantViewButtonActionPerformed
         // TODO add your handling code here:
@@ -531,6 +531,10 @@ public class MainFrame extends javax.swing.JFrame {
                     if (!absolutePath.endsWith(".xml"))
                         absolutePath+=".xml";
                     try {
+                        ActualData.getConfiguration().putBoolSetting("framesMultipleInheritance", true);
+                        framesMultipleInheritanceCheckBoxMenuItem.setState(true);
+                        ActualData.getConfiguration().putBoolSetting("conceptsMultipleInheritance", true);
+                        conceptsMultipleInheritanceCheckBoxMenuItem.setState(true);
                         InputOutputXML.load(absolutePath);
                         ErrorDialog errD = new ErrorDialog(this, true, "Загрузка из файла прошла успешно!");
                         errD.setTitle("Модель загружена");
@@ -604,6 +608,16 @@ public class MainFrame extends javax.swing.JFrame {
     private void framesMultipleInheritanceCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_framesMultipleInheritanceCheckBoxMenuItemActionPerformed
         // TODO add your handling code here:
         boolean b = framesMultipleInheritanceCheckBoxMenuItem.getState();
+        if (!b){
+            if (ActualData.framesMultipleInhIsExists()){
+                ErrorDialog errD = new ErrorDialog(this, true, "В модели уже присутствует множественное наследование фреймов!");
+                errD.setTitle("Настройки не изменены");
+                errD.setVisible(true);
+                framesMultipleInheritanceCheckBoxMenuItem.setState(true);
+                ActualData.getConfiguration().putBoolSetting("framesMultipleInheritance", true);
+                return;
+            }
+        }
         ActualConfiguration config = ActualData.getConfiguration();
         config.putBoolSetting("framesMultipleInheritance", b);
     }//GEN-LAST:event_framesMultipleInheritanceCheckBoxMenuItemActionPerformed
@@ -611,6 +625,16 @@ public class MainFrame extends javax.swing.JFrame {
     private void conceptsMultipleInheritanceCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conceptsMultipleInheritanceCheckBoxMenuItemActionPerformed
         // TODO add your handling code here:
         boolean b = conceptsMultipleInheritanceCheckBoxMenuItem.getState();
+        if (!b){
+            if (ActualData.conceptsMultipleInhIsExists()){
+                ErrorDialog errD = new ErrorDialog(this, true, "В модели уже присутствует множественное наследование концептов!");
+                errD.setTitle("Настройки не изменены");
+                errD.setVisible(true);
+                conceptsMultipleInheritanceCheckBoxMenuItem.setState(true);
+                ActualData.getConfiguration().putBoolSetting("conceptsMultipleInheritance", true);
+                return;
+            }
+        }
         ActualConfiguration config = ActualData.getConfiguration();
         config.putBoolSetting("conceptsMultipleInheritance", b);
     }//GEN-LAST:event_conceptsMultipleInheritanceCheckBoxMenuItemActionPerformed
@@ -683,6 +707,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem conceptsHierarchyTuningMenuItem;
     private javax.swing.JCheckBoxMenuItem conceptsMultipleInheritanceCheckBoxMenuItem;
     private javax.swing.JButton constantViewButton;
+    private javax.swing.JButton createConceptButton;
     private javax.swing.JButton deleteFrameButton;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JTree frameTree;
@@ -690,7 +715,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem framesHierarchyTuningMenuItem;
     private javax.swing.JCheckBoxMenuItem framesMultipleInheritanceCheckBoxMenuItem;
     private javax.swing.JMenuItem generateMenuItem;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuBar jMenuBar1;

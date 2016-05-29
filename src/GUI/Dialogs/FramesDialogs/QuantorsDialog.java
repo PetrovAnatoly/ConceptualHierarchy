@@ -5,6 +5,7 @@
  */
 package GUI.Dialogs.FramesDialogs;
 
+import GUI.Dialogs.ErrorDialog;
 import java.util.ArrayList;
 
 /**
@@ -46,7 +47,7 @@ public class QuantorsDialog extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         varsComboBox = new javax.swing.JComboBox();
         limitationTextField = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        okButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -66,10 +67,10 @@ public class QuantorsDialog extends javax.swing.JDialog {
 
         varsComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jButton1.setText("Ок");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        okButton.setText("Ок");
+        okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                okButtonActionPerformed(evt);
             }
         });
 
@@ -93,7 +94,7 @@ public class QuantorsDialog extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -110,7 +111,7 @@ public class QuantorsDialog extends javax.swing.JDialog {
                     .addComponent(limitationTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(quantorTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+                .addComponent(okButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -128,11 +129,24 @@ public class QuantorsDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_quantorTypeComboBoxActionPerformed
 
     String quantor = "";
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         // TODO add your handling code here:
         String type = (String) quantorTypeComboBox.getSelectedItem();
         String var = (String) varsComboBox.getSelectedItem();
         String val = limitationTextField.getText().trim();
+        if (!type.equals("Для всех (A)")){
+            int value = 0;
+            try{value = Integer.valueOf(val);}
+            catch(NumberFormatException exc){}
+            finally{
+                if (value<=0){
+                    ErrorDialog errD = new ErrorDialog(null, true, "Некорректный ввод!");
+                    errD.setVisible(true);
+                    return;
+                }
+            }
+        }
+        
         //int value = Integer.valueOf(val);
         switch (type) {
             case "Для всех (A)":
@@ -150,7 +164,7 @@ public class QuantorsDialog extends javax.swing.JDialog {
         }
         setVisible(false);
         dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_okButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -195,11 +209,11 @@ public class QuantorsDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField limitationTextField;
+    private javax.swing.JButton okButton;
     private javax.swing.JComboBox quantorTypeComboBox;
     private javax.swing.JComboBox varsComboBox;
     // End of variables declaration//GEN-END:variables
