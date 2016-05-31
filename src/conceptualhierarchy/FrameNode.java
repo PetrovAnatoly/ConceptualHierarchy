@@ -87,8 +87,6 @@ public class FrameNode {
             }
         childNodes.removeAll(toRemoveSet);
     }
-    
-    
     private static int shift = 0; 
     public void showAsTree()
     {

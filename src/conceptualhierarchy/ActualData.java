@@ -302,6 +302,30 @@ public class ActualData {
         }
         return rtrn;
     }
+    public static void reformFrameTree(){
+        frameHierarchyRoot = new FrameNode(new AbstractSimpleFrame("Frames", "", new ArrayList(), new Body(new ArrayList())));
+        frameNodeAccordance.clear();
+        //HashMap<AbstractFrame, FrameNode> newFrNodeAcc = new HashMap<>();
+        //frameNodeAccordance = newFrNodeAcc;
+        for (AbstractFrame arg: frameSet){
+            FrameNode newNode = new FrameNode(arg);
+            ArrayList<AbstractFrame> forefatherSet = getIsaSetForFrame(arg);
+            ArrayList<AbstractFrame> setOfParentFrames = getIsaSetForFrameWithoutTransitivity(forefatherSet);
+            if (setOfParentFrames.isEmpty()) {
+                frameHierarchyRoot.addChild(newNode);
+                newNode.addParent(frameHierarchyRoot);
+                frameHierarchyRoot.reformIfNeeded(newNode);
+            } else {
+                for (AbstractFrame i : setOfParentFrames) {
+                    FrameNode node = frameNodeAccordance.get(i);
+                    node.addChild(newNode);
+                    newNode.addParent(node);
+                    node.reformIfNeeded(newNode);
+                }
+            }
+            frameNodeAccordance.put(arg, newNode);
+        }
+    }
     public static void addFrameToHierarchy(AbstractFrame arg) {
         FrameNode newNode = new FrameNode(arg);
         ArrayList<AbstractFrame> forefatherSet = getIsaSetForFrame(arg);
@@ -457,7 +481,7 @@ public class ActualData {
 
     private static ArrayList<AbstractFrame> getIsaSetForFrame(AbstractFrame arg) {
         ArrayList<AbstractFrame> rtrnSet = new ArrayList();
-        for (AbstractFrame i : frameSet) {
+        for (AbstractFrame i : frameNodeAccordance.keySet()) {
             if (arg != i && arg.ISA(i)) {
                 rtrnSet.add(i);
             }

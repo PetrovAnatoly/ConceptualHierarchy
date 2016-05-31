@@ -654,6 +654,8 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         boolean b = rolesExpansionCheckBoxMenuItem.getState();
         ActualData.getConfiguration().getBoolSettings().put("rolesExpansionInChildFrames", b);
+        ActualData.reformFrameTree();
+        updateFrameIsaTree();
     }//GEN-LAST:event_rolesExpansionCheckBoxMenuItemActionPerformed
     public static void viewFrame(AbstractFrame fr){
         if (fr instanceof AndFrame){
