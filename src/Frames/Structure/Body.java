@@ -32,6 +32,38 @@ public class Body {
     
     public ArrayList<Slot> getSlots(){ return slots;}
     public void addSlot(Slot slot) { slots.add(slot);}
+    
+    public boolean covered(Body arg){
+        varAccording = new HashMap();
+        if (slots.size()<arg.slots.size()) 
+            return false;
+        for (Slot argSlot: arg.slots)
+            for (Slot slot: slots)
+            {
+                if (slot.role.equals(argSlot.role) 
+                        && (slot.domen == argSlot.domen || slot.domen.ISA(argSlot.domen))) 
+                {
+                    if (slot.argument.isVariable() && !argSlot.argument.isVariable())
+                        return false;
+                    else {
+                        if (slot.argument.isVariable() && argSlot.argument.isVariable()){
+                            varAccording.put(slot.argument, argSlot.argument);
+                            break;
+                        }
+                        else if ((!slot.argument.isVariable()) && argSlot.argument.isVariable())
+                            break;
+                        else if ((!slot.argument.isVariable()) && !argSlot.argument.isVariable())
+                            if (slot.argument.getName().equals(argSlot.argument.getName()))
+                                break;
+                            else 
+                                return false;
+                    }
+                }
+                if (slots.indexOf(argSlot) == slots.size()-1) 
+                    return false;  
+            }
+        return true;
+    }
     public boolean coveredAndSimilar(Body arg){
         varAccording = new HashMap();
         if (slots.size()!=arg.slots.size()) 

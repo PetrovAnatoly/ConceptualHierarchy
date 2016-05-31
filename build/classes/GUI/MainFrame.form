@@ -126,6 +126,14 @@
                 <Property name="text" type="java.lang.String" value="&#x41d;&#x430;&#x441;&#x442;&#x440;&#x43e;&#x439;&#x43a;&#x430; &#x438;&#x435;&#x440;&#x430;&#x440;&#x445;&#x438;&#x438; &#x43a;&#x43e;&#x43d;&#x446;&#x435;&#x43f;&#x442;&#x43e;&#x432;"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="rolesExpansionCheckBoxMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x420;&#x430;&#x437;&#x440;&#x435;&#x448;&#x438;&#x442;&#x44c; &#x440;&#x430;&#x441;&#x448;&#x438;&#x440;&#x435;&#x43d;&#x438;&#x435; &#x440;&#x43e;&#x43b;&#x435;&#x439; &#x434;&#x43e;&#x447;&#x435;&#x440;&#x43d;&#x438;&#x43c;&#x438; &#x444;&#x440;&#x435;&#x439;&#x43c;&#x430;&#x43c;&#x438;"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rolesExpansionCheckBoxMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
       </SubComponents>

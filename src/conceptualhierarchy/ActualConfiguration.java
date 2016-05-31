@@ -24,7 +24,7 @@ public class ActualConfiguration implements java.io.Serializable{
     public ActualConfiguration(){
         boolSettings.put("framesMultipleInheritance", true);
         boolSettings.put("conceptsMultipleInheritance", true);
-        
+        boolSettings.put("rolesExpansionInChildFrames", false);
     }
     private HashMap<String, String> strSettings = new HashMap<>();
     private HashMap<String, Boolean> boolSettings = new HashMap<>();

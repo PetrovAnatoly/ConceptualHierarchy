@@ -19,6 +19,7 @@ import GUI.Dialogs.GenerateDialog;
 import GUI.Dialogs.FramesDialogs.NotFrameViewDialog;
 import GUI.Dialogs.FramesDialogs.ViewSimpleFrameDialog;
 import GUI.Dialogs.ErrorDialog;
+import GUI.Dialogs.FramesHierarchySettingsDialog;
 import ModelInputLoad.InputOutputCDL;
 import conceptualhierarchy.ActualData;
 import conceptualhierarchy.ConceptNode;
@@ -92,6 +93,7 @@ public class MainFrame extends javax.swing.JFrame {
         viewMenu = new javax.swing.JMenu();
         framesHierarchyTuningMenuItem = new javax.swing.JMenuItem();
         conceptsHierarchyTuningMenuItem = new javax.swing.JMenuItem();
+        rolesExpansionCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Модель предметной области");
@@ -275,6 +277,14 @@ public class MainFrame extends javax.swing.JFrame {
 
         conceptsHierarchyTuningMenuItem.setText("Настройка иерархии концептов");
         viewMenu.add(conceptsHierarchyTuningMenuItem);
+
+        rolesExpansionCheckBoxMenuItem.setText("Разрешить расширение ролей дочерними фреймами");
+        rolesExpansionCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rolesExpansionCheckBoxMenuItemActionPerformed(evt);
+            }
+        });
+        viewMenu.add(rolesExpansionCheckBoxMenuItem);
 
         jMenuBar1.add(viewMenu);
 
@@ -602,6 +612,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void framesHierarchyTuningMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_framesHierarchyTuningMenuItemActionPerformed
         // TODO add your handling code here:
+        FramesHierarchySettingsDialog settingsD = new FramesHierarchySettingsDialog(null, true);
         
     }//GEN-LAST:event_framesHierarchyTuningMenuItemActionPerformed
     
@@ -638,6 +649,12 @@ public class MainFrame extends javax.swing.JFrame {
         ActualConfiguration config = ActualData.getConfiguration();
         config.putBoolSetting("conceptsMultipleInheritance", b);
     }//GEN-LAST:event_conceptsMultipleInheritanceCheckBoxMenuItemActionPerformed
+
+    private void rolesExpansionCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rolesExpansionCheckBoxMenuItemActionPerformed
+        // TODO add your handling code here:
+        boolean b = rolesExpansionCheckBoxMenuItem.getState();
+        ActualData.getConfiguration().getBoolSettings().put("rolesExpansionInChildFrames", b);
+    }//GEN-LAST:event_rolesExpansionCheckBoxMenuItemActionPerformed
     public static void viewFrame(AbstractFrame fr){
         if (fr instanceof AndFrame){
             BinaryFrameViewDialog frViewDialog = new BinaryFrameViewDialog(new javax.swing.JFrame(), true);
@@ -726,6 +743,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem removeAllNotUsedConceptsMenuItem;
     private javax.swing.JMenuItem removeAllNotUsedConstantsMenuItem;
     private javax.swing.JButton removeConceptButton;
+    private javax.swing.JCheckBoxMenuItem rolesExpansionCheckBoxMenuItem;
     private javax.swing.JMenuItem saveModelMenuItem;
     private javax.swing.JMenu viewMenu;
     // End of variables declaration//GEN-END:variables

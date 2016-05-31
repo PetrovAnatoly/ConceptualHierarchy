@@ -10,6 +10,7 @@ import Frames.Structure.Quantor;
 import Frames.Structure.Slot;
 import Frames.Structure.SlotArgument;
 import ModelInputLoad.CDLTag;
+import conceptualhierarchy.ActualData;
 import java.util.ArrayList;
 import java.util.HashMap;  
 import Сoncepts.Concept;
@@ -72,8 +73,14 @@ public class AbstractSimpleFrame extends AbstractFrame {
             return true;
         if (!predicate.equals(arg.predicate))
             return false;
-        if (!body.coveredAndSimilar(arg.body))
-            return false;
+        if (!ActualData.getConfiguration().getBoolSettings().get("rolesExpansionInChildFrames")){
+            if (!body.coveredAndSimilar(arg.body))
+                return false;
+        }
+        else { 
+            if (!body.covered(arg.body))
+                return false;
+        }
         if (arg.quantors.isEmpty())
             return true;
         ArrayList<Variable> thisQuantifiedVariables = getQuantifiedVariables();
