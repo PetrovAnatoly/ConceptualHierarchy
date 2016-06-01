@@ -120,7 +120,7 @@ public class CDLTag {
         rtrn+=">\n";
         return rtrn;
     }
-    static CDLTag parseString(String s){
+    /*static CDLTag parseStr(String s){
         s = s.trim();
         CDLTag rtrn = new CDLTag("INPUT_STRING_IS_INCORRECT");
         int inputLength = s.length();
@@ -211,8 +211,108 @@ public class CDLTag {
             }
         }
         return rtrn;
+    }*/
+    private static int counter = 0;
+    private static String cdlStr;
+    public static CDLTag parseString(String s){
+        cdlStr = s.trim();
+        counter = 0;
+        CDLTag rtrn = parse();
+        System.out.println("cdl file is parsed");
+        return rtrn;
     }
-    
+    private static CDLTag parse(){
+        CDLTag rtrn = new CDLTag("");
+        skipSpaces();
+        if (cdlStr.charAt(counter) != '<')
+            return rtrn;
+        else
+            counter++;
+        while ((cdlStr.charAt(counter) != ' ') && (cdlStr.charAt(counter) != '\n') && (cdlStr.charAt(counter) != '\t')){
+            rtrn.tagName += cdlStr.charAt(counter);
+            counter++;
+        }
+        //System.out.println("tagName:" + rtrn.tagName);
+        skipSpaces();
+        while (cdlStr.charAt(counter) != '>'){
+            String propName = "";
+            while (cdlStr.charAt(counter) != ':'){
+                propName+=cdlStr.charAt(counter);
+                counter++;
+                if (counter == cdlStr.length())
+                    break;
+            }
+            //System.out.println("propName:" + propName);
+            counter++;
+            if (cdlStr.charAt(counter) == '\"'){
+                counter++;
+                String simplePropVal = "";
+                while (cdlStr.charAt(counter) != '\"'){
+                    simplePropVal += cdlStr.charAt(counter);
+                    counter++;
+                }
+                counter++;
+                //System.out.println("propVal:" + simplePropVal);
+                rtrn.addSimpleProperty(propName, simplePropVal);
+            }
+            if (cdlStr.charAt(counter) == '['){
+                //System.out.println("complexPropReached");
+                counter++;
+                skipSpaces();
+                if (cdlStr.charAt(counter) == '\"'){
+                    //System.out.println("complexStrPropReached");
+                    skipSpaces();
+                    ArrayList<String> props = readSimpleProps();
+                    //System.out.println("propVal:" + props);
+                    rtrn.complexStringProperties.put(propName, props);
+                }
+                else if (cdlStr.charAt(counter) == '<'){
+                    //System.out.println("complexTagPropReached");
+                    ArrayList<CDLTag> props = new ArrayList<>();
+                    while (cdlStr.charAt(counter) != ']'){
+                        CDLTag prop = parse();
+                        //System.out.println("propVal:" + prop.getConDesLanStructure());
+                        props.add(prop);
+                        skipSpaces();
+                    }
+                    rtrn.complexTagProperties.put(propName, props);
+                    counter++;
+                }
+                else 
+                    skipSpaces();
+            }
+            skipSpaces();
+        }
+        counter++;
+        return rtrn;
+    }
+    private static ArrayList<String> readSimpleProps(){
+        ArrayList<String> rtrn = new ArrayList<>();
+        int depth = 1;
+        while (depth!=0){
+            if (cdlStr.charAt(counter) == '\"'){
+                counter++;
+                String atomValue = "";
+                while (cdlStr.charAt(counter) != '\"'){
+                    atomValue += cdlStr.charAt(counter);
+                    counter++;
+                }
+                rtrn.add(atomValue);
+                counter++;
+            }
+            skipSpaces();
+            if (cdlStr.charAt(counter) == ']')
+                depth--;
+        }
+        counter++;
+        return rtrn;
+    }
+    private static void skipSpaces(){
+        while ((cdlStr.charAt(counter) == ' ') || 
+                (cdlStr.charAt(counter) == '\n') || 
+                (cdlStr.charAt(counter) == '\t'))
+            counter++;
+    }
     private static ArrayList<String> getStrAtomValuesOfComplexProperty(String s){
         ArrayList<String> rtrn = new ArrayList<>();
         int inputLength = s.length();

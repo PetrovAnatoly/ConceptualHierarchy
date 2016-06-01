@@ -561,7 +561,7 @@ public class MainFrame extends javax.swing.JFrame {
                         ErrorDialog errD = new ErrorDialog(this, true, "Загрузка из файла прошла успешно!");
                         errD.setTitle("Модель загружена");
                         errD.setVisible(true);
-                    } catch (Exception ex) {
+                    } catch (IOException ex) {
                         new ErrorDialog(this, true, "Ошибка при загрузке модели из файла!").setVisible(true);
                     }
                 }
@@ -655,6 +655,16 @@ public class MainFrame extends javax.swing.JFrame {
         boolean b = rolesExpansionCheckBoxMenuItem.getState();
         ActualData.getConfiguration().getBoolSettings().put("rolesExpansionInChildFrames", b);
         ActualData.reformFrameTree();
+        b = framesMultipleInheritanceCheckBoxMenuItem.getState();
+        if (!b){
+            if (ActualData.framesMultipleInhIsExists()){
+                ErrorDialog errD = new ErrorDialog(this, true, "В модели появилось множественное наследование фреймов. Ограничение выключено.");
+                errD.setTitle("Множественное наследование фреймов разрешено");
+                errD.setVisible(true);
+                framesMultipleInheritanceCheckBoxMenuItem.setState(true);
+                ActualData.getConfiguration().putBoolSetting("framesMultipleInheritance", true);
+            }
+        }
         updateFrameIsaTree();
     }//GEN-LAST:event_rolesExpansionCheckBoxMenuItemActionPerformed
     public static void viewFrame(AbstractFrame fr){

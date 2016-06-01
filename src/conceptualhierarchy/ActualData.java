@@ -616,8 +616,6 @@ public class ActualData {
             for (AbstractSimpleFrame defFrame: defFrames){
                 ArrayList<DefConcept> defConcepts = defFrameConcept.get(defFrame);
                 defConcepts.remove((DefConcept) conc);
-                //if (defConcepts.isEmpty())
-                  //  defFrameConcept.remove(defFrame);
             }
         }
         ArrayList<ConceptNode> chNodes = (ArrayList<ConceptNode>) node.childNodes.clone();
@@ -1039,8 +1037,6 @@ public class ActualData {
         else return false;
     }
     public boolean conceptWithThisPropertiesCreateMultipleInheritance(){
-        
-        
         return false;
     }
 }

@@ -62,14 +62,6 @@ public class Body {
                 if (slots.indexOf(slot) == slots.size()-1) 
                     return false;  
             }
-        System.out.println("------------------------covered-----");
-        System.out.println("this:\n");
-        for (CDLTag tag: toConDesLanTags())
-            System.out.println(tag.getConDesLanStructure());
-        System.out.println("arg:\n");
-        for (CDLTag tag: arg.toConDesLanTags())
-            System.out.println(tag.getConDesLanStructure());
-        
         return true;
     }
     public boolean coveredAndSimilar(Body arg){
