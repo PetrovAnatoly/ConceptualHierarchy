@@ -30,6 +30,7 @@ import conceptualhierarchy.ActualConfiguration;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
+import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -53,6 +54,10 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         pack();
+        //JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, framesPanel, conceptsPanel);
+        //mainSplitPane.setLeftComponent(framesPanel);
+        //splitPane.setVisible(true);
+        //this.add(splitPane);
         setLocationRelativeTo(null);
     }
 
@@ -65,19 +70,22 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        frameTree = new javax.swing.JTree();
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        conceptTree = new javax.swing.JTree();
-        jLabel2 = new javax.swing.JLabel();
+        mainSplitPane = new javax.swing.JSplitPane();
+        framesPanel = new javax.swing.JPanel();
         addFrameButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         deleteFrameButton = new javax.swing.JButton();
         frameViewButton = new javax.swing.JButton();
-        conceptViewButton = new javax.swing.JButton();
-        createConceptButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        frameTree = new javax.swing.JTree();
+        conceptsPanel = new javax.swing.JPanel();
         removeConceptButton = new javax.swing.JButton();
+        createConceptButton = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        conceptTree = new javax.swing.JTree();
         constantViewButton = new javax.swing.JButton();
+        conceptViewButton = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         saveModelMenuItem = new javax.swing.JMenuItem();
@@ -98,6 +106,36 @@ public class MainFrame extends javax.swing.JFrame {
         setTitle("Модель предметной области");
         setMinimumSize(new java.awt.Dimension(755, 499));
 
+        mainSplitPane.setDividerSize(7);
+        mainSplitPane.setResizeWeight(0.5);
+        mainSplitPane.setContinuousLayout(true);
+        mainSplitPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        mainSplitPane.setOneTouchExpandable(true);
+
+        addFrameButton.setText("Добавить фрейм");
+        addFrameButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addFrameButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel1.setText("Фреймы:");
+
+        deleteFrameButton.setText("Удалить фрейм");
+        deleteFrameButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteFrameButtonActionPerformed(evt);
+            }
+        });
+
+        frameViewButton.setText("Просмотреть фрейм");
+        frameViewButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frameViewButtonActionPerformed(evt);
+            }
+        });
+
         updateFrameIsaTree();
         frameTree.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -111,40 +149,48 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(frameTree);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel1.setText("Фреймы:");
+        javax.swing.GroupLayout framesPanelLayout = new javax.swing.GroupLayout(framesPanel);
+        framesPanel.setLayout(framesPanelLayout);
+        framesPanelLayout.setHorizontalGroup(
+            framesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(framesPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(framesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(framesPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
+                        .addComponent(frameViewButton))
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, framesPanelLayout.createSequentialGroup()
+                        .addComponent(addFrameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteFrameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        framesPanelLayout.setVerticalGroup(
+            framesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(framesPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(framesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(framesPanelLayout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jLabel1))
+                    .addComponent(frameViewButton, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(framesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(deleteFrameButton)
+                    .addComponent(addFrameButton))
+                .addContainerGap())
+        );
 
-        updateConceptIsaTree();
-        jScrollPane2.setViewportView(conceptTree);
+        mainSplitPane.setLeftComponent(framesPanel);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel2.setText("Концепты:");
-
-        addFrameButton.setText("Добавить фрейм");
-        addFrameButton.addActionListener(new java.awt.event.ActionListener() {
+        removeConceptButton.setText("Удалить концепт");
+        removeConceptButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addFrameButtonActionPerformed(evt);
-            }
-        });
-
-        deleteFrameButton.setText("Удалить фрейм");
-        deleteFrameButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteFrameButtonActionPerformed(evt);
-            }
-        });
-
-        frameViewButton.setText("Просмотреть выбранный фрейм");
-        frameViewButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                frameViewButtonActionPerformed(evt);
-            }
-        });
-
-        conceptViewButton.setText("Свойства концепта");
-        conceptViewButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                conceptViewButtonActionPerformed(evt);
+                removeConceptButtonActionPerformed(evt);
             }
         });
 
@@ -155,12 +201,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        removeConceptButton.setText("Удалить концепт");
-        removeConceptButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                removeConceptButtonActionPerformed(evt);
-            }
-        });
+        updateConceptIsaTree();
+        jScrollPane2.setViewportView(conceptTree);
 
         constantViewButton.setText("Константы");
         constantViewButton.addActionListener(new java.awt.event.ActionListener() {
@@ -168,6 +210,55 @@ public class MainFrame extends javax.swing.JFrame {
                 constantViewButtonActionPerformed(evt);
             }
         });
+
+        conceptViewButton.setText("Свойства");
+        conceptViewButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                conceptViewButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel2.setText("Концепты:");
+
+        javax.swing.GroupLayout conceptsPanelLayout = new javax.swing.GroupLayout(conceptsPanel);
+        conceptsPanel.setLayout(conceptsPanelLayout);
+        conceptsPanelLayout.setHorizontalGroup(
+            conceptsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(conceptsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(conceptsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(conceptsPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                        .addComponent(constantViewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(conceptViewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(conceptsPanelLayout.createSequentialGroup()
+                        .addComponent(createConceptButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(removeConceptButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        conceptsPanelLayout.setVerticalGroup(
+            conceptsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(conceptsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(conceptsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(conceptViewButton)
+                    .addComponent(constantViewButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(conceptsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(createConceptButton)
+                    .addComponent(removeConceptButton))
+                .addContainerGap())
+        );
+
+        mainSplitPane.setRightComponent(conceptsPanel);
 
         fileMenu.setText("Файл");
 
@@ -278,58 +369,13 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
-                        .addComponent(frameViewButton))
-                    .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(addFrameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deleteFrameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
-                        .addComponent(constantViewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(conceptViewButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(createConceptButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(removeConceptButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+            .addComponent(mainSplitPane)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(jLabel1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(frameViewButton)
-                            .addComponent(conceptViewButton)
-                            .addComponent(constantViewButton))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(deleteFrameButton)
-                    .addComponent(addFrameButton)
-                    .addComponent(createConceptButton)
-                    .addComponent(removeConceptButton))
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(2, 2, 2)
+                .addComponent(mainSplitPane))
         );
 
         pack();
@@ -712,6 +758,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTree conceptTree;
     private javax.swing.JButton conceptViewButton;
     private javax.swing.JCheckBoxMenuItem conceptsMultipleInheritanceCheckBoxMenuItem;
+    private javax.swing.JPanel conceptsPanel;
     private javax.swing.JButton constantViewButton;
     private javax.swing.JButton createConceptButton;
     private javax.swing.JButton deleteFrameButton;
@@ -719,6 +766,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTree frameTree;
     private javax.swing.JButton frameViewButton;
     private javax.swing.JCheckBoxMenuItem framesMultipleInheritanceCheckBoxMenuItem;
+    private javax.swing.JPanel framesPanel;
     private javax.swing.JMenuItem generateMenuItem;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -726,6 +774,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JMenuItem loadModelMenuItem;
+    private javax.swing.JSplitPane mainSplitPane;
     private javax.swing.JMenu modelMenu;
     private javax.swing.JMenuItem removeAllNotDefFramesMenuItem;
     private javax.swing.JMenuItem removeAllNotUsedConceptsMenuItem;
