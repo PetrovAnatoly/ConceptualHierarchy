@@ -14,7 +14,7 @@ import Frames.Structure.Quantor;
 import Frames.Structure.Slot;
 import Frames.Structure.SlotArgument;
 import GUI.Dialogs.ErrorDialog;
-import GUI.TableModels.FrameSlotsTableModel;
+import GUI.Models.FrameSlotsTableModel;
 import conceptualhierarchy.ActualData;
 import java.util.ArrayList;
 import java.util.HashMap;

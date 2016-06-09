@@ -5,7 +5,7 @@
  */
 package GUI.Dialogs.ExtensionalDialogs;
 
-import GUI.TableModels.ExtensionalTableModel;
+import GUI.Models.ExtensionalTableModel;
 import conceptualhierarchy.ActualData;
 import conceptualhierarchy.Extensional;
 

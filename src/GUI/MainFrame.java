@@ -19,7 +19,8 @@ import GUI.Dialogs.GenerateDialog;
 import GUI.Dialogs.FramesDialogs.NotFrameViewDialog;
 import GUI.Dialogs.FramesDialogs.ViewSimpleFrameDialog;
 import GUI.Dialogs.ErrorDialog;
-import GUI.Dialogs.FramesHierarchySettingsDialog;
+import GUI.Models.ConceptNodeCellRenderer;
+import GUI.Models.FrameNodeCellRenderer;
 import ModelInputLoad.InputOutputCDL;
 import conceptualhierarchy.ActualData;
 import conceptualhierarchy.ConceptNode;
@@ -33,6 +34,7 @@ import javax.swing.JTree;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import org.xml.sax.SAXException;
@@ -90,9 +92,6 @@ public class MainFrame extends javax.swing.JFrame {
         clearModelMenuItem = new javax.swing.JMenuItem();
         framesMultipleInheritanceCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
         conceptsMultipleInheritanceCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
-        viewMenu = new javax.swing.JMenu();
-        framesHierarchyTuningMenuItem = new javax.swing.JMenuItem();
-        conceptsHierarchyTuningMenuItem = new javax.swing.JMenuItem();
         rolesExpansionCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -263,30 +262,15 @@ public class MainFrame extends javax.swing.JFrame {
         });
         modelMenu.add(conceptsMultipleInheritanceCheckBoxMenuItem);
 
-        jMenuBar1.add(modelMenu);
-
-        viewMenu.setText("Вид");
-
-        framesHierarchyTuningMenuItem.setText("Настройка иерархии фреймов");
-        framesHierarchyTuningMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                framesHierarchyTuningMenuItemActionPerformed(evt);
-            }
-        });
-        viewMenu.add(framesHierarchyTuningMenuItem);
-
-        conceptsHierarchyTuningMenuItem.setText("Настройка иерархии концептов");
-        viewMenu.add(conceptsHierarchyTuningMenuItem);
-
         rolesExpansionCheckBoxMenuItem.setText("Разрешить расширение ролей дочерними фреймами");
         rolesExpansionCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rolesExpansionCheckBoxMenuItemActionPerformed(evt);
             }
         });
-        viewMenu.add(rolesExpansionCheckBoxMenuItem);
+        modelMenu.add(rolesExpansionCheckBoxMenuItem);
 
-        jMenuBar1.add(viewMenu);
+        jMenuBar1.add(modelMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -337,7 +321,7 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(constantViewButton))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
                     .addComponent(jScrollPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -609,12 +593,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_removeAllNotUsedConstantsMenuItemActionPerformed
-
-    private void framesHierarchyTuningMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_framesHierarchyTuningMenuItemActionPerformed
-        // TODO add your handling code here:
-        FramesHierarchySettingsDialog settingsD = new FramesHierarchySettingsDialog(null, true);
-        
-    }//GEN-LAST:event_framesHierarchyTuningMenuItemActionPerformed
     
     private void framesMultipleInheritanceCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_framesMultipleInheritanceCheckBoxMenuItemActionPerformed
         // TODO add your handling code here:
@@ -733,7 +711,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu clearingMenu;
     private javax.swing.JTree conceptTree;
     private javax.swing.JButton conceptViewButton;
-    private javax.swing.JMenuItem conceptsHierarchyTuningMenuItem;
     private javax.swing.JCheckBoxMenuItem conceptsMultipleInheritanceCheckBoxMenuItem;
     private javax.swing.JButton constantViewButton;
     private javax.swing.JButton createConceptButton;
@@ -741,7 +718,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JTree frameTree;
     private javax.swing.JButton frameViewButton;
-    private javax.swing.JMenuItem framesHierarchyTuningMenuItem;
     private javax.swing.JCheckBoxMenuItem framesMultipleInheritanceCheckBoxMenuItem;
     private javax.swing.JMenuItem generateMenuItem;
     private javax.swing.JLabel jLabel1;
@@ -757,12 +733,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton removeConceptButton;
     private javax.swing.JCheckBoxMenuItem rolesExpansionCheckBoxMenuItem;
     private javax.swing.JMenuItem saveModelMenuItem;
-    private javax.swing.JMenu viewMenu;
     // End of variables declaration//GEN-END:variables
 
     private DefaultMutableTreeNode getFrameHierarchyTree(FrameNode node){
         ArrayList<FrameNode> childNodes = node.getChildNodes();
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(node.getValue().getName());  
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(node.getValue().getName());
         for (FrameNode child: childNodes){
             DefaultMutableTreeNode childNode = getFrameHierarchyTree(child);  
             root.add(childNode);
@@ -771,7 +746,8 @@ public class MainFrame extends javax.swing.JFrame {
     }
     private DefaultMutableTreeNode getConceptHierarchyTree(ConceptNode node){
         ArrayList<ConceptNode> childNodes = node.getChildNodes();
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(node.getValue().getName());   
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(node.getValue().getName());  
+        
         for (ConceptNode child: childNodes){
             DefaultMutableTreeNode childNode = getConceptHierarchyTree(child);  
             root.add(childNode);
@@ -780,10 +756,12 @@ public class MainFrame extends javax.swing.JFrame {
     }
     private void updateFrameIsaTree(){
         frameTree = new JTree(getFrameHierarchyTree(ActualData.getFrameHoerarchy()));
+        frameTree.setCellRenderer(new FrameNodeCellRenderer());
         jScrollPane1.setViewportView(frameTree);
     }
     private void updateConceptIsaTree(){
         conceptTree = new JTree(getConceptHierarchyTree(ActualData.getConceptHoerarchy()));
+        conceptTree.setCellRenderer(new ConceptNodeCellRenderer());
         jScrollPane2.setViewportView(conceptTree);
     }
 }

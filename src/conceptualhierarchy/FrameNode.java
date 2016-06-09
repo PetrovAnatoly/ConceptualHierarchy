@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class FrameNode {
     public FrameNode(AbstractFrame arg){
         value = arg;
+        
     }
     
     //fields

@@ -7,7 +7,7 @@ package GUI.Dialogs.ExtensionalDialogs;
 
 import Frames.AbstractSimpleFrame;
 import GUI.Dialogs.ErrorDialog;
-import GUI.TableModels.AddExtensionTableModel;
+import GUI.Models.AddExtensionTableModel;
 import conceptualhierarchy.ActualData;
 import java.util.HashMap;
 import Сoncepts.Concept;

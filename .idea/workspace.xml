@@ -2,7 +2,43 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c61e098b-1df6-49b1-a1a4-678e769a18cd" name="Default" comment="">
+      <change type="DELETED" beforePath="C:\Users\Anatoly\Documents\NetBeansProjects\ConceptualHierarchy\build\classes\GUI\Dialogs\FramesHierarchySettingsDialog$1.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Anatoly\Documents\NetBeansProjects\ConceptualHierarchy\build\classes\GUI\Dialogs\FramesHierarchySettingsDialog$2$1.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Anatoly\Documents\NetBeansProjects\ConceptualHierarchy\build\classes\GUI\Dialogs\FramesHierarchySettingsDialog$2.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Anatoly\Documents\NetBeansProjects\ConceptualHierarchy\build\classes\GUI\Dialogs\FramesHierarchySettingsDialog.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Anatoly\Documents\NetBeansProjects\ConceptualHierarchy\build\classes\GUI\Dialogs\FramesHierarchySettingsDialog.form" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Anatoly\Documents\NetBeansProjects\ConceptualHierarchy\build\classes\GUI\MainFrame$22.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Anatoly\Documents\NetBeansProjects\ConceptualHierarchy\build\classes\conceptualhierarchy\FramesHierarchyActualData.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Anatoly\Documents\NetBeansProjects\ConceptualHierarchy\src\GUI\Dialogs\FramesHierarchySettingsDialog.form" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Anatoly\Documents\NetBeansProjects\ConceptualHierarchy\src\GUI\Dialogs\FramesHierarchySettingsDialog.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Anatoly\Documents\NetBeansProjects\ConceptualHierarchy\src\conceptualhierarchy\FramesHierarchyActualData.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$1.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$10.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$10.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$11.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$11.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$12.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$12.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$13.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$13.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$14.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$14.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$15.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$15.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$16.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$16.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$17.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$17.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$18.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$18.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$19.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$19.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$2.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$20.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$20.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$21.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$21.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$3.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$4.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$4.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$5.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$5.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$6.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$6.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$7.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$7.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$8.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$8.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame$9.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame$9.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame.class" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/GUI/MainFrame.form" afterPath="$PROJECT_DIR$/build/classes/GUI/MainFrame.form" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GUI/MainFrame.form" afterPath="$PROJECT_DIR$/src/GUI/MainFrame.form" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GUI/MainFrame.java" afterPath="$PROJECT_DIR$/src/GUI/MainFrame.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nbproject/private/private.xml" afterPath="$PROJECT_DIR$/nbproject/private/private.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ConceptualHierarchy.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -24,21 +60,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="SetOfNames.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SetOfNames.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/conceptualhierarchy/SetOfNames.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="16" column="14" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ActualData.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/conceptualhierarchy/ActualData.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8122867">
-              <caret line="453" column="42" selection-start-line="453" selection-start-column="42" selection-end-line="453" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -71,7 +97,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1378" />
+    <option name="width" value="1382" />
     <option name="height" value="744" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -97,7 +123,7 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -106,10 +132,70 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ConceptualHierarchy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ConceptualHierarchy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ConceptualHierarchy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ConceptualHierarchy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ConceptualHierarchy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ConceptualHierarchy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ModelInputLoad" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ConceptualHierarchy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ConceptualHierarchy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="conceptualhierarchy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -386,14 +472,16 @@
       <workItem from="1451016160800" duration="150000" />
       <workItem from="1451816188502" duration="289000" />
       <workItem from="1460579824501" duration="34000" />
+      <workItem from="1464897799470" duration="1589000" />
+      <workItem from="1465464984654" duration="103000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4449000" />
+    <option name="totallyTimeSpent" value="6141000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1378" height="744" extended-state="0" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -405,7 +493,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24962063" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24886535" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -445,6 +533,30 @@
     <entry file="file://$PROJECT_DIR$/src/conceptualhierarchy/SetOfNames.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/conceptualhierarchy/SetOfNames.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="16" column="14" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/conceptualhierarchy/ActualData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/conceptualhierarchy/SetOfNames.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
           <caret line="16" column="14" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
           <folding />
         </state>
@@ -487,106 +599,6 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUI/Dialogs/AddConstantDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="5" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUI/Dialogs/BinaryFrameViewDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUI/Dialogs/AddExtensionDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="uml://JAVA/Frames">
-      <provider selected="true" editor-type-id="UmlEditorProvider">
-        <state>
-          <ID>JAVA</ID>
-          <OriginalElement>Frames</OriginalElement>
-          <nodes>
-            <node x="354.75" y="240.0">Frames.AndFrame</node>
-            <node x="301.75" y="0.0">Frames.AbstractFrame</node>
-            <node x="439.0" y="160.0">Frames.NotFrame</node>
-            <node x="50.61250000000001" y="80.0">Frames.AbstractSimpleFrame</node>
-            <node x="0.0" y="160.0">Frames.EventFrame</node>
-            <node x="364.0" y="80.0">Frames.AbstractComplexFrame</node>
-            <node x="254.75" y="240.0">Frames.OrFrame</node>
-            <node x="116.0" y="160.0">Frames.CharacteristicFrame</node>
-            <node x="275.0" y="160.0">Frames.AbstractBinaryFrame</node>
-          </nodes>
-          <notes />
-          <edges>
-            <edge source="Frames.AndFrame" target="Frames.AbstractBinaryFrame">
-              <point x="0.0" y="-15.0" />
-              <point x="399.25" y="215.0" />
-              <point x="383.0" y="215.0" />
-              <point x="36.0" y="15.0" />
-            </edge>
-            <edge source="Frames.NotFrame" target="Frames.AbstractComplexFrame">
-              <point x="0.0" y="-15.0" />
-              <point x="39.5" y="15.0" />
-            </edge>
-            <edge source="Frames.AbstractSimpleFrame" target="Frames.AbstractFrame">
-              <point x="0.0" y="-15.0" />
-              <point x="124.11250000000001" y="50.0" />
-              <point x="315.625" y="50.0" />
-              <point x="-41.625" y="15.0" />
-            </edge>
-            <edge source="Frames.OrFrame" target="Frames.AbstractBinaryFrame">
-              <point x="0.0" y="-15.0" />
-              <point x="294.75" y="215.0" />
-              <point x="311.0" y="215.0" />
-              <point x="-36.0" y="15.0" />
-            </edge>
-            <edge source="Frames.CharacteristicFrame" target="Frames.AbstractSimpleFrame">
-              <point x="0.0" y="-15.0" />
-              <point x="185.5" y="135.0" />
-              <point x="160.8625" y="135.0" />
-              <point x="36.75" y="15.0" />
-            </edge>
-            <edge source="Frames.EventFrame" target="Frames.AbstractSimpleFrame">
-              <point x="0.0" y="-15.0" />
-              <point x="48.0" y="135.0" />
-              <point x="87.36250000000001" y="135.0" />
-              <point x="-36.75" y="15.0" />
-            </edge>
-            <edge source="Frames.AbstractComplexFrame" target="Frames.AbstractFrame">
-              <point x="39.5" y="-15.0" />
-              <point x="482.5" y="50.0" />
-              <point x="398.875" y="50.0" />
-              <point x="41.625" y="15.0" />
-            </edge>
-            <edge source="Frames.AbstractBinaryFrame" target="Frames.AbstractComplexFrame">
-              <point x="36.0" y="-15.0" />
-              <point x="383.0" y="135.0" />
-              <point x="403.5" y="135.0" />
-              <point x="-39.5" y="15.0" />
-            </edge>
-            <edge source="Frames.AbstractBinaryFrame" target="Frames.AbstractFrame">
-              <point x="-36.0" y="-15.0" />
-              <point x="311.0" y="60.0" />
-              <point x="343.375" y="60.0" />
-              <point x="-13.875" y="15.0" />
-            </edge>
-          </edges>
-          <settings layout="Hierarchic Group" zoom="0.6000000000000001" x="-116.0" y="235.0" />
-          <SelectedNodes />
-          <Categories />
-          <SCOPE>All</SCOPE>
-          <VISIBILITY>public</VISIBILITY>
         </state>
       </provider>
     </entry>
@@ -628,14 +640,38 @@
         <state>
           <ID>JAVA</ID>
           <OriginalElement>GUI</OriginalElement>
-          <nodes />
+          <nodes>
+            <node x="" y="">GUI.Dialogs.FramesDialogs.ViewSimpleFrameDialog</node>
+            <node x="" y="">GUI.Dialogs.ConceptDialogs.ConceptDialog</node>
+            <node x="" y="">GUI.Dialogs.FramesDialogs.ChoiceTypeOfNewFrameDialog</node>
+            <node x="" y="">GUI.TableModels.constantTableModel</node>
+            <node x="" y="">GUI.Dialogs.ErrorDialog</node>
+            <node x="" y="">GUI.Dialogs.GenerateDialog</node>
+            <node x="" y="">GUI.Dialogs.FramesDialogs.QuantorsDialog</node>
+            <node x="" y="">GUI.Dialogs.ExtensionalDialogs.ViewPredicateExtensionalDialog</node>
+            <node x="" y="">GUI.Dialogs.ConceptDialogs.AddConstantDialog</node>
+            <node x="" y="">GUI.Dialogs.FramesDialogs.BinaryFrameViewDialog</node>
+            <node x="" y="">GUI.Dialogs.ConceptDialogs.ConstantViewDialog</node>
+            <node x="" y="">GUI.Dialogs.FramesDialogs.NotFrameViewDialog</node>
+            <node x="" y="">GUI.Dialogs.ExtensionalDialogs.AddExtensionDialog</node>
+            <node x="" y="">GUI.Dialogs.FramesDialogs.CreateSimpleFrameDialog</node>
+            <node x="" y="">GUI.TableModels.FrameSlotsTableModel</node>
+            <node x="" y="">GUI.TableModels.ExtensionalTableModel</node>
+            <node x="" y="">GUI.MainFrame</node>
+            <node x="" y="">GUI.TableModels.AddExtensionTableModel</node>
+            <node x="" y="">GUI.Dialogs.FramesDialogs.CreateNotFrameDialog</node>
+            <node x="" y="">GUI.Dialogs.ExtensionalDialogs.ViewFrameExtensionalDialog</node>
+            <node x="" y="">GUI.Dialogs.ConceptDialogs.DefFrameDialog</node>
+            <node x="" y="">GUI.Dialogs.FramesDialogs.CreateAndFrameDialog</node>
+            <node x="" y="">GUI.Dialogs.FramesDialogs.CreateOrFrameDialog</node>
+          </nodes>
           <notes />
           <edges />
-          <settings layout="Hierarchic Group" zoom="1.0" x="75.0" y="90.0" />
+          <settings layout="Hierarchic Group" zoom="0.6224944320712695" x="544.0" y="439.0" />
           <SelectedNodes />
           <Categories />
           <SCOPE>All</SCOPE>
-          <VISIBILITY>public</VISIBILITY>
+          <VISIBILITY>private</VISIBILITY>
         </state>
       </provider>
     </entry>
@@ -645,19 +681,66 @@
           <ID>JAVA</ID>
           <OriginalElement>conceptualhierarchy</OriginalElement>
           <nodes>
-            <node x="" y="">conceptualhierarchy.InputOutputXML</node>
             <node x="" y="">conceptualhierarchy.ConceptNode</node>
             <node x="" y="">conceptualhierarchy.ActualData</node>
+            <node x="" y="">ModelInputLoad.CDLTag</node>
+            <node x="" y="">conceptualhierarchy.ActualConfiguration</node>
             <node x="" y="">conceptualhierarchy.Extensional</node>
+            <node x="" y="">ModelInputLoad.InputOutputCDL</node>
             <node x="" y="">conceptualhierarchy.FrameNode</node>
+            <node x="" y="">ModelInputLoad.InputOutputXML</node>
           </nodes>
           <notes />
           <edges />
-          <settings layout="Hierarchic Group" zoom="1.9261376896149363" x="198.0" y="78.0" />
+          <settings layout="Hierarchic Group" zoom="1.0" x="338.0" y="110.0" />
           <SelectedNodes />
           <Categories />
           <SCOPE>All</SCOPE>
-          <VISIBILITY>public</VISIBILITY>
+          <VISIBILITY>private</VISIBILITY>
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://JAVA/Frames">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>JAVA</ID>
+          <OriginalElement>Frames</OriginalElement>
+          <nodes>
+            <node x="" y="">Сoncepts.Variable</node>
+            <node x="" y="">Сoncepts.DefConcept</node>
+            <node x="" y="">Frames.AndFrame</node>
+            <node x="" y="">Frames.FunctionalFrame</node>
+            <node x="" y="">Frames.NotFrame</node>
+            <node x="" y="">Сoncepts.Constant</node>
+            <node x="" y="">Frames.AbstractSimpleFrame</node>
+            <node x="" y="">Frames.Structure.Body</node>
+            <node x="" y="">Frames.CharacteristicFrame</node>
+            <node x="" y="">Frames.Structure.Quantor</node>
+            <node x="" y="">Сoncepts.Concept</node>
+            <node x="" y="">Frames.Structure.Slot</node>
+            <node x="" y="">Frames.AbstractFrame</node>
+            <node x="" y="">Frames.Structure.SlotArgument</node>
+            <node x="" y="">Frames.EventFrame</node>
+            <node x="" y="">Frames.AbstractComplexFrame</node>
+            <node x="" y="">Frames.OrFrame</node>
+            <node x="" y="">Сoncepts.AbstractConcept</node>
+            <node x="" y="">Frames.AbstractBinaryFrame</node>
+          </nodes>
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="1.0" x="393.0" y="270.0" />
+          <SelectedNodes />
+          <Categories />
+          <SCOPE>All</SCOPE>
+          <VISIBILITY>private</VISIBILITY>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/conceptualhierarchy/ActualData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.1450512">
+          <caret line="435" column="20" selection-start-line="435" selection-start-column="20" selection-end-line="435" selection-end-column="20" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -665,14 +748,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="16" column="14" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/conceptualhierarchy/ActualData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8122867">
-          <caret line="453" column="42" selection-start-line="453" selection-start-column="42" selection-end-line="453" selection-end-column="42" />
           <folding />
         </state>
       </provider>

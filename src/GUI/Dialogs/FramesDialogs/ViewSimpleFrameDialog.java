@@ -11,7 +11,7 @@ import Frames.EventFrame;
 import Frames.FunctionalFrame;
 import GUI.Dialogs.ConceptDialogs.DefFrameDialog;
 import GUI.Dialogs.ExtensionalDialogs.ViewFrameExtensionalDialog;
-import GUI.TableModels.FrameSlotsTableModel;
+import GUI.Models.FrameSlotsTableModel;
 import javax.swing.table.DefaultTableModel;
 
 /**

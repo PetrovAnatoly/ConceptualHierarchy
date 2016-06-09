@@ -122,7 +122,11 @@ public class CreateNotFrameDialog extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String firstOperandName = (String) firstOperandComboBox.getSelectedItem();
-        String newFrameName = newFrameNameTextField.getText();
+        String newFrameName = newFrameNameTextField.getText().trim();
+        if (newFrameName.isEmpty()){
+            ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Вы не ввели название фрейма!");
+            errorD.setVisible(true);
+        }
         if (!ActualData.avalibleFrameName(newFrameName)) {
             ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Фрейм с таким именем уже есть");
             errorD.setVisible(true);

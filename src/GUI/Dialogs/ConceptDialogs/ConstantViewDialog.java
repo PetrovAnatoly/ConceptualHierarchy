@@ -6,7 +6,7 @@
 package GUI.Dialogs.ConceptDialogs;
 
 import GUI.Dialogs.ErrorDialog;
-import GUI.TableModels.constantTableModel;
+import GUI.Models.constantTableModel;
 import conceptualhierarchy.ActualData;
 import Сoncepts.Concept;
 import Сoncepts.DefConcept;

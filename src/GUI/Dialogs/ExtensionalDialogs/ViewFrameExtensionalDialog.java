@@ -6,7 +6,7 @@
 package GUI.Dialogs.ExtensionalDialogs;
 
 import Frames.AbstractSimpleFrame;
-import GUI.TableModels.ExtensionalTableModel;
+import GUI.Models.ExtensionalTableModel;
 import conceptualhierarchy.ActualData;
 import conceptualhierarchy.Extensional;
 import java.util.HashMap;
