@@ -274,10 +274,10 @@ public class CreateSimpleFrameDialog extends javax.swing.JDialog {
             ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Введите имя фрейма!");
             errorD.setVisible(true);
         }
-       /* else if (!Quantor.correctQuantorString(quantorsStr)){
-            ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Некорректная строка кванторов");
+        else if (slotsTable.getRowCount() == 0){
+            ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Введите слоты!");
             errorD.setVisible(true);
-        }*/
+        }
         else {
             ArrayList<Concept> newConcepts = new ArrayList();
             HashMap<Concept, ArrayList<Constant>> newConstants = new HashMap();

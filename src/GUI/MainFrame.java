@@ -104,7 +104,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Модель предметной области");
-        setMinimumSize(new java.awt.Dimension(755, 499));
+        setMinimumSize(new java.awt.Dimension(575, 499));
 
         mainSplitPane.setDividerSize(7);
         mainSplitPane.setResizeWeight(0.5);
@@ -177,7 +177,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(jLabel1))
                     .addComponent(frameViewButton, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(framesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(deleteFrameButton)
@@ -202,6 +202,16 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         updateConceptIsaTree();
+        conceptTree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                conceptTreeMouseClicked(evt);
+            }
+        });
+        conceptTree.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                conceptTreeKeyPressed(evt);
+            }
+        });
         jScrollPane2.setViewportView(conceptTree);
 
         constantViewButton.setText("Константы");
@@ -250,7 +260,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(conceptViewButton)
                     .addComponent(constantViewButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(conceptsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createConceptButton)
@@ -374,7 +384,7 @@ public class MainFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(2, 2, 2)
+                .addContainerGap()
                 .addComponent(mainSplitPane))
         );
 
@@ -412,21 +422,36 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteFrameButtonActionPerformed
 
     private void frameTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_frameTreeMouseClicked
-        // TODO add your handling code here:
-          
-    }//GEN-LAST:event_frameTreeMouseClicked
-
-    private void frameTreeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_frameTreeKeyPressed
-        // TODO add your handling code here:
         TreeSelectionModel TSM = frameTree.getSelectionModel();
         TreePath TP = TSM.getSelectionPath();
-        if (TP == null) 
+        if (TP == null)
             return;
         DefaultMutableTreeNode TC = (DefaultMutableTreeNode)TP.getLastPathComponent();
         String s = (String) TC.getUserObject();
         if (!s.equals("Frames")) {
-            AbstractFrame fr = ActualData.getFrameByName(s);
-            viewFrame(fr);
+            frameViewButton.setEnabled(true);
+            deleteFrameButton.setEnabled(true);
+        }
+        else {
+            frameViewButton.setEnabled(false);
+            deleteFrameButton.setEnabled(false);
+        }
+    }//GEN-LAST:event_frameTreeMouseClicked
+
+    private void frameTreeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_frameTreeKeyPressed
+        TreeSelectionModel TSM = frameTree.getSelectionModel();
+        TreePath TP = TSM.getSelectionPath();
+        if (TP == null)
+            return;
+        DefaultMutableTreeNode TC = (DefaultMutableTreeNode)TP.getLastPathComponent();
+        String s = (String) TC.getUserObject();
+        if (!s.equals("Frames")) {
+            frameViewButton.setEnabled(true);
+            deleteFrameButton.setEnabled(true);
+        }
+        else {
+            frameViewButton.setEnabled(false);
+            deleteFrameButton.setEnabled(false);
         }
     }//GEN-LAST:event_frameTreeKeyPressed
  
@@ -446,8 +471,6 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_frameViewButtonActionPerformed
 
     private void conceptViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conceptViewButtonActionPerformed
-        // TODO add your handling code here:
-        
         TreeSelectionModel TSM = conceptTree.getSelectionModel();
         TreePath TP = TSM.getSelectionPath();
         if (TP == null)  
@@ -465,7 +488,6 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_conceptViewButtonActionPerformed
 
     private void createConceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createConceptButtonActionPerformed
-        // TODO add your handling code here:
         ConceptDialog cwd = new ConceptDialog(this, true);
         cwd.setVisible(true);
         if (ActualData.addingIsSucces()){
@@ -475,7 +497,6 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_createConceptButtonActionPerformed
 
     private void constantViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_constantViewButtonActionPerformed
-        // TODO add your handling code here:
         TreeSelectionModel TSM = conceptTree.getSelectionModel();
         TreePath TP = TSM.getSelectionPath();
         if (TP == null) 
@@ -492,7 +513,6 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_constantViewButtonActionPerformed
 
     private void removeConceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeConceptButtonActionPerformed
-        // TODO add your handling code here:
         TreeSelectionModel TSM = conceptTree.getSelectionModel();
         TreePath TP = TSM.getSelectionPath();
         if (TP == null)  
@@ -691,6 +711,53 @@ public class MainFrame extends javax.swing.JFrame {
         }
         updateFrameIsaTree();
     }//GEN-LAST:event_rolesExpansionCheckBoxMenuItemActionPerformed
+
+    private void conceptTreeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_conceptTreeKeyPressed
+        TreeSelectionModel TSM = conceptTree.getSelectionModel();
+        TreePath TP = TSM.getSelectionPath();
+        if (TP == null){
+            constantViewButton.setEnabled(false);
+            conceptViewButton.setEnabled(false);
+            removeConceptButton.setEnabled(false);
+            return;
+        }
+        DefaultMutableTreeNode TC = (DefaultMutableTreeNode)TP.getLastPathComponent();
+        String s = (String) TC.getUserObject();
+        if (s.equals("Concepts")) {
+            constantViewButton.setEnabled(false);
+            conceptViewButton.setEnabled(false);
+            removeConceptButton.setEnabled(false);
+        }
+        else{
+            constantViewButton.setEnabled(true);
+            conceptViewButton.setEnabled(true);
+            removeConceptButton.setEnabled(true);
+        }
+    }//GEN-LAST:event_conceptTreeKeyPressed
+
+    private void conceptTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_conceptTreeMouseClicked
+        // TODO add your handling code here:
+        TreeSelectionModel TSM = conceptTree.getSelectionModel();
+        TreePath TP = TSM.getSelectionPath();
+        if (TP == null){
+            constantViewButton.setEnabled(false);
+            conceptViewButton.setEnabled(false);
+            removeConceptButton.setEnabled(false);
+            return;
+        }
+        DefaultMutableTreeNode TC = (DefaultMutableTreeNode)TP.getLastPathComponent();
+        String s = (String) TC.getUserObject();
+        if (s.equals("Concepts")) {
+            constantViewButton.setEnabled(false);
+            conceptViewButton.setEnabled(false);
+            removeConceptButton.setEnabled(false);
+        }
+        else{
+            constantViewButton.setEnabled(true);
+            conceptViewButton.setEnabled(true);
+            removeConceptButton.setEnabled(true);
+        }
+    }//GEN-LAST:event_conceptTreeMouseClicked
     public static void viewFrame(AbstractFrame fr){
         if (fr instanceof AndFrame){
             BinaryFrameViewDialog frViewDialog = new BinaryFrameViewDialog(new javax.swing.JFrame(), true);
@@ -806,11 +873,36 @@ public class MainFrame extends javax.swing.JFrame {
     private void updateFrameIsaTree(){
         frameTree = new JTree(getFrameHierarchyTree(ActualData.getFrameHoerarchy()));
         frameTree.setCellRenderer(new FrameNodeCellRenderer());
+        frameTree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                frameTreeMouseClicked(evt);
+            }
+        });
+        frameTree.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                frameTreeKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(frameTree);
+        frameViewButton.setEnabled(false);
+        deleteFrameButton.setEnabled(false);
     }
     private void updateConceptIsaTree(){
         conceptTree = new JTree(getConceptHierarchyTree(ActualData.getConceptHoerarchy()));
         conceptTree.setCellRenderer(new ConceptNodeCellRenderer());
+        conceptTree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                conceptTreeMouseClicked(evt);
+            }
+        });
+        conceptTree.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                conceptTreeKeyPressed(evt);
+            }
+        });
         jScrollPane2.setViewportView(conceptTree);
+        constantViewButton.setEnabled(false);
+        conceptViewButton.setEnabled(false);
+        removeConceptButton.setEnabled(false);
     }
 }

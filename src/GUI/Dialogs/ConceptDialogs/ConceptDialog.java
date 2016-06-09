@@ -193,6 +193,7 @@ public class ConceptDialog extends javax.swing.JDialog {
         if (conc instanceof DefConcept){
             newPropertyButton.setVisible(false);
             deletePropertyButton.setVisible(false);
+            myTableModel.tableEditable = false;
         }
     }
     private boolean conceptPropertiesIsChanged(){
@@ -324,7 +325,17 @@ public class ConceptDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_nameTextFieldActionPerformed
     private final Object[] headers = {"Свойства концепта:"};
     private final Object[][] data = {};
-    private final DefaultTableModel myTableModel = new DefaultTableModel(data,headers);
+    static class MyTableModel extends DefaultTableModel{
+        boolean tableEditable = true;
+        private MyTableModel(Object[][] data, Object[] headers) {
+            super(data, headers);
+        }
+        @Override
+        public boolean isCellEditable(int i, int k){
+            return tableEditable;
+        }
+    }
+    private final MyTableModel myTableModel = new MyTableModel(data,headers);
  
     private void addRawToPropertyTable(){
         Object[] raw = {""};
