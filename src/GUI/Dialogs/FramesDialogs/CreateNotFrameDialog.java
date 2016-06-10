@@ -8,6 +8,7 @@ package GUI.Dialogs.FramesDialogs;
 import Frames.AbstractFrame;
 import Frames.NotFrame;
 import GUI.Dialogs.ErrorDialog;
+import GUI.Models.SearchComboBoxModel;
 import conceptualhierarchy.ActualData;
 
 /**
@@ -47,16 +48,21 @@ public class CreateNotFrameDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         jLabel1.setText("NOT");
 
         firstOperandComboBox.setEditable(true);
-        firstOperandComboBox.setModel(new javax.swing.DefaultComboBoxModel(ActualData.getFrameNameSet().toArray()));
+        firstOperandComboBox.setModel(new SearchComboBoxModel(firstOperandComboBox, ActualData.getFrameNameSet().toArray()));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("Not-Frame:");
 
-        jLabel2.setText("Выберите из списка или начните писать название:");
+        jLabel2.setText("Выберите из списка или введите название:");
 
         jLabel3.setText("Имя нового фрейма:");
 
@@ -82,7 +88,7 @@ public class CreateNotFrameDialog extends javax.swing.JDialog {
                                 .addComponent(firstOperandComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
-                                .addGap(0, 121, Short.MAX_VALUE))
+                                .addGap(0, 158, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -128,11 +134,11 @@ public class CreateNotFrameDialog extends javax.swing.JDialog {
             errorD.setVisible(true);
         }
         if (!ActualData.avalibleFrameName(newFrameName)) {
-            ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Фрейм с таким именем уже есть");
+            ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Фрейм с таким именем уже есть!");
             errorD.setVisible(true);
         }
         else if (ActualData.avalibleFrameName(firstOperandName)){
-            ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Некорректный операнд");
+            ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Некорректный операнд!");
             errorD.setVisible(true);
         }
         else {
@@ -153,6 +159,12 @@ public class CreateNotFrameDialog extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        // TODO add your handling code here:
+        ((SearchComboBoxModel)firstOperandComboBox.getModel()).updateModel("");
+        firstOperandComboBox.setSelectedItem("");
+    }//GEN-LAST:event_formComponentShown
 
     /**
      * @param args the command line arguments

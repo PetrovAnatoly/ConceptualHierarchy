@@ -251,6 +251,11 @@ public class GenerateDialog extends javax.swing.JDialog {
             ErrorDialog errD = new ErrorDialog(new JFrame(), true, "Концепты сгенерированы!");
             errD.setTitle("Сгенерировано");
             errD.setVisible(true);
+            for (Concept  concept: ActualData.getConcepts())
+                if (!(concept instanceof DefConcept)){
+                    conceptChooseComboBox.removeItem(concept.getName());
+                    conceptChooseComboBox.addItem(concept.getName());
+                }
         }
         catch (NumberFormatException ex){
             new ErrorDialog(new JFrame(), true, "Некорректный ввод!").setVisible(true);

@@ -58,7 +58,10 @@ package GUI.Dialogs.FramesDialogs;
 import Frames.AbstractFrame;
 import Frames.AndFrame;
 import GUI.Dialogs.ErrorDialog;
+import GUI.Models.SearchComboBoxModel;
 import conceptualhierarchy.ActualData;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -100,13 +103,18 @@ public class CreateAndFrameDialog extends javax.swing.JDialog {
         setTitle("Выберите операнды");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setResizable(false);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         firstOperandComboBox.setEditable(true);
-        firstOperandComboBox.setModel(new javax.swing.DefaultComboBoxModel(ActualData.getFrameNameSet().toArray()));
-        firstOperandComboBox.setRequestFocusEnabled(true);
+        firstOperandComboBox.setModel(new SearchComboBoxModel(firstOperandComboBox, ActualData.getFrameNameSet().toArray()));
+        //firstOperandComboBox.setRequestFocusEnabled(true);
 
         secondOperandComboBox.setEditable(true);
-        secondOperandComboBox.setModel(new javax.swing.DefaultComboBoxModel(ActualData.getFrameNameSet().toArray()));
+        secondOperandComboBox.setModel(new SearchComboBoxModel(secondOperandComboBox, ActualData.getFrameNameSet().toArray()));
 
         jLabel1.setText("AND");
 
@@ -117,7 +125,7 @@ public class CreateAndFrameDialog extends javax.swing.JDialog {
             }
         });
 
-        jLabel2.setText("Выберите из списка или начните писать название:");
+        jLabel2.setText("Выберите из списка или введите название:");
 
         jLabel3.setText("Имя нового фрейма:");
 
@@ -132,29 +140,27 @@ public class CreateAndFrameDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel2)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(firstOperandComboBox, 0, 154, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(secondOperandComboBox, 0, 169, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(newFrameNameTextField)))
-                        .addContainerGap())))
+                        .addComponent(firstOperandComboBox, 0, 154, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(secondOperandComboBox, 0, 169, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(newFrameNameTextField)))
+                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,19 +187,23 @@ public class CreateAndFrameDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String firstOperandName = (String) firstOperandComboBox.getSelectedItem();
-        String secondOperandName = (String) secondOperandComboBox.getSelectedItem();
+        String firstOperandName = ((String) firstOperandComboBox.getSelectedItem()).trim();
+        String secondOperandName = ((String) secondOperandComboBox.getSelectedItem()).trim();
         String newFrameName = newFrameNameTextField.getText().trim();
         if (newFrameName.isEmpty()){
-            ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Вы не вввели название фрейма");
+            ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Вы не вввели название фрейма!");
             errorD.setVisible(true);
         }
         else if (!ActualData.avalibleFrameName(newFrameName)) {
-            ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Фрейм с таким именем уже есть");
+            ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Фрейм с таким именем уже есть!");
             errorD.setVisible(true);
         }
         else if (ActualData.avalibleFrameName(firstOperandName) || ActualData.avalibleFrameName(secondOperandName)){
-            ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Некорректные операнды");
+            ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Некорректные операнды!");
+            errorD.setVisible(true);
+        }
+        else if (firstOperandName.equals(secondOperandName)){
+            ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Одинаковые операнды!");
             errorD.setVisible(true);
         }
         else {
@@ -216,6 +226,13 @@ public class CreateAndFrameDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        // TODO add your handling code here:
+        ((SearchComboBoxModel)firstOperandComboBox.getModel()).updateModel("");
+        firstOperandComboBox.setSelectedItem("");
+        ((SearchComboBoxModel)secondOperandComboBox.getModel()).updateModel("");
+        secondOperandComboBox.setSelectedItem("");
+    }//GEN-LAST:event_formComponentShown
     /**
      * @param args the command line arguments
      */

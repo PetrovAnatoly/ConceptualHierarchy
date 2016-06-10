@@ -27,6 +27,7 @@ import conceptualhierarchy.ConceptNode;
 import conceptualhierarchy.FrameNode;
 import ModelInputLoad.InputOutputXML;
 import conceptualhierarchy.ActualConfiguration;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
@@ -104,13 +105,15 @@ public class MainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Модель предметной области");
-        setMinimumSize(new java.awt.Dimension(575, 499));
+        setMinimumSize(new java.awt.Dimension(570, 350));
 
         mainSplitPane.setDividerSize(7);
         mainSplitPane.setResizeWeight(0.5);
         mainSplitPane.setContinuousLayout(true);
         mainSplitPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         mainSplitPane.setOneTouchExpandable(true);
+
+        framesPanel.setPreferredSize(new java.awt.Dimension(373, 458));
 
         addFrameButton.setText("Добавить фрейм");
         addFrameButton.addActionListener(new java.awt.event.ActionListener() {
@@ -143,8 +146,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         frameTree.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                frameTreeKeyPressed(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                frameTreeKeyReleased(evt);
             }
         });
         jScrollPane1.setViewportView(frameTree);
@@ -158,7 +161,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(framesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(framesPanelLayout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
                         .addComponent(frameViewButton))
                     .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, framesPanelLayout.createSequentialGroup()
@@ -177,7 +180,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(jLabel1))
                     .addComponent(frameViewButton, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(framesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(deleteFrameButton)
@@ -186,6 +189,8 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         mainSplitPane.setLeftComponent(framesPanel);
+
+        conceptsPanel.setPreferredSize(new java.awt.Dimension(373, 458));
 
         removeConceptButton.setText("Удалить концепт");
         removeConceptButton.addActionListener(new java.awt.event.ActionListener() {
@@ -208,8 +213,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         conceptTree.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                conceptTreeKeyPressed(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                conceptTreeKeyReleased(evt);
             }
         });
         jScrollPane2.setViewportView(conceptTree);
@@ -241,7 +246,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jScrollPane2)
                     .addGroup(conceptsPanelLayout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
                         .addComponent(constantViewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(conceptViewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -260,7 +265,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(conceptViewButton)
                     .addComponent(constantViewButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(conceptsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createConceptButton)
@@ -379,13 +384,13 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainSplitPane)
+            .addComponent(mainSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 744, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(mainSplitPane))
+                .addGap(2, 2, 2)
+                .addComponent(mainSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE))
         );
 
         pack();
@@ -415,10 +420,11 @@ public class MainFrame extends javax.swing.JFrame {
                 new ErrorDialog(this, true, "Фрейм используется в def-измерении, сначала удалите все его def-концепты!").setVisible(true);
                 return;
             }
-            else
+            else{
                 ActualData.removeFrameByName(s);
+                updateFrameIsaTree();
+            }
         }
-        updateFrameIsaTree();
     }//GEN-LAST:event_deleteFrameButtonActionPerformed
 
     private void frameTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_frameTreeMouseClicked
@@ -437,23 +443,6 @@ public class MainFrame extends javax.swing.JFrame {
             deleteFrameButton.setEnabled(false);
         }
     }//GEN-LAST:event_frameTreeMouseClicked
-
-    private void frameTreeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_frameTreeKeyPressed
-        TreeSelectionModel TSM = frameTree.getSelectionModel();
-        TreePath TP = TSM.getSelectionPath();
-        if (TP == null)
-            return;
-        DefaultMutableTreeNode TC = (DefaultMutableTreeNode)TP.getLastPathComponent();
-        String s = (String) TC.getUserObject();
-        if (!s.equals("Frames")) {
-            frameViewButton.setEnabled(true);
-            deleteFrameButton.setEnabled(true);
-        }
-        else {
-            frameViewButton.setEnabled(false);
-            deleteFrameButton.setEnabled(false);
-        }
-    }//GEN-LAST:event_frameTreeKeyPressed
  
     private void frameViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frameViewButtonActionPerformed
         // TODO add your handling code here:
@@ -712,29 +701,6 @@ public class MainFrame extends javax.swing.JFrame {
         updateFrameIsaTree();
     }//GEN-LAST:event_rolesExpansionCheckBoxMenuItemActionPerformed
 
-    private void conceptTreeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_conceptTreeKeyPressed
-        TreeSelectionModel TSM = conceptTree.getSelectionModel();
-        TreePath TP = TSM.getSelectionPath();
-        if (TP == null){
-            constantViewButton.setEnabled(false);
-            conceptViewButton.setEnabled(false);
-            removeConceptButton.setEnabled(false);
-            return;
-        }
-        DefaultMutableTreeNode TC = (DefaultMutableTreeNode)TP.getLastPathComponent();
-        String s = (String) TC.getUserObject();
-        if (s.equals("Concepts")) {
-            constantViewButton.setEnabled(false);
-            conceptViewButton.setEnabled(false);
-            removeConceptButton.setEnabled(false);
-        }
-        else{
-            constantViewButton.setEnabled(true);
-            conceptViewButton.setEnabled(true);
-            removeConceptButton.setEnabled(true);
-        }
-    }//GEN-LAST:event_conceptTreeKeyPressed
-
     private void conceptTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_conceptTreeMouseClicked
         // TODO add your handling code here:
         TreeSelectionModel TSM = conceptTree.getSelectionModel();
@@ -758,6 +724,54 @@ public class MainFrame extends javax.swing.JFrame {
             removeConceptButton.setEnabled(true);
         }
     }//GEN-LAST:event_conceptTreeMouseClicked
+
+    private void conceptTreeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_conceptTreeKeyReleased
+        TreeSelectionModel TSM = conceptTree.getSelectionModel();
+        TreePath TP = TSM.getSelectionPath();
+        if (TP == null){
+            constantViewButton.setEnabled(false);
+            conceptViewButton.setEnabled(false);
+            removeConceptButton.setEnabled(false);
+            return;
+        }
+        DefaultMutableTreeNode TC = (DefaultMutableTreeNode)TP.getLastPathComponent();
+        String s = (String) TC.getUserObject();
+        if (s.equals("Concepts")) {
+            constantViewButton.setEnabled(false);
+            conceptViewButton.setEnabled(false);
+            removeConceptButton.setEnabled(false);
+        }
+        else{
+            constantViewButton.setEnabled(true);
+            conceptViewButton.setEnabled(true);
+            removeConceptButton.setEnabled(true);
+        }
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+            conceptViewButtonActionPerformed(null);
+        else if (evt.getKeyCode() == KeyEvent.VK_DELETE)
+            removeConceptButtonActionPerformed(null);
+    }//GEN-LAST:event_conceptTreeKeyReleased
+
+    private void frameTreeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_frameTreeKeyReleased
+        TreeSelectionModel TSM = frameTree.getSelectionModel();
+        TreePath TP = TSM.getSelectionPath();
+        if (TP == null)
+            return;
+        DefaultMutableTreeNode TC = (DefaultMutableTreeNode)TP.getLastPathComponent();
+        String s = (String) TC.getUserObject();
+        if (!s.equals("Frames")) {
+            frameViewButton.setEnabled(true);
+            deleteFrameButton.setEnabled(true);
+        }
+        else {
+            frameViewButton.setEnabled(false);
+            deleteFrameButton.setEnabled(false);
+        }
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+            frameViewButtonActionPerformed(null);
+        else if (evt.getKeyCode() == KeyEvent.VK_DELETE)
+            deleteFrameButtonActionPerformed(null);
+    }//GEN-LAST:event_frameTreeKeyReleased
     public static void viewFrame(AbstractFrame fr){
         if (fr instanceof AndFrame){
             BinaryFrameViewDialog frViewDialog = new BinaryFrameViewDialog(new javax.swing.JFrame(), true);
@@ -879,8 +893,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         frameTree.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                frameTreeKeyPressed(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                frameTreeKeyReleased(evt);
             }
         });
         jScrollPane1.setViewportView(frameTree);
@@ -896,8 +910,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         conceptTree.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                conceptTreeKeyPressed(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                conceptTreeKeyReleased(evt);
             }
         });
         jScrollPane2.setViewportView(conceptTree);

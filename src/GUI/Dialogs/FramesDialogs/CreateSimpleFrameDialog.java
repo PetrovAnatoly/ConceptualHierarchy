@@ -260,8 +260,8 @@ public class CreateSimpleFrameDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String newFrName = newFrameNameTextField.getText();
-        String newFrPredicate = predicateTextField.getText();
+        String newFrName = newFrameNameTextField.getText().trim();
+        String newFrPredicate = predicateTextField.getText().trim();
         if (!ActualData.avalibleFrameName(newFrName)) {
             ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, "Фрейм с таким именем уже есть");
             errorD.setVisible(true);
@@ -284,9 +284,9 @@ public class CreateSimpleFrameDialog extends javax.swing.JDialog {
             HashMap<Concept, ArrayList<Variable>> newVariables = new HashMap();
             Body newFrBody = new Body(); 
             for (int i = 0; i < slotsTable.getRowCount(); i++){
-                String role = (String) slotsTable.getValueAt(i, 0);
-                String argumentStr = (String) slotsTable.getValueAt(i, 1);
-                String conceptStr = (String) slotsTable.getValueAt(i, 2);
+                String role = ((String) slotsTable.getValueAt(i, 0)).trim();
+                String argumentStr = ((String) slotsTable.getValueAt(i, 1)).trim();
+                String conceptStr = ((String) slotsTable.getValueAt(i, 2)).trim();
                 if (role.equals("") || argumentStr.equals("") || conceptStr.equals("")){
                     String errorMassage = "Некорректный ввод слотов";
                     ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, errorMassage);
@@ -316,6 +316,13 @@ public class CreateSimpleFrameDialog extends javax.swing.JDialog {
                 else
                     slotConc = ActualData.getConceptByName(conceptStr);
                 if (argumentStr.charAt(0) == '\'' && argumentStr.charAt(argumentStr.length()-1) == '\''){
+                    String cnstntName = argumentStr.substring(1).substring(0, argumentStr.length()-2).trim();
+                    if (cnstntName.isEmpty()){
+                        String errorMassage = "Некорректный ввод слотов";
+                        ErrorDialog errorD = new ErrorDialog(new javax.swing.JFrame(), true, errorMassage);
+                        errorD.setVisible(true);
+                        return;
+                    }
                     if (newConcIndicator){
                         if (newConstants.containsKey(slotConc)){
                             ArrayList<Constant> newConstInDomen = newConstants.get(slotConc);
