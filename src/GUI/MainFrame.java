@@ -30,6 +30,8 @@ import conceptualhierarchy.ActualConfiguration;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashSet;
 import javax.swing.JFileChooser;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
@@ -102,6 +104,14 @@ public class MainFrame extends javax.swing.JFrame {
         framesMultipleInheritanceCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
         conceptsMultipleInheritanceCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
         rolesExpansionCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
+        viewMenu = new javax.swing.JMenu();
+        framesHierarchyViewMenu = new javax.swing.JMenu();
+        expandFrameHierarchyMenuItem = new javax.swing.JMenuItem();
+        collapseFrameHierarchyMenuItem = new javax.swing.JMenuItem();
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        conceptsHierarchyViewMenu = new javax.swing.JMenu();
+        expandConceptHierarchyMenuItem = new javax.swing.JMenuItem();
+        collapseConceptHierarchyMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Модель предметной области");
@@ -377,6 +387,54 @@ public class MainFrame extends javax.swing.JFrame {
         modelMenu.add(rolesExpansionCheckBoxMenuItem);
 
         jMenuBar1.add(modelMenu);
+
+        viewMenu.setText("Вид");
+
+        framesHierarchyViewMenu.setText("Иерархия фреймов");
+
+        expandFrameHierarchyMenuItem.setText("Раскрыть");
+        expandFrameHierarchyMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                expandFrameHierarchyMenuItemActionPerformed(evt);
+            }
+        });
+        framesHierarchyViewMenu.add(expandFrameHierarchyMenuItem);
+
+        collapseFrameHierarchyMenuItem.setText("Свернуть");
+        collapseFrameHierarchyMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                collapseFrameHierarchyMenuItemActionPerformed(evt);
+            }
+        });
+        framesHierarchyViewMenu.add(collapseFrameHierarchyMenuItem);
+
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
+        framesHierarchyViewMenu.add(jCheckBoxMenuItem1);
+
+        viewMenu.add(framesHierarchyViewMenu);
+
+        conceptsHierarchyViewMenu.setText("Иерархия концептов");
+
+        expandConceptHierarchyMenuItem.setText("Раскрыть");
+        expandConceptHierarchyMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                expandConceptHierarchyMenuItemActionPerformed(evt);
+            }
+        });
+        conceptsHierarchyViewMenu.add(expandConceptHierarchyMenuItem);
+
+        collapseConceptHierarchyMenuItem.setText("Свернуть");
+        collapseConceptHierarchyMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                collapseConceptHierarchyMenuItemActionPerformed(evt);
+            }
+        });
+        conceptsHierarchyViewMenu.add(collapseConceptHierarchyMenuItem);
+
+        viewMenu.add(conceptsHierarchyViewMenu);
+
+        jMenuBar1.add(viewMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -772,6 +830,32 @@ public class MainFrame extends javax.swing.JFrame {
         else if (evt.getKeyCode() == KeyEvent.VK_DELETE)
             deleteFrameButtonActionPerformed(null);
     }//GEN-LAST:event_frameTreeKeyReleased
+
+    private static void expandTree(JTree tree){
+        for (int i = 0; i < tree.getRowCount(); i++) {
+            tree.expandRow(i);
+        }
+    }
+    private static void collapseTree(JTree tree){
+        for (int i = tree.getRowCount()-1; i >-1 ; i--) {
+            tree.collapseRow(i);
+        }
+    }
+    private void expandFrameHierarchyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expandFrameHierarchyMenuItemActionPerformed
+        expandTree(frameTree);
+    }//GEN-LAST:event_expandFrameHierarchyMenuItemActionPerformed
+
+    private void collapseFrameHierarchyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_collapseFrameHierarchyMenuItemActionPerformed
+        collapseTree(frameTree);
+    }//GEN-LAST:event_collapseFrameHierarchyMenuItemActionPerformed
+
+    private void expandConceptHierarchyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expandConceptHierarchyMenuItemActionPerformed
+        expandTree(conceptTree);
+    }//GEN-LAST:event_expandConceptHierarchyMenuItemActionPerformed
+
+    private void collapseConceptHierarchyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_collapseConceptHierarchyMenuItemActionPerformed
+        collapseTree(conceptTree);
+    }//GEN-LAST:event_collapseConceptHierarchyMenuItemActionPerformed
     public static void viewFrame(AbstractFrame fr){
         if (fr instanceof AndFrame){
             BinaryFrameViewDialog frViewDialog = new BinaryFrameViewDialog(new javax.swing.JFrame(), true);
@@ -836,19 +920,26 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem clearExtensionalsMenuItem;
     private javax.swing.JMenuItem clearModelMenuItem;
     private javax.swing.JMenu clearingMenu;
+    private javax.swing.JMenuItem collapseConceptHierarchyMenuItem;
+    private javax.swing.JMenuItem collapseFrameHierarchyMenuItem;
     private javax.swing.JTree conceptTree;
     private javax.swing.JButton conceptViewButton;
+    private javax.swing.JMenu conceptsHierarchyViewMenu;
     private javax.swing.JCheckBoxMenuItem conceptsMultipleInheritanceCheckBoxMenuItem;
     private javax.swing.JPanel conceptsPanel;
     private javax.swing.JButton constantViewButton;
     private javax.swing.JButton createConceptButton;
     private javax.swing.JButton deleteFrameButton;
+    private javax.swing.JMenuItem expandConceptHierarchyMenuItem;
+    private javax.swing.JMenuItem expandFrameHierarchyMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JTree frameTree;
     private javax.swing.JButton frameViewButton;
+    private javax.swing.JMenu framesHierarchyViewMenu;
     private javax.swing.JCheckBoxMenuItem framesMultipleInheritanceCheckBoxMenuItem;
     private javax.swing.JPanel framesPanel;
     private javax.swing.JMenuItem generateMenuItem;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -863,6 +954,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton removeConceptButton;
     private javax.swing.JCheckBoxMenuItem rolesExpansionCheckBoxMenuItem;
     private javax.swing.JMenuItem saveModelMenuItem;
+    private javax.swing.JMenu viewMenu;
     // End of variables declaration//GEN-END:variables
 
     private DefaultMutableTreeNode getFrameHierarchyTree(FrameNode node){
@@ -876,16 +968,37 @@ public class MainFrame extends javax.swing.JFrame {
     }
     private DefaultMutableTreeNode getConceptHierarchyTree(ConceptNode node){
         ArrayList<ConceptNode> childNodes = node.getChildNodes();
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(node.getValue().getName());  
-        
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(node.getValue().getName());
         for (ConceptNode child: childNodes){
             DefaultMutableTreeNode childNode = getConceptHierarchyTree(child);  
             root.add(childNode);
         }
         return root;
     }
+    private static void exportExpandedNodes(JTree from, JTree to){
+        HashSet<String> expandedNodeNames = new HashSet<>();
+        for (int i = 1; i < from.getRowCount(); i++) {
+            if (from.isExpanded(i)){
+                TreePath p = from.getPathForRow(i);
+                String name = ((DefaultMutableTreeNode) p.getLastPathComponent()).toString();
+                if (!expandedNodeNames.contains(name))
+                    expandedNodeNames.add(name);
+            }
+        }
+        System.out.println(expandedNodeNames);
+        int i = 0;
+        while (i < to.getRowCount()){
+            TreePath p = to.getPathForRow(i);
+            String name = ((DefaultMutableTreeNode) p.getLastPathComponent()).toString();
+            if (expandedNodeNames.contains(name))
+                to.expandPath(p);
+            i++;
+        }
+    }
     private void updateFrameIsaTree(){
-        frameTree = new JTree(getFrameHierarchyTree(ActualData.getFrameHoerarchy()));
+        JTree newTree = new JTree(getFrameHierarchyTree(ActualData.getFrameHoerarchy()));
+        exportExpandedNodes(frameTree, newTree);
+        frameTree = newTree;
         frameTree.setCellRenderer(new FrameNodeCellRenderer());
         frameTree.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -902,7 +1015,9 @@ public class MainFrame extends javax.swing.JFrame {
         deleteFrameButton.setEnabled(false);
     }
     private void updateConceptIsaTree(){
-        conceptTree = new JTree(getConceptHierarchyTree(ActualData.getConceptHoerarchy()));
+        JTree newTree = new JTree(getConceptHierarchyTree(ActualData.getConceptHoerarchy()));
+        exportExpandedNodes(conceptTree, newTree);
+        conceptTree = newTree;
         conceptTree.setCellRenderer(new ConceptNodeCellRenderer());
         conceptTree.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
