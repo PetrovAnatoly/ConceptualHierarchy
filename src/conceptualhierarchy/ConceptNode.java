@@ -6,6 +6,7 @@
 package conceptualhierarchy;
 
 import java.util.ArrayList;
+//import Сoncepts.AbstractConcept;
 import Сoncepts.Concept;
 
 /**
@@ -14,10 +15,10 @@ import Сoncepts.Concept;
  */
 public class ConceptNode{
     //constructors
-    public ConceptNode(Concept arg){ value = arg;}
+    public ConceptNode(/*Abstract*/Concept arg){ value = arg;}
     
     //fields
-    protected Concept value;
+    protected /*Abstract*/Concept value;
     protected ArrayList<ConceptNode> childNodes = new ArrayList();
     protected ArrayList<ConceptNode> parents = new ArrayList();
     
@@ -57,7 +58,7 @@ public class ConceptNode{
 
     public ArrayList<ConceptNode> getChildNodes() { return childNodes;}
 
-    public Concept getValue() { return value;}
+    public /*Abstract*/Concept getValue() { return value;}
     
     public boolean isDescedentOf(ConceptNode arg){
         for (ConceptNode i: arg.childNodes)

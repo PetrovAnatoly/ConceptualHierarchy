@@ -22,7 +22,8 @@ public abstract class AbstractFrame{
     public boolean ISA(ScriptFrame arg) { return false;}
     public boolean ISA(AndFrame arg) { return false;}
     public boolean ISA(NotFrame arg) { 
-        return false;}
+        return !arg.getOperand().ISA(this);
+    }
     public boolean ISA(AbstractFrame arg) { 
         if (arg instanceof AbstractSimpleFrame)
             return ISA((AbstractSimpleFrame) arg);
@@ -37,7 +38,9 @@ public abstract class AbstractFrame{
     public boolean equals(AbstractFrame arg){
         return ISA(arg) && arg.ISA(this);
     }
-    public boolean ISA(OrFrame arg){ return false;}
+    public boolean ISA(OrFrame arg){ 
+        return (ISA(arg.firstOperand) || ISA(arg.secondOperand));
+    }
     public abstract boolean conceptIsUsed(Concept concept); 
     public abstract boolean constantIsUsed(Constant constant);  
 

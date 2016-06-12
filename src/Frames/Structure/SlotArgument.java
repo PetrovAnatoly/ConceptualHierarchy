@@ -12,4 +12,5 @@ package Frames.Structure;
 public interface SlotArgument {
     public boolean isVariable();
     public String getName();
+    public void setName(String s);
 }

@@ -76,6 +76,7 @@ public class Quantor {
     }
     
     public String getType() { return type;}
+    public void setType(String tp){ type = tp;}
     public Variable getVariable() { return var;}
     public int getValue() { return value;}
     public void setValue(int val){ value = val;}

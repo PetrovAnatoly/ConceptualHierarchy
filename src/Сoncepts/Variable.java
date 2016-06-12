@@ -17,7 +17,7 @@ public class Variable implements SlotArgument{
         name = argName;
         domen = concept;
     } 
-    private final String name;
+    private String name;
     private Concept domen;
     
     @Override
@@ -25,4 +25,9 @@ public class Variable implements SlotArgument{
     @Override
     public boolean isVariable() { return true;}
     public Concept getDomen() { return domen;}
+
+    @Override
+    public void setName(String s) {
+        name = s;
+    }
 }

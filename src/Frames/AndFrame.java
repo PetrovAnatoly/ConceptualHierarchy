@@ -20,12 +20,12 @@ public class AndFrame extends AbstractBinaryFrame{
     
     @Override
     public boolean ISA(AbstractSimpleFrame argument) {
-        return (firstOperand.ISA(argument) || secondOperand.ISA(argument));
+        return firstOperand.ISA(argument) && secondOperand.ISA(argument);
     }
     
     @Override
     public boolean ISA(AndFrame arg){
-        if (arg.firstOperand instanceof AbstractSimpleFrame){
+        /*if (arg.firstOperand instanceof AbstractSimpleFrame){
             AbstractSimpleFrame firstArgOperand = (AbstractSimpleFrame) arg.firstOperand;
             if (arg.secondOperand instanceof AbstractSimpleFrame){
                 AbstractSimpleFrame secondArgOperand = (AbstractSimpleFrame) arg.secondOperand;
@@ -73,12 +73,13 @@ public class AndFrame extends AbstractBinaryFrame{
             }
             else return false;
         }
-        return false;
+        return false;*/
+        return firstOperand.ISA(arg) && secondOperand.ISA(arg);
     }
     
     @Override
     public boolean ISA(OrFrame arg){
-        return ISA(arg.firstOperand) && ISA(arg.secondOperand);
+        return firstOperand.ISA(arg) && secondOperand.ISA(arg);
     }
 
     @Override

@@ -97,4 +97,11 @@ public class Concept extends AbstractConcept{
             rtrn.addComplexStringProperty("свойства", prop);
         return rtrn;
     }
+
+    @Override
+    public boolean ISA(AbstractConcept arg) {
+        if (arg instanceof Concept)
+            return ISA((Concept)arg);
+        else return false;
+    }
 }

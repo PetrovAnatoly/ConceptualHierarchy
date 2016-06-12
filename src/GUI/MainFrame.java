@@ -108,7 +108,6 @@ public class MainFrame extends javax.swing.JFrame {
         framesHierarchyViewMenu = new javax.swing.JMenu();
         expandFrameHierarchyMenuItem = new javax.swing.JMenuItem();
         collapseFrameHierarchyMenuItem = new javax.swing.JMenuItem();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         conceptsHierarchyViewMenu = new javax.swing.JMenu();
         expandConceptHierarchyMenuItem = new javax.swing.JMenuItem();
         collapseConceptHierarchyMenuItem = new javax.swing.JMenuItem();
@@ -407,10 +406,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         framesHierarchyViewMenu.add(collapseFrameHierarchyMenuItem);
-
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
-        framesHierarchyViewMenu.add(jCheckBoxMenuItem1);
 
         viewMenu.add(framesHierarchyViewMenu);
 
@@ -939,7 +934,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem framesMultipleInheritanceCheckBoxMenuItem;
     private javax.swing.JPanel framesPanel;
     private javax.swing.JMenuItem generateMenuItem;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -985,7 +979,6 @@ public class MainFrame extends javax.swing.JFrame {
                     expandedNodeNames.add(name);
             }
         }
-        System.out.println(expandedNodeNames);
         int i = 0;
         while (i < to.getRowCount()){
             TreePath p = to.getPathForRow(i);

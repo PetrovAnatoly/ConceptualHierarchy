@@ -102,13 +102,58 @@ public class AbstractSimpleFrame extends AbstractFrame {
       
     @Override
     public boolean ISA(OrFrame arg){
-        return ISA(arg.firstOperand) || ISA(arg.secondOperand);
+        return !ISA(new NotFrame("", arg.firstOperand)) ^ !ISA(new NotFrame("", arg.secondOperand));
+    }
+    @Override
+    public boolean ISA(NotFrame arg){
+        if(arg.firstOperand instanceof AbstractSimpleFrame){
+            AbstractSimpleFrame fo = (AbstractSimpleFrame)(arg.firstOperand);
+            if(fo.getPredicate().equals(getPredicate())){
+                if (!fo.getQuantors().isEmpty()){
+                    ArrayList<Quantor> foQntrs = fo.cloneQuantors();
+                    int originalFrstQuantorValue = foQntrs.get(0).getValue();
+                    AbstractSimpleFrame notFrameSimple;
+                    if (foQntrs.get(0).getType().equals("[]")){
+                        foQntrs.get(0).setType("{]");
+                        foQntrs.get(0).setValue(originalFrstQuantorValue - 1);
+                        notFrameSimple = new AbstractSimpleFrame(fo.name, fo.predicate , foQntrs, fo.body);
+                        if (ISA(notFrameSimple))
+                            return true;
+                        foQntrs.get(0).setType("[}");
+                        foQntrs.get(0).setValue(originalFrstQuantorValue + 1);
+                        return ISA(notFrameSimple);
+                    }
+                    else if (foQntrs.get(0).getType().equals("[}")){
+                        foQntrs.get(0).setType("{]");
+                        foQntrs.get(0).setValue(originalFrstQuantorValue - 1);
+                        notFrameSimple = new AbstractSimpleFrame(fo.name, fo.predicate , foQntrs, fo.body);
+                        return ISA(notFrameSimple);
+                    }
+                    else if (foQntrs.get(0).getType().equals("{]")){
+                        foQntrs.get(0).setType("[}");
+                        foQntrs.get(0).setValue(originalFrstQuantorValue + 1);
+                        notFrameSimple = new AbstractSimpleFrame(fo.name, fo.predicate , foQntrs, fo.body);
+                        return ISA(notFrameSimple);
+                    }
+                    else if (foQntrs.get(0).getType().equals("A")){
+                        foQntrs.get(0).setType("[]");
+                        foQntrs.get(0).setValue(0);
+                        notFrameSimple = new AbstractSimpleFrame(fo.name, fo.predicate , foQntrs, fo.body);
+                        return ISA(notFrameSimple);
+                    }
+                }
+                else if (fo.getVariableCount() == 0)
+                    return !arg.getOperand().ISA(this);
+            }
+            else 
+                return false;
+        }
+        else return ISA(arg.transformWithDeMorganLaws());
+        return false;
     }
     //!!!
     public AbstractSimpleFrame getMergeFrame(AbstractSimpleFrame arg){
         AbstractSimpleFrame rtrn;
-        
-        
         return this;
     }
     //!!!
@@ -163,7 +208,7 @@ public class AbstractSimpleFrame extends AbstractFrame {
             }
         return rtrn;
     }
-    private int getVariableCount(){
+    int getVariableCount(){
         int i = 0;
         for (Slot slot: body.getSlots())
             if (slot.getArgument().isVariable())
