@@ -10,6 +10,7 @@ package Сoncepts;
  * @author Anatoly
  */
 public class AndConcept extends AbstractComplexConcept{
+    public AndConcept(String n, Concept fo, Concept so){ super(n, fo, so);}
     private final static String operation = "AND";
     @Override
     public String getOperation() { return operation;}
@@ -25,5 +26,10 @@ public class AndConcept extends AbstractComplexConcept{
     }
     public boolean ISA(AndConcept arg){
         return (ISA(arg.firstOperand) && ISA(arg.secondOperand));
+    }
+
+    @Override
+    public boolean ISA(Concept arg) {
+        return false;
     }
 }

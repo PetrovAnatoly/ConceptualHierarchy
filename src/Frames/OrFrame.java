@@ -19,23 +19,39 @@ public class OrFrame extends AbstractBinaryFrame{
     } 
     
     @Override
+    public boolean ISA(AbstractFrame arg) { 
+        if (arg instanceof AbstractSimpleFrame)
+            return ISA((AbstractSimpleFrame) arg);
+        else if (arg instanceof AndFrame)
+            return ISA((AndFrame) arg);
+        else if (arg instanceof OrFrame)
+            return ISA((OrFrame) arg);
+        else if (arg instanceof NotFrame)   
+            return ISA((NotFrame) arg);  
+        else return false;
+    }
+    @Override
     public boolean ISA(AbstractSimpleFrame argument) {
         return (firstOperand.ISA(argument) && secondOperand.ISA(argument));
     }
     
     @Override
-    public boolean ISA(AndFrame argument){
-        return (firstOperand.ISA(argument) && secondOperand.ISA(argument));
+    public boolean ISA(AndFrame arg){
+        return firstOperand.ISA(arg) && secondOperand.ISA(arg);
     }
     
     @Override
-    public boolean ISA(OrFrame argument){
-        return (firstOperand.ISA(argument) && secondOperand.ISA(argument));
+    public boolean ISA(OrFrame arg){
+        return firstOperand.ISA(arg) && secondOperand.ISA(arg);
     }
     
     @Override
     public String getOperation() { return "OR";}
-
+    @Override
+    public boolean ISA(NotFrame arg){
+        //AbstractFrame notArg = arg.firstOperand;
+        return firstOperand.ISA(arg) && secondOperand.ISA(arg);
+    }
     @Override
     public CDLTag toConDesLanTag() {
         CDLTag rtrn = new CDLTag("фрейм");

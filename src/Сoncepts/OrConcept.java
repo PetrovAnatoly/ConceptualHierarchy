@@ -11,6 +11,7 @@ package Сoncepts;
  */
 public class OrConcept extends AbstractComplexConcept{
     private final static String operation = "OR";
+    public OrConcept(String n, Concept fo, Concept so) {super(n, fo, so);}
     @Override
     public String getOperation() { return operation;}
     @Override

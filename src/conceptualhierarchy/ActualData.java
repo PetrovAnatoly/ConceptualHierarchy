@@ -341,7 +341,7 @@ public class ActualData {
             newNode.addParent(frameHierarchyRoot);
             frameHierarchyRoot.reformIfNeeded(newNode);
         } else {
-            for (AbstractFrame i : setOfParentFrames) {
+            for (AbstractFrame i: setOfParentFrames) {
                 FrameNode node = frameNodeAccordance.get(i);
                 node.addChild(newNode);
                 newNode.addParent(node);
@@ -480,7 +480,7 @@ public class ActualData {
     }
 
     private static ArrayList<AbstractFrame> getIsaSetForFrame(AbstractFrame arg) {
-        ArrayList<AbstractFrame> rtrnSet = new ArrayList();
+        ArrayList<AbstractFrame> rtrnSet = new ArrayList<>();
         for (AbstractFrame i : frameNodeAccordance.keySet()) {
             if (arg != i && arg.ISA(i)) {
                 rtrnSet.add(i);
@@ -566,9 +566,9 @@ public class ActualData {
         }
         if (fr instanceof AbstractSimpleFrame){
             defFrameConcept.remove(fr);
-            //String predicate = ((AbstractSimpleFrame) fr).getPredicate();
-            //if (getFrameWithThisPredicate(predicate) == null)
-            //    predicateExtensionals.remove(predicate);
+            String predicate = ((AbstractSimpleFrame) fr).getPredicate();
+            if (getFrameWithThisPredicate(predicate) == null)
+                predicateExtensionals.remove(predicate);
         }
     }
     

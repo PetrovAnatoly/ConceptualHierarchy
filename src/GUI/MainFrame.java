@@ -696,7 +696,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void removeAllNotUsedConstantsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeAllNotUsedConstantsMenuItemActionPerformed
         for (Concept concept: ActualData.getConstants().keySet()){
             for (Constant constant: (ArrayList<Constant>)ActualData.getConstants().get(concept).clone()){
-                if (!(ActualData.constantIsUsedInFrame(constant) || ActualData.constantIsUsedInFrame(constant)))
+                if (!(ActualData.constantIsUsedInFrame(constant) || ActualData.constantIsUsedInExtension(constant)))
                     ActualData.removeConstantInDomenByName(constant.getName(), concept);
             }
         }

@@ -10,6 +10,7 @@ package Сoncepts;
  * @author Anatoly
  */
 public class ComplementConcept extends AbstractComplexConcept{
+    public ComplementConcept(String n, Concept fo, Concept so){ super(n, fo, so);}
     private final static String operation = "COMPL";
     @Override
     public String getOperation() { return operation;}

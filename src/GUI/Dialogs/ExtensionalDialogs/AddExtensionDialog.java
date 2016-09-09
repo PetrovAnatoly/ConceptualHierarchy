@@ -64,13 +64,15 @@ public final class AddExtensionDialog extends javax.swing.JDialog {
         jScrollPane2.setViewportView(jList1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Новая подстановка");
+        setMinimumSize(new java.awt.Dimension(364, 238));
 
         jLabel1.setText("Предикат:");
 
         predicateTextField.setEditable(false);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setText("Добавление означивания");
+        jLabel2.setText("Добавление подстановки");
 
         extensionTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

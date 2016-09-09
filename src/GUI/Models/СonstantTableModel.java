@@ -16,9 +16,9 @@ import Сoncepts.DefConcept;
  *
  * @author Anatoly
  */
-public class constantTableModel extends DefaultTableModel{
+public class СonstantTableModel extends DefaultTableModel{
     
-    public constantTableModel(Concept concept){
+    public СonstantTableModel(Concept concept){
         super(data, headers);
         domen = concept;
         ArrayList<Constant> constants;
@@ -37,7 +37,7 @@ public class constantTableModel extends DefaultTableModel{
         }
     }
 
-    public constantTableModel() {
+    public СonstantTableModel() {
         super();
     }
     private int firstRemovebleIndex = 0;

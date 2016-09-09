@@ -19,69 +19,43 @@ public class AndFrame extends AbstractBinaryFrame{
     }
     
     @Override
+    public boolean ISA(AbstractFrame arg) { 
+        if (arg instanceof AbstractSimpleFrame)
+            return ISA((AbstractSimpleFrame) arg);
+        else if (arg instanceof AndFrame)
+            return ISA((AndFrame) arg);
+        else if (arg instanceof OrFrame)
+            return ISA((OrFrame) arg);
+        else if (arg instanceof NotFrame)   
+            return ISA((NotFrame) arg);  
+        else return false;
+    }
     public boolean ISA(AbstractSimpleFrame argument) {
+        /*NotFrame notArg = new NotFrame("", argument);
+        OrFrame orNotOperands = new OrFrame("", new NotFrame("", firstOperand), new NotFrame("", secondOperand));
+        return notArg.ISA(orNotOperands);*/
         return firstOperand.ISA(argument) && secondOperand.ISA(argument);
     }
     
     @Override
     public boolean ISA(AndFrame arg){
-        /*if (arg.firstOperand instanceof AbstractSimpleFrame){
-            AbstractSimpleFrame firstArgOperand = (AbstractSimpleFrame) arg.firstOperand;
-            if (arg.secondOperand instanceof AbstractSimpleFrame){
-                AbstractSimpleFrame secondArgOperand = (AbstractSimpleFrame) arg.secondOperand;
-                return (ISA(firstArgOperand) && ISA(secondArgOperand));
-            }
-            else if (arg.secondOperand instanceof AndFrame){
-                AndFrame secondArgOperand = (AndFrame) arg.secondOperand;
-                return (ISA(firstArgOperand) && ISA(secondArgOperand));
-            }
-            else if (arg.secondOperand instanceof OrFrame){
-                OrFrame secondArgOperand = (OrFrame) arg.secondOperand;
-                return (ISA(firstArgOperand) && ISA(secondArgOperand));
-            }
-            else return false;
-        }
-        else if (arg.firstOperand instanceof AndFrame){
-            AndFrame firstArgOperand = (AndFrame) arg.firstOperand;
-            if (arg.secondOperand instanceof AbstractSimpleFrame){
-                AbstractSimpleFrame secondArgOperand = (AbstractSimpleFrame) arg.secondOperand;
-                return (ISA(firstArgOperand) && ISA(secondArgOperand));
-            }
-            else if (arg.secondOperand instanceof AndFrame){
-                AndFrame secondArgOperand = (AndFrame) arg.secondOperand;
-                return (ISA(firstArgOperand) && ISA(secondArgOperand));
-            }
-            else if (arg.secondOperand instanceof OrFrame){
-                OrFrame secondArgOperand = (OrFrame) arg.secondOperand;
-                return (ISA(firstArgOperand) && ISA(secondArgOperand));
-            }
-            else return false;
-        }
-        else if (arg.firstOperand instanceof OrFrame){
-            OrFrame firstArgOperand = (OrFrame) arg.firstOperand;
-            if (arg.secondOperand instanceof AbstractSimpleFrame){
-                AbstractSimpleFrame secondArgOperand = (AbstractSimpleFrame) arg.secondOperand;
-                return (ISA(firstArgOperand) && ISA(secondArgOperand));
-            }
-            else if (arg.secondOperand instanceof AndFrame){
-                AndFrame secondArgOperand = (AndFrame) arg.secondOperand;
-                return (ISA(firstArgOperand) && ISA(secondArgOperand));
-            }
-            else if (arg.secondOperand instanceof OrFrame){
-                OrFrame secondArgOperand = (OrFrame) arg.secondOperand;
-                return (ISA(firstArgOperand) && ISA(secondArgOperand));
-            }
-            else return false;
-        }
-        return false;*/
-        return firstOperand.ISA(arg) && secondOperand.ISA(arg);
+        return ISA(arg.firstOperand) && ISA(arg.secondOperand);
     }
-    
     @Override
     public boolean ISA(OrFrame arg){
-        return firstOperand.ISA(arg) && secondOperand.ISA(arg);
+        if (ISA(arg.firstOperand))
+            return true;
+        if (ISA(arg.secondOperand))
+            return true;
+        NotFrame notThis = new NotFrame("", this);
+        AndFrame notArg = new AndFrame("", new NotFrame("", arg.firstOperand), new NotFrame("", arg.secondOperand));
+        return notArg.ISA(notThis);
     }
-
+    @Override
+    public boolean ISA(NotFrame arg){
+        return firstOperand.ISA(arg) || secondOperand.ISA(arg);
+        //return ISA(arg.getEquivalent());
+    }
     @Override
     public String getOperation() { return "AND";}
 

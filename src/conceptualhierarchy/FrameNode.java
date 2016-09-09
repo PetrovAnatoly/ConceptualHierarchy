@@ -7,6 +7,7 @@ package conceptualhierarchy;
 
 import Frames.AbstractFrame;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  *
@@ -27,6 +28,13 @@ public class FrameNode {
     public AbstractFrame getValue() { return value;}
     public ArrayList<FrameNode> getChildNodes() { return childNodes;}
     public ArrayList<FrameNode> getParents() { return parents;}
+    public HashSet<FrameNode> getAllDescendants(){
+        HashSet<FrameNode> rtrnSet = new HashSet<>();
+        rtrnSet.addAll(childNodes);
+        for (FrameNode child: childNodes)
+            rtrnSet.addAll(child.getAllDescendants());
+        return rtrnSet;
+    }
     public boolean addChild(FrameNode arg) {
         if (childNodes.contains(arg))
             return false;
@@ -61,19 +69,59 @@ public class FrameNode {
     };
     
     public boolean isDescedentOf(FrameNode arg){
+        if (arg.childNodes.contains(this))
+            return true;
         for (FrameNode i: arg.childNodes)
-            if (this == i || isDescedentOf(i))
+            if (isDescedentOf(i))
                 return true;
         return false;
     };
     
+   /* static HashSet<FrameNode> visitedNodes = new HashSet<>();
+    static HashSet<FrameNode> isaNodesToSkip = new HashSet<>();
+    HashSet<AbstractFrame> getMinimisedIsaSetForFrame(AbstractFrame arg){
+        HashSet<AbstractFrame> rtrnSet = new HashSet<>();
+        for (FrameNode node: childNodes){
+            if (visitedNodes.contains(node))
+                continue;
+            AbstractFrame nodeValue = node.getValue();
+            if (arg != nodeValue && arg.ISA(nodeValue)){
+                if (node.parents.size()>1)
+                    isaNodesToSkip.add(node);
+                HashSet<AbstractFrame> isaSetAmongChilds = node.getMinimisedIsaSetForFrame(arg);
+                if (isaSetAmongChilds.isEmpty()){
+                    boolean b = true;
+                    for (FrameNode ch: node.childNodes)
+                        if (isaNodesToSkip.contains(ch)){
+                            b = false;
+                            isaNodesToSkip.add(node);
+                            break;
+                        }
+                    if (b)
+                        rtrnSet.add(nodeValue); 
+                }
+                else 
+                    rtrnSet.addAll(isaSetAmongChilds);
+            }
+            else 
+                visitedNodes.addAll(node.getAllDescendants());
+            visitedNodes.add(node);
+        }
+        return rtrnSet;
+    }
+    */
     public void reformIfNeeded(FrameNode arg){
         ArrayList<FrameNode> toRemoveSet = new ArrayList();
         boolean childNodesContainsArg = childNodes.contains(arg);
-        for (FrameNode i: (ArrayList<FrameNode>)childNodes.clone())
+        boolean isDescedentOfArg = isDescedentOf(arg);
+        for (FrameNode i: (ArrayList<FrameNode>)childNodes.clone()){
             if (!childNodesContainsArg || arg!=i){
                 if (i.value.ISA(arg.value)){
-                    if (!arg.childNodes.contains(arg)){
+                    if (isDescedentOfArg){
+                        arg.removeChild(i);
+                        i.removeParent(arg);
+                    }
+                    else if (!i.isDescedentOf(arg)){
                         arg.addChild(i);
                         i.addParent(arg);
                     }
@@ -86,6 +134,7 @@ public class FrameNode {
                 else 
                     i.reformIfNeeded(arg);
             }
+        }
         childNodes.removeAll(toRemoveSet);
     }
     private static int shift = 0; 

@@ -5,7 +5,9 @@
  */
 package Frames;
 
+import Frames.Structure.Quantor;
 import ModelInputLoad.CDLTag;
+import java.util.ArrayList;
 import Сoncepts.Concept;
 import Сoncepts.Constant;
 
@@ -20,9 +22,11 @@ public abstract class AbstractFrame{
     public void rename(String arg) {name = arg;}
     public abstract boolean ISA(AbstractSimpleFrame argument);
     public boolean ISA(ScriptFrame arg) { return false;}
-    public boolean ISA(AndFrame arg) { return false;}
-    public boolean ISA(NotFrame arg) { 
-        return !arg.getOperand().ISA(this);
+    public boolean ISA(AndFrame arg) { 
+        return ISA(arg.firstOperand) || ISA(arg.secondOperand);
+    }
+    public boolean ISA(NotFrame arg) {
+        return ISA(arg.getEquivalent());
     }
     public boolean ISA(AbstractFrame arg) { 
         if (arg instanceof AbstractSimpleFrame)
@@ -39,7 +43,13 @@ public abstract class AbstractFrame{
         return ISA(arg) && arg.ISA(this);
     }
     public boolean ISA(OrFrame arg){ 
-        return (ISA(arg.firstOperand) || ISA(arg.secondOperand));
+        if (ISA(arg.firstOperand))
+            return true;
+        if (ISA(arg.secondOperand))
+            return true;
+        NotFrame notThis = new NotFrame("", this);
+        AndFrame notArg = new AndFrame("", new NotFrame("", arg.firstOperand), new NotFrame("", arg.secondOperand));
+        return notArg.ISA(notThis);
     }
     public abstract boolean conceptIsUsed(Concept concept); 
     public abstract boolean constantIsUsed(Constant constant);  

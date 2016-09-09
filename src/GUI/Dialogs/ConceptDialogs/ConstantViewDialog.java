@@ -6,7 +6,7 @@
 package GUI.Dialogs.ConceptDialogs;
 
 import GUI.Dialogs.ErrorDialog;
-import GUI.Models.constantTableModel;
+import GUI.Models.СonstantTableModel;
 import conceptualhierarchy.ActualData;
 import Сoncepts.Concept;
 import Сoncepts.DefConcept;
@@ -363,11 +363,11 @@ public class ConstantViewDialog extends javax.swing.JDialog {
         });
     }
     
-    private constantTableModel myTableModel = new constantTableModel();
+    private СonstantTableModel myTableModel = new СonstantTableModel();
     private Concept concept;
     public void setConcept(Concept conc){
         concept = conc;
-        myTableModel = new constantTableModel(conc);
+        myTableModel = new СonstantTableModel(conc);
         constantTable.setModel(myTableModel);
         constantTable.setVisible(true);
         conceptCommentTextField.setText(concept.getComment());

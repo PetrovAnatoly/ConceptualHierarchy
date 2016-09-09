@@ -67,7 +67,8 @@ public class ViewFrameExtensionalDialog extends javax.swing.JDialog {
         jScrollPane2.setViewportView(jList1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(400, 400));
+        setTitle("Экстенсионал фрейма");
+        setMinimumSize(new java.awt.Dimension(400, 300));
 
         jLabel2.setText("Имя фрейма:");
 
@@ -153,13 +154,12 @@ public class ViewFrameExtensionalDialog extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(quantorsField)
-                            .addComponent(frameNameField)
-                            .addComponent(predicateField)))
+                            .addComponent(predicateField)
+                            .addComponent(frameNameField)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(closedFrameMessage)
+                        .addComponent(closedFrameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(closedFrameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(closedFrameMessage))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(predExtButton, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)))

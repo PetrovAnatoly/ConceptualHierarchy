@@ -41,6 +41,7 @@ public class ViewPredicateExtensionalDialog extends javax.swing.JDialog {
         extensionalTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Экстенсионал предиката");
 
         titleLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         titleLabel.setText("Означивания предиката");
