@@ -551,7 +551,7 @@ public class ActualData {
         node.childNodes.clear();
         for (FrameNode ch : chNodes) {
             ch.removeParent(node);
-            ArrayList<AbstractFrame> isaFrames = getIsaSetForFrameWithoutTransitivity(getIsaSetForFrame(ch.value));
+            HashSet<AbstractFrame> isaFrames = frameHierarchyRoot.getMinimisedIsaSetForFrame(fr);//getIsaSetForFrameWithoutTransitivity(getIsaSetForFrame(ch.value));
             if (isaFrames.isEmpty()) {
                 frameHierarchyRoot.addChild(ch);
                 ch.addParent(frameHierarchyRoot);

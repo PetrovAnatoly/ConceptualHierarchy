@@ -77,7 +77,7 @@ public class FrameNode {
         return false;
     };
     
-   /* static HashSet<FrameNode> visitedNodes = new HashSet<>();
+    static HashSet<FrameNode> visitedNodes = new HashSet<>();
     static HashSet<FrameNode> isaNodesToSkip = new HashSet<>();
     HashSet<AbstractFrame> getMinimisedIsaSetForFrame(AbstractFrame arg){
         HashSet<AbstractFrame> rtrnSet = new HashSet<>();
@@ -109,7 +109,7 @@ public class FrameNode {
         }
         return rtrnSet;
     }
-    */
+    
     public void reformIfNeeded(FrameNode arg){
         ArrayList<FrameNode> toRemoveSet = new ArrayList();
         boolean childNodesContainsArg = childNodes.contains(arg);
